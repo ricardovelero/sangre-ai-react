@@ -64,7 +64,7 @@ export default function RegisterForm() {
       <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
         <img
           alt='Sangre AI'
-          src='/public/sangreai.webp'
+          src='/sangreai.webp'
           className='mx-auto h-10 w-auto'
         />
         <h2 className='mt-4 text-center text-2xl/9 font-bold tracking-tight text-gray-900'>
