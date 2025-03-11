@@ -1,9 +1,10 @@
-import LogoutButton from "./LogoutButton";
+// const navItems = [
+//   { label: "Dashboard", url: "/" },
+//   { label: "Analíticas", url: "/analitics" },
+//   { label: "Cargar Analíticas", url: "/upload" },
+//   { label: "Ajustes", url: "/settings" },
+// ];
 
 export default function NavBar() {
-  return (
-    <div>
-      <LogoutButton />
-    </div>
-  );
+  return <div>NavBar</div>;
 }
