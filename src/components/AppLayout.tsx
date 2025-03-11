@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
-import { useAuthStore } from "@/store/authStore";
+import { useAuthStore } from "../store/authStore";
 import { useEffect } from "react";
 
 export default function AppLayout() {
@@ -9,6 +9,7 @@ export default function AppLayout() {
   useEffect(() => {
     initializeAuth();
   }, [initializeAuth]);
+
   return (
     <div className='mx-auto sm:px-6 lg:px-24'>
       <NavBar />
