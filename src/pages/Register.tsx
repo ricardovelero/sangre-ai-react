@@ -37,7 +37,7 @@ export default function RegisterForm() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        `${process.env.API_URL}/api/auth/register`,
+        `${import.meta.env.VITE_APP_API_URL}/api/auth/register`,
         data
       );
 
@@ -134,7 +134,7 @@ export default function RegisterForm() {
             color='indigo'
             type='submit'
             disabled={isSubmitting}
-            className='w-full cursor-pointer'
+            className='w-full'
           >
             {isSubmitting ? "Registrando..." : "Registrar"}
           </Button>

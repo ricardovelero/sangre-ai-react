@@ -24,7 +24,7 @@ export default function LoginForm() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        `${process.env.API_URL}/api/auth/login`,
+        `${import.meta.env.VITE_APP_API_URL}/api/auth/login`,
         data
       );
 
@@ -94,7 +94,7 @@ export default function LoginForm() {
             color='indigo'
             type='submit'
             disabled={isSubmitting}
-            className='w-full cursor-pointer'
+            className='w-full'
           >
             {isSubmitting ? "Ingresando..." : "Ingresar"}
           </Button>
