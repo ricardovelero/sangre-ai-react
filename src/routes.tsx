@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import PublicLayout from "@/components/PublicLayout";
-import DashboardLayout from "@/components/AppLayout";
+import AppLayout from "@/components/AppLayout";
 import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import PageNotFound from "@/pages/NotFound";
@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
     errorElement: <AppError />,
     children: [
       {
-        element: <DashboardLayout />,
+        element: <AppLayout />,
         children: [{ path: "dashboard", element: <Dashboard /> }],
       },
     ],
