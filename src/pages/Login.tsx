@@ -24,7 +24,7 @@ export default function LoginForm() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        `${process.env.API_URL}/api/auth/login`,
         data
       );
 

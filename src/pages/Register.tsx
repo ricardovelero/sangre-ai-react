@@ -5,6 +5,8 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   nombre: z.string().optional(),
@@ -25,6 +27,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function RegisterForm() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -34,13 +37,22 @@ export default function RegisterForm() {
   const onSubmit = async (data: FormData) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/registro",
+        `${process.env.API_URL}/api/auth/register`,
         data
       );
 
       console.log(response.data);
-      // Aquí puedes guardar los tokens o redirigir al usuario
-      alert(response.data.message);
+
+      // Save tokens in cookies
+      Cookies.set("token", response.data.token, {
+        expires: 3,
+        secure: true,
+      });
+      Cookies.set("refreshToken", response.data.refreshToken, {
+        expires: 9,
+        secure: true,
+      });
+      navigate("/a/dashboard");
     } catch (error: any) {
       console.error(error);
       alert(error.response?.data?.message || "Error al registrar");
@@ -50,8 +62,12 @@ export default function RegisterForm() {
   return (
     <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
-        <img alt='Sangre AI' src='' className='mx-auto h-10 w-auto' />
-        <h2 className='mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900'>
+        <img
+          alt='Sangre AI'
+          src='/public/sangreai.webp'
+          className='mx-auto h-10 w-auto'
+        />
+        <h2 className='mt-4 text-center text-2xl/9 font-bold tracking-tight text-gray-900'>
           Regístrate
         </h2>
       </div>
