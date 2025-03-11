@@ -13,39 +13,57 @@ export type User = {
 // Define Zustand state and actions
 type AuthState = {
   user: User | null;
+  token: string | null;
   isAuthenticated: boolean;
-  loading: boolean;
-  initializeAuth: () => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, onSuccess?: () => void) => void;
   logout: () => void;
-  refreshToken: () => Promise<void>;
+  getToken: () => Promise<string | null>;
+  initializeAuth: () => Promise<void>;
 };
 
 // Backend API URL
 const API_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:5000/api/auth";
+  import.meta.env.VITE_APP_API_URL || "http://localhost:3000/api/auth";
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
-      isAuthenticated: false,
-      loading: true,
+      token: Cookies.get("token") || null,
+      isAuthenticated: !!Cookies.get("token"), // Initially check for a token,
 
       // Initialiaze authentication state
       initializeAuth: async () => {
-        try {
-          const token = Cookies.get("token");
-          if (!token) throw new Error("No se encontró un token");
+        console.log("🔥 Checking JWT authentication...");
+        const token = Cookies.get("token");
 
+        if (!token) {
+          console.log("🚨 No token found, user is not authenticated");
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
+          return;
+        }
+        try {
           const response = await axios.get<User>(`${API_URL}/user`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-
-          set({ user: response.data, isAuthenticated: true, loading: false });
+          console.log("✅ User authenticated:", response.data);
+          set({
+            user: response.data,
+            token,
+            isAuthenticated: true,
+          });
         } catch (error) {
-          console.error("Error en inicialización de autenticación", error);
-          set({ user: null, isAuthenticated: false, loading: false });
+          console.error("🚨 Invalid token, logging out:", error);
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
+          Cookies.remove("token");
         }
       },
 
@@ -91,27 +109,9 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      // Refresh Token function
-      refreshToken: async () => {
-        try {
-          const refreshToken = Cookies.get("refreshToken");
-          if (!refreshToken) throw new Error("No refresh token available");
-
-          const response = await axios.post<{ token: string }>(
-            `${API_URL}/refresh`,
-            { refreshToken }
-          );
-
-          Cookies.set("token", response.data.token, {
-            expires: 1,
-            secure: true,
-          });
-
-          set({ isAuthenticated: true });
-        } catch (error: any) {
-          console.error("Token Refresh Error:", error.response?.data || error);
-          set({ user: null, isAuthenticated: false });
-        }
+      // Get token
+      getToken: async () => {
+        return get().token;
       },
     }),
     {
