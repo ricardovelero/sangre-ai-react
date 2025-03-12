@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 export default function PageNotFound() {
   return (
     <main className='grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8'>
@@ -10,10 +12,13 @@ export default function PageNotFound() {
           Sorry, we couldn’t find the page you’re looking for.
         </p>
         <div className='mt-10 flex items-center justify-center gap-x-6'>
-          <button onClick={() => window.history.back()}>Go back home</button>
-          <button onClick={() => (window.location.href = "/contact")}>
+          <Button onClick={() => window.history.back()}>Go back home</Button>
+          <Button
+            variant={"outline"}
+            onClick={() => (window.location.href = "/contact")}
+          >
             Contact support <span aria-hidden='true'>&rarr;</span>
-          </button>
+          </Button>
         </div>
       </div>
     </main>

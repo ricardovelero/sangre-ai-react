@@ -1,3 +1,3 @@
-export default function AnaliticsUpload() {
-  return <div>AnaliticsUpload</div>;
+export default function AnalyticsUpload() {
+  return <div>AnalyticsUpload</div>;
 }

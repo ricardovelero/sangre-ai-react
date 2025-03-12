@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useRouteError } from "react-router-dom";
 
 export default function AppError() {
@@ -13,10 +14,13 @@ export default function AppError() {
           {error.statusText || error.message}
         </p>
         <div className='mt-10 flex items-center justify-center gap-x-6'>
-          <button onClick={() => window.history.back()}>Go back</button>
-          <button onClick={() => (window.location.href = "/contact")}>
+          <Button onClick={() => window.history.back()}>Go back</Button>
+          <Button
+            variant={"outline"}
+            onClick={() => (window.location.href = "/contact")}
+          >
             Contact support <span aria-hidden='true'>&rarr;</span>
-          </button>
+          </Button>
         </div>
       </div>
     </main>

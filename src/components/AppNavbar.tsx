@@ -10,10 +10,10 @@ import { cn } from "@/lib/utils";
 import Logo from "./Logo";
 
 const navItems = [
-  { label: "Dashboard", href: "/" },
-  { label: "Analíticas", href: "/analitics" },
-  { label: "Cargar Analíticas", href: "/upload" },
-  { label: "Ajustes", href: "/settings" },
+  { label: "Dashboard", href: "/a/dashboard" },
+  { label: "Analíticas", href: "/a/analytics" },
+  { label: "Cargar Analíticas", href: "/a/upload-analytics" },
+  { label: "Ajustes", href: "/a/settings" },
 ];
 
 export default function NavBar() {

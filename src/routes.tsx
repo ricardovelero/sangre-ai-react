@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "dashboard", element: <Dashboard /> },
           { path: "analytics", element: <Analytics /> },
-          { path: "upload-analitics", element: <AnalyticsUpload /> },
+          { path: "upload-analytics", element: <AnalyticsUpload /> },
           { path: "settings", element: <Settings /> },
         ],
       },
