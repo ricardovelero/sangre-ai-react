@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import LogoutButton from "./LogoutButton";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -10,10 +9,9 @@ import { cn } from "@/lib/utils";
 import Logo from "./Logo";
 
 const navItems = [
-  { label: "Dashboard", href: "/" },
-  { label: "Analíticas", href: "/analitics" },
-  { label: "Cargar Analíticas", href: "/upload" },
-  { label: "Ajustes", href: "/settings" },
+  { label: "Inicio", href: "/" },
+  { label: "¿Cómo funciona?", href: "/how-it-works" },
+  { label: "Quienes somos", href: "/about-us" },
 ];
 
 export default function NavBar() {
@@ -42,7 +40,17 @@ export default function NavBar() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <LogoutButton />
+      <div>
+        <NavLink to={"/login"} className={navigationMenuTriggerStyle()}>
+          Ingresar
+        </NavLink>
+        <NavLink
+          to={"/register"}
+          className='bg-accent-foreground text-accent text-sm px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground'
+        >
+          Registrarse
+        </NavLink>
+      </div>
     </div>
   );
 }

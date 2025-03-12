@@ -7,8 +7,10 @@ import PageNotFound from "@/pages/NotFound";
 import AppError from "@/pages/AppError";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AboutUs from "@/pages/AboutUs";
+import ContactUs from "@/pages/ContactUs";
 import Register from "@/pages/Register";
 import LoginForm from "@/pages/Login";
+import HowItWorks from "./pages/HowItWorks";
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +19,9 @@ export const router = createBrowserRouter([
     errorElement: <AppError />,
     children: [
       { index: true, element: <Home /> },
-      { path: "sobre-nosotros", element: <AboutUs /> },
+      { path: "how-it-works", element: <HowItWorks /> },
+      { path: "about-us", element: <AboutUs /> },
+      { path: "contact-us", element: <ContactUs /> },
       { path: "register", element: <Register /> },
       { path: "login", element: <LoginForm /> },
       { path: "*", element: <PageNotFound /> },

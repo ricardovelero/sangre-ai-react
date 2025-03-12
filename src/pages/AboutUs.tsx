@@ -1,3 +1,3 @@
-export default function AnputUs() {
-  return <div>AnputUs</div>;
+export default function AboutUs() {
+  return <div>AboutUs</div>;
 }
