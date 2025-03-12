@@ -11,9 +11,9 @@ import Logo from "./Logo";
 
 const navItems = [
   { label: "Dashboard", href: "/a/dashboard" },
-  { label: "Analíticas", href: "/a/analytics" },
-  { label: "Cargar Analíticas", href: "/a/upload-analytics" },
-  { label: "Ajustes", href: "/a/settings" },
+  { label: "Analíticas", href: "/a/analiticas" },
+  { label: "Cargar Analíticas", href: "/a/subir-analiticas" },
+  // { label: "Ajustes", href: "/a/settings" },
 ];
 
 export default function NavBar() {

@@ -11,8 +11,8 @@ import ContactUs from "@/pages/ContactUs";
 import Register from "@/pages/Register";
 import LoginForm from "@/pages/Login";
 import HowItWorks from "./pages/HowItWorks";
-import Analytics from "./pages/Analytics";
-import AnalyticsUpload from "./pages/AnalyticsUpload";
+import Analiticas from "./pages/Analiticas";
+import AnaliticasSubir from "./pages/AnaliticasCargar";
 import Settings from "./pages/Settings";
 
 export const router = createBrowserRouter([
@@ -39,9 +39,9 @@ export const router = createBrowserRouter([
         element: <AppLayout />,
         children: [
           { path: "dashboard", element: <Dashboard /> },
-          { path: "analytics", element: <Analytics /> },
-          { path: "upload-analytics", element: <AnalyticsUpload /> },
-          { path: "settings", element: <Settings /> },
+          { path: "analiticas", element: <Analiticas /> },
+          { path: "subir-analiticas", element: <AnaliticasSubir /> },
+          { path: "ajustes", element: <Settings /> },
         ],
       },
     ],
