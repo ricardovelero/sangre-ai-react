@@ -31,7 +31,8 @@ type AuthState = {
 
 // Backend API URL
 const API_URL =
-  import.meta.env.VITE_APP_API_URL || "http://localhost:3000/api/auth";
+  `${import.meta.env.VITE_APP_API_URL}/auth` ||
+  "http://localhost:3000/api/auth";
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -84,10 +85,7 @@ export const useAuthStore = create<AuthState>()(
       register: async (data: FormData, onSuccess) => {
         set({ loading: true });
         try {
-          const response = await axios.post(
-            `${import.meta.env.VITE_APP_API_URL}/register`,
-            data
-          );
+          const response = await axios.post(`${API_URL}/register`, data);
 
           console.log("Registration data:", response.data);
 
