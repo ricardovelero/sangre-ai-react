@@ -14,6 +14,7 @@ import HowItWorks from "./pages/HowItWorks";
 import Analiticas from "./pages/Analiticas";
 import AnaliticasSubir from "./pages/AnaliticasCargar";
 import Settings from "./pages/Settings";
+import Test from "./pages/Test";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,7 @@ export const router = createBrowserRouter([
           { path: "analiticas", element: <Analiticas /> },
           { path: "subir-analiticas", element: <AnaliticasSubir /> },
           { path: "ajustes", element: <Settings /> },
+          { path: "test", element: <Test /> },
         ],
       },
     ],
