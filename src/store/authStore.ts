@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { FormData } from "@/pages/Register";
 
 export type User = {
   _id: string;
@@ -15,10 +16,17 @@ type AuthState = {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string, onSuccess?: () => void) => void;
+  register: (data: FormData, onSuccess?: () => void) => Promise<string | null>;
+  login: (
+    email: string,
+    password: string,
+    onSuccess?: () => void
+  ) => Promise<string | null>;
   logout: () => void;
   getToken: () => Promise<string | null>;
   initializeAuth: () => Promise<void>;
+  error: string | null;
+  loading: boolean;
 };
 
 // Backend API URL
@@ -31,6 +39,8 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: Cookies.get("token") || null,
       isAuthenticated: !!Cookies.get("token"), // Initially check for a token,
+      error: null,
+      loading: false,
 
       // Initialiaze authentication state
       initializeAuth: async () => {
@@ -67,8 +77,43 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
+      register: async (data: FormData, onSuccess) => {
+        try {
+          const response = await axios.post(
+            `${import.meta.env.VITE_APP_API_URL}/register`,
+            data
+          );
+
+          console.log("Registration data:", response.data);
+
+          // Save tokens in cookies
+          Cookies.set("token", response.data.token, {
+            expires: 3,
+            secure: true,
+          });
+          Cookies.set("refreshToken", response.data.refreshToken, {
+            expires: 9,
+            secure: true,
+          });
+
+          set({ user: response.data.user, isAuthenticated: true });
+
+          if (onSuccess) onSuccess();
+          return null;
+        } catch (error: any) {
+          console.error(
+            "Registration Error:",
+            error.response?.data?.message || error
+          );
+          const errorMessage =
+            error.response?.data?.message || "Registration failed";
+          set({ error: errorMessage });
+          return get().error;
+        }
+      },
+
       // Login function
-      login: async (email: string, password: string) => {
+      login: async (email: string, password: string, onSuccess) => {
         try {
           const response = await axios.post<{
             token: string;
@@ -87,9 +132,13 @@ export const useAuthStore = create<AuthState>()(
           });
 
           set({ user: response.data.user, isAuthenticated: true });
+          if (onSuccess) onSuccess();
+          return null;
         } catch (error: any) {
-          console.error("Login Error:", error.response?.data || error);
-          throw error.response?.data || error;
+          console.error("Login Error:", error.response?.data?.message || error);
+          const errorMessage = error.response?.data?.message || "Login failed";
+          set({ error: errorMessage });
+          return get().error;
         }
       },
 

@@ -1,16 +1,23 @@
+import { useAuthStore } from "@/store/authStore";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/components/ui/link";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { toast } from "sonner";
 
-const schema = z.object({
-  nombre: z.string().optional(),
-  apellido: z.string().optional(),
+const formSchema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   email: z.string().email({ message: "Email inválido" }),
   password: z
     .string()
@@ -23,39 +30,36 @@ const schema = z.object({
     }),
 });
 
-// Infer TypeScript type from the Zod schema
-type FormData = z.infer<typeof schema>;
+export type FormData = z.infer<typeof formSchema>;
 
 export default function RegisterForm() {
+  const { register } = useAuthStore();
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({ resolver: zodResolver(schema) });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    },
+  });
 
-  const onSubmit = async (data: FormData) => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/api/auth/register`,
-        data
-      );
-
-      console.log(response.data);
-
-      // Save tokens in cookies
-      Cookies.set("token", response.data.token, {
-        expires: 3,
-        secure: true,
-      });
-      Cookies.set("refreshToken", response.data.refreshToken, {
-        expires: 9,
-        secure: true,
-      });
+  const onSubmit = async (values: FormData) => {
+    const errorMessage = await register(values, () => {
+      console.log("Registration successful!");
+      toast.success("Registro con éxito.");
       navigate("/a/dashboard");
-    } catch (error: any) {
-      console.error(error);
-      alert(error.response?.data?.message || "Error al registrar");
+    });
+
+    if (errorMessage) {
+      toast.error(
+        errorMessage ||
+          "🤦 Falló el registro, por favor intenta de nuevo o contacta sporte."
+      );
+      console.error(
+        errorMessage || "😵 Something went wrong. Registration failed"
+      );
     }
   };
 
@@ -72,81 +76,88 @@ export default function RegisterForm() {
         </h2>
       </div>
       <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-        <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-          <div>
-            <label
-              htmlFor='nombre'
-              className='block text-sm/6 font-medium text-gray-900'
-            >
-              Nombre (opcional)
-            </label>
-            <div className='mt-2'>
-              <Input type='text' {...register("nombre")} className='inputs' />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor='apellido'
-              className='block text-sm/6 font-medium text-gray-900'
-            >
-              Apellido (opcional)
-            </label>
-            <div className='mt-2'>
-              <Input type='text' {...register("apellido")} className='inputs' />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor='email'
-              className='block text-sm/6 font-medium text-gray-900'
-            >
-              Email
-            </label>
-            <div className='mt-2'>
-              <Input type='email' {...register("email")} className='inputs' />
-              {errors.email && (
-                <p className='form-error'>{errors.email.message}</p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+            <FormField
+              control={form.control}
+              name='firstName'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='text'
+                      className='inputs'
+                      placeholder='opcional'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            </div>
-          </div>
-          <div>
-            <label
-              htmlFor='password'
-              className='block text-sm/6 font-medium text-gray-900'
-            >
-              Contraseña
-            </label>
-            <div className='mt-2'>
-              <Input
-                type='password'
-                {...register("password")}
-                className='inputs'
-              />
-              {errors.password && (
-                <p className='form-error'>{errors.password.message}</p>
+            />
+            <FormField
+              control={form.control}
+              name='lastName'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Apellidos</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='text'
+                      className='inputs'
+                      {...field}
+                      placeholder='opcional'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
-            </div>
-          </div>
+            />
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type='email' className='inputs' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='password'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Contraseña</FormLabel>
+                  <FormControl>
+                    <Input type='password' className='inputs' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <Button
-            color='indigo'
-            type='submit'
-            disabled={isSubmitting}
-            className='w-full'
-          >
-            {isSubmitting ? "Registrando..." : "Registrar"}
-          </Button>
-        </form>
+            <Button
+              type='submit'
+              disabled={form.formState.isSubmitting}
+              className='w-full'
+            >
+              {form.formState.isSubmitting ? "Registrando..." : "Registrar"}
+            </Button>
+          </form>
+        </Form>
         <p className='mt-10 text-center text-sm/6 text-gray-500'>
           ¿Ya estás registrado?{" "}
-          <Link
+          <NavLink
             to='/login'
             className='font-semibold text-indigo-600 hover:text-indigo-500'
           >
             Ingresa con tus credenciales
-          </Link>
+          </NavLink>
         </p>
       </div>
     </div>
