@@ -6,5 +6,5 @@
 // ];
 
 export default function NavBar() {
-  return <div>NavBar</div>;
+  return <div>Public NavBar</div>;
 }
