@@ -7,8 +7,8 @@ import { FormData } from "@/pages/Register";
 export type User = {
   _id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
 };
 
 // Define Zustand state and actions
@@ -46,6 +46,7 @@ export const useAuthStore = create<AuthState>()(
       initializeAuth: async () => {
         console.log("🔥 Checking JWT authentication...");
         const token = Cookies.get("token");
+        set({ loading: true });
 
         if (!token) {
           console.log("🚨 No token found, user is not authenticated");
@@ -53,6 +54,7 @@ export const useAuthStore = create<AuthState>()(
             user: null,
             token: null,
             isAuthenticated: false,
+            loading: false,
           });
           return;
         }
@@ -74,10 +76,13 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
           });
           Cookies.remove("token");
+        } finally {
+          set({ loading: false });
         }
       },
 
       register: async (data: FormData, onSuccess) => {
+        set({ loading: true });
         try {
           const response = await axios.post(
             `${import.meta.env.VITE_APP_API_URL}/register`,
@@ -109,11 +114,14 @@ export const useAuthStore = create<AuthState>()(
             error.response?.data?.message || "Registration failed";
           set({ error: errorMessage });
           return get().error;
+        } finally {
+          set({ loading: false });
         }
       },
 
       // Login function
       login: async (email: string, password: string, onSuccess) => {
+        set({ loading: true });
         try {
           const response = await axios.post<{
             token: string;
@@ -139,11 +147,14 @@ export const useAuthStore = create<AuthState>()(
           const errorMessage = error.response?.data?.message || "Login failed";
           set({ error: errorMessage });
           return get().error;
+        } finally {
+          set({ loading: false });
         }
       },
 
       // Logout function
       logout: async () => {
+        set({ loading: true });
         try {
           await axios.post(`${API_URL}/logout`, {
             refreshToken: Cookies.get("refreshToken"),
@@ -155,6 +166,8 @@ export const useAuthStore = create<AuthState>()(
           set({ user: null, isAuthenticated: false });
         } catch (error: any) {
           console.error("Logout Error:", error.response?.data || error);
+        } finally {
+          set({ loading: false });
         }
       },
 

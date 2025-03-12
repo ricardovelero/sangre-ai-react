@@ -8,7 +8,7 @@ import {
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
 import { useAuthStore } from "@/store/authStore";
-import { LogIn, LogOut } from "lucide-react";
+import { LoaderCircle, LogIn, LogOut } from "lucide-react";
 
 const navItems = [
   { label: "Inicio", href: "/" },
@@ -17,7 +17,7 @@ const navItems = [
 ];
 
 export default function NavBar() {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, loading } = useAuthStore();
   return (
     <div className='flex items-center justify-between'>
       <div className='flex items-center justify-evenly'>
@@ -44,7 +44,9 @@ export default function NavBar() {
         </NavigationMenu>
       </div>
       <div>
-        {isAuthenticated ? (
+        {loading ? (
+          <LoaderCircle className='animate-spin' size={16} />
+        ) : isAuthenticated ? (
           <>
             <NavLink
               to={"/a/dashboard"}
