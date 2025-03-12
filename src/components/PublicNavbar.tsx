@@ -7,6 +7,8 @@ import {
 } from "./ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
+import { useAuthStore } from "@/store/authStore";
+import { LogIn, LogOut } from "lucide-react";
 
 const navItems = [
   { label: "Inicio", href: "/" },
@@ -15,6 +17,7 @@ const navItems = [
 ];
 
 export default function NavBar() {
+  const { isAuthenticated } = useAuthStore();
   return (
     <div className='flex items-center justify-between'>
       <div className='flex items-center justify-evenly'>
@@ -41,15 +44,37 @@ export default function NavBar() {
         </NavigationMenu>
       </div>
       <div>
-        <NavLink to={"/login"} className={navigationMenuTriggerStyle()}>
-          Ingresar
-        </NavLink>
-        <NavLink
-          to={"/register"}
-          className='bg-accent-foreground text-accent text-sm px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground'
-        >
-          Registrarse
-        </NavLink>
+        {isAuthenticated ? (
+          <>
+            <NavLink
+              to={"/a/dashboard"}
+              className='bg-accent-foreground text-accent text-sm px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground'
+            >
+              Dashboard
+            </NavLink>
+            <NavLink
+              to={"/logout"}
+              className={`flex gap-1 ${navigationMenuTriggerStyle()}`}
+            >
+              Salir <LogOut size={16} />
+            </NavLink>
+          </>
+        ) : (
+          <>
+            <NavLink
+              to={"/login"}
+              className={`flex gap-1 ${navigationMenuTriggerStyle()}`}
+            >
+              Ingresar <LogIn size={16} />
+            </NavLink>
+            <NavLink
+              to={"/register"}
+              className='bg-accent-foreground text-accent text-sm px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground'
+            >
+              Registrarse
+            </NavLink>
+          </>
+        )}
       </div>
     </div>
   );
