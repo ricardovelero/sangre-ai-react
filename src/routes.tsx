@@ -15,7 +15,7 @@ import Analiticas from "@/pages/Analiticas";
 import AnaliticasSubir from "@/pages/AnaliticasCargar";
 import Settings from "@/pages/Settings";
 import Test from "@/pages/Test";
-import VerAnalitica from "@/pages/VerAnalitica";
+import VerAnalitica from "@/pages/AnaliticaVer";
 
 export const router = createBrowserRouter([
   {
