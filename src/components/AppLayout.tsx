@@ -11,9 +11,11 @@ export default function AppLayout() {
   }, [initializeAuth]);
 
   return (
-    <div className='mx-auto sm:px-6 lg:px-24'>
-      <AppNavbar />
-      <Outlet />
+    <div className='container mx-auto sm:px-6 lg:px-8'>
+      <div className='min-h-full'>
+        <AppNavbar />
+        <Outlet />
+      </div>
     </div>
   );
 }

@@ -81,44 +81,55 @@ export default function AnaliticasCargar() {
   }
 
   return (
-    <>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className='w-2/3 space-y-6'
-        >
-          <FormField
-            control={form.control}
-            name='file'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Selecciona tu archivo</FormLabel>
-                <FormControl>
-                  <Input
-                    accept='application/pdf'
-                    type='file'
-                    placeholder='analitica.pdf'
-                    onChange={(e) => field.onChange(e.target.files?.[0])} // ✅ Ensure real file is stored
-                  />
-                </FormControl>
-                <FormDescription>
-                  Por ahora, solo aceptamos archivos PDF
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type='submit' disabled={loading}>
-            Subir
-          </Button>
-        </form>
-      </Form>
-      {loading && (
-        <>
-          <h2>Tu analisis</h2>
-          <div>{analisis}</div>
-        </>
-      )}
-    </>
+    <div className='py-10'>
+      <header>
+        <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+          <h1 className='text-3xl font-bold tracking-tight text-gray-900'>
+            Cargar Analítica
+          </h1>
+        </div>
+      </header>
+      <main>
+        <div className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className='w-2/3 space-y-6'
+            >
+              <FormField
+                control={form.control}
+                name='file'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Selecciona tu archivo</FormLabel>
+                    <FormControl>
+                      <Input
+                        accept='application/pdf'
+                        type='file'
+                        placeholder='analitica.pdf'
+                        onChange={(e) => field.onChange(e.target.files?.[0])} // ✅ Ensure real file is stored
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Por ahora, solo aceptamos archivos PDF
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type='submit' disabled={loading}>
+                {loading ? "Subiendo..." : "Subir"}
+              </Button>
+            </form>
+          </Form>
+          {loading && (
+            <>
+              <h2>Tu analisis</h2>
+              <div>{analisis}</div>
+            </>
+          )}
+        </div>
+      </main>
+    </div>
   );
 }
