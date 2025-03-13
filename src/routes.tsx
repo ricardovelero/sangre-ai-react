@@ -10,11 +10,12 @@ import AboutUs from "@/pages/AboutUs";
 import ContactUs from "@/pages/ContactUs";
 import Register from "@/pages/Register";
 import LoginForm from "@/pages/Login";
-import HowItWorks from "./pages/HowItWorks";
-import Analiticas from "./pages/Analiticas";
-import AnaliticasSubir from "./pages/AnaliticasCargar";
-import Settings from "./pages/Settings";
-import Test from "./pages/Test";
+import HowItWorks from "@/pages/HowItWorks";
+import Analiticas from "@/pages/Analiticas";
+import AnaliticasSubir from "@/pages/AnaliticasCargar";
+import Settings from "@/pages/Settings";
+import Test from "@/pages/Test";
+import VerAnalitica from "@/pages/VerAnalitica";
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +42,8 @@ export const router = createBrowserRouter([
         children: [
           { path: "dashboard", element: <Dashboard /> },
           { path: "analiticas", element: <Analiticas /> },
-          { path: "subir-analiticas", element: <AnaliticasSubir /> },
+          { path: "analitica/:id", element: <VerAnalitica /> },
+          { path: "subir-analitica", element: <AnaliticasSubir /> },
           { path: "ajustes", element: <Settings /> },
           { path: "test", element: <Test /> },
         ],

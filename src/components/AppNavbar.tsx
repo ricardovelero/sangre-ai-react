@@ -11,7 +11,7 @@ import Logo from "./Logo";
 const navItems = [
   { label: "Dashboard", href: "/a/dashboard" },
   { label: "Analíticas", href: "/a/analiticas" },
-  { label: "Cargar Analíticas", href: "/a/subir-analiticas" },
+  { label: "Cargar Analítica", href: "/a/subir-analitica" },
   // { label: "Ajustes", href: "/a/settings" },
 ];
 
