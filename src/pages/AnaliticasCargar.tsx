@@ -20,6 +20,7 @@ import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import CardView from "@/components/analiticas/CardView";
 import { Analitica } from "@/types/analitica.types";
+import { useAuthStore } from "@/store/authStore";
 
 const fileUploadSchema = z.object({
   file: z
@@ -44,18 +45,23 @@ export default function AnaliticasCargar() {
   });
 
   async function onSubmit(data: z.infer<typeof fileUploadSchema>) {
+    const { getToken } = useAuthStore();
+
     const formData = new FormData();
     formData.append("file", data.file);
 
     console.log("Archivo PDF subido:", data.file);
     try {
       setLoading(true);
+      const token = await getToken();
+
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/upload`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
