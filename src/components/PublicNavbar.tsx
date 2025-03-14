@@ -51,7 +51,7 @@ export default function NavBar() {
             <>
               <NavLink
                 to={"/a/dashboard"}
-                className='bg-accent-foreground text-accent text-sm px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground'
+                className='bg-accent-foreground text-accent text-sm px-4 py-2 mr-2 rounded-md hover:bg-accent hover:text-accent-foreground'
               >
                 Dashboard
               </NavLink>
@@ -66,7 +66,7 @@ export default function NavBar() {
             <>
               <NavLink
                 to={"/login"}
-                className={`flex gap-1 ${navigationMenuTriggerStyle()}`}
+                className={`flex gap-1 mr-2 ${navigationMenuTriggerStyle()}`}
               >
                 Ingresar <LogIn size={16} />
               </NavLink>
