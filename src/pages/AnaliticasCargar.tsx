@@ -66,11 +66,17 @@ export default function AnaliticasCargar() {
       }
       console.log("El texto recibido", response.data.text);
     } catch (error: any) {
-      setError(`Error subiendo el archivo ${error.response.data.message}`);
-      toast.error(
-        error.response.data.message ||
-          "Algo malo pasó. Error al subir el archivo"
-      );
+      if (error) {
+        setError(
+          error.response?.data.message ||
+            "Algo malo pasó. Error al subir el archivo"
+        );
+        toast.error(
+          error.response?.data.message ||
+            "Algo malo pasó. Error al subir el archivo"
+        );
+      }
+      console.log("Algo malo pasó");
     } finally {
       setLoading(false);
     }
