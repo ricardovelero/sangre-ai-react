@@ -43,10 +43,9 @@ export default function AnaliticasCargar() {
       file: undefined,
     },
   });
+  const { getToken } = useAuthStore();
 
   async function onSubmit(data: z.infer<typeof fileUploadSchema>) {
-    const { getToken } = useAuthStore();
-
     const formData = new FormData();
     formData.append("file", data.file);
 
