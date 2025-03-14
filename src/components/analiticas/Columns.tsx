@@ -31,8 +31,6 @@ export const columns: ColumnDef<Analitica>[] = [
     accessorKey: "markdown",
     header: "Reporte Analítica",
     cell: ({ row }) => {
-      console.log(row.original._id);
-
       const analisis = row.original.markdown;
       return (
         <NavLink to={`/a/analitica/${row.original._id}`}>

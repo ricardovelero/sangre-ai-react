@@ -4,7 +4,9 @@ interface LoadingProps {
   message?: string;
 }
 
-export default function Loading({ message = "Cargando..." }: LoadingProps) {
+export default function LoadingState({
+  message = "Cargando...",
+}: LoadingProps) {
   return (
     <div className='container flex justify-center p-6 min-h-screen'>
       <div className='flex flex-col items-center justify-center'>
