@@ -4,6 +4,9 @@ import axios from "axios";
 import { useAuthStore } from "@/store/authStore";
 import Markdown from "react-markdown";
 import { Analitica } from "@/types/analitica.types";
+import PageHeader from "@/components/PageHeader";
+import LoadingState from "@/components/LoadingState";
+import ErrorState from "@/components/ErrorState";
 
 export default function VerAnalitica() {
   const { id } = useParams();
@@ -41,22 +44,14 @@ export default function VerAnalitica() {
     }
   }, [id]);
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <LoadingState message='Cargando informe...' />;
+  if (error) return <ErrorState message={error} />;
 
   return (
     <div className='py-10'>
-      <header>
-        <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-          <h1 className='text-3xl font-bold tracking-tight text-gray-900'>
-            Informe de tu analítica
-          </h1>
-        </div>
-      </header>
-      <main>
-        <div className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
-          <Markdown>{analitica?.markdown}</Markdown>
-        </div>
+      <PageHeader title='Informe de tu analítica' />
+      <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
+        <Markdown>{analitica?.markdown}</Markdown>
       </main>
     </div>
   );

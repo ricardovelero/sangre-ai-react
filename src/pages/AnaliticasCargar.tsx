@@ -15,18 +15,11 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import axios from "axios";
 import { useState } from "react";
-import { LoaderCircle } from "lucide-react";
-import Markdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
+import PageHeader from "@/components/PageHeader";
+import LoadingState from "@/components/LoadingState";
+import ErrorState from "@/components/ErrorState";
+import CardView from "@/components/analiticas/CardView";
+import { Analitica } from "@/types/analitica.types";
 
 const fileUploadSchema = z.object({
   file: z
@@ -40,10 +33,9 @@ const fileUploadSchema = z.object({
 });
 
 export default function AnaliticasCargar() {
-  const [analisis, setAnalisis] = useState("");
-  const [analisisId, setAnalisisId] = useState("");
+  const [analisis, setAnalisis] = useState<Analitica>();
   const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
   const form = useForm<z.infer<typeof fileUploadSchema>>({
     resolver: zodResolver(fileUploadSchema),
     defaultValues: {
@@ -69,13 +61,12 @@ export default function AnaliticasCargar() {
       );
 
       if (response.data) {
-        setAnalisis(response.data.text);
-        setAnalisisId(response.data.id);
+        setAnalisis(response.data);
         toast.success(response.data.message);
       }
       console.log("El texto recibido", response.data.text);
     } catch (error: any) {
-      console.error("Error subiendo el archivo", error.response.data.message);
+      setError(`Error subiendo el archivo ${error.response.data.message}`);
       toast.error(
         error.response.data.message ||
           "Algo malo pasó. Error al subir el archivo"
@@ -85,76 +76,45 @@ export default function AnaliticasCargar() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className='flex items-center justify-center gap-2 h-screen'>
-        <LoaderCircle className='animate-spin' size={16} />
-        <span className='animate-pulse'>Procesando....</span>
-      </div>
-    );
-  }
+  if (loading) return <LoadingState message='Procesando analítica...' />;
+  if (error) return <ErrorState message={error} />;
 
   return (
     <div className='py-10'>
-      <header>
-        <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
-          <h1 className='text-3xl font-bold tracking-tight text-gray-900'>
-            Cargar Analítica
-          </h1>
-        </div>
-      </header>
-      <main>
-        <div className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className='w-2/3 space-y-6'
-            >
-              <FormField
-                control={form.control}
-                name='file'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Selecciona tu archivo</FormLabel>
-                    <FormControl>
-                      <Input
-                        accept='application/pdf'
-                        type='file'
-                        placeholder='analitica.pdf'
-                        onChange={(e) => field.onChange(e.target.files?.[0])} // ✅ Ensure real file is stored
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Por ahora, solo aceptamos archivos PDF
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type='submit' disabled={loading}>
-                {loading ? "Subiendo..." : "Subir"}
-              </Button>
-            </form>
-          </Form>
-          {analisis && (
-            <Card className='mt-12 w-2xl'>
-              <CardHeader>
-                <CardTitle>Resultados</CardTitle>
-                <CardDescription>
-                  Aquí tienes un extracto del análisis.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className='line-clamp-6'>
-                <Markdown remarkPlugins={[remarkGfm]}>{analisis}</Markdown>
-              </CardContent>
-              <CardFooter>
-                <Button onClick={() => navigate("/a/analitica/" + analisisId)}>
-                  Ver informe completo
-                </Button>
-              </CardFooter>
-            </Card>
-          )}
-        </div>
+      <PageHeader title='Cargar Analítica' />
+      <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className='w-2/3 space-y-6'
+          >
+            <FormField
+              control={form.control}
+              name='file'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Selecciona tu archivo</FormLabel>
+                  <FormControl>
+                    <Input
+                      accept='application/pdf'
+                      type='file'
+                      placeholder='analitica.pdf'
+                      onChange={(e) => field.onChange(e.target.files?.[0])}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Por ahora, solo aceptamos archivos PDF
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type='submit' disabled={loading}>
+              {loading ? "Subiendo..." : "Subir"}
+            </Button>
+          </form>
+        </Form>
+        {analisis && <CardView analitica={analisis} />}
       </main>
     </div>
   );

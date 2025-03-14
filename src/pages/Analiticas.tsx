@@ -55,7 +55,7 @@ export default function Analiticas() {
   if (error) return <ErrorState message={error} />;
   return (
     <div className='py-10'>
-      <header className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+      <header className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-10'>
         <div className='flex justify-between'>
           <h1 className='text-3xl font-bold tracking-tight text-gray-900'>
             Analíticas
