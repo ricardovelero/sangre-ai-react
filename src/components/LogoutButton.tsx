@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { LogOut } from "lucide-react";
 
 const LogoutButton = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const LogoutButton = () => {
   return (
     isAuthenticated && (
       <Button variant={"ghost"} onClick={handleLogout} disabled={loading}>
-        {loading ? "Logging out..." : "Logout"}
+        {loading ? "Saliendo..." : "Salir"} <LogOut size={16} />
       </Button>
     )
   );

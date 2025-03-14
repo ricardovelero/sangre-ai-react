@@ -16,6 +16,8 @@ import AnaliticasSubir from "@/pages/AnaliticasCargar";
 import Settings from "@/pages/Settings";
 import Test from "@/pages/Test";
 import VerAnalitica from "@/pages/AnaliticaVer";
+import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +31,8 @@ export const router = createBrowserRouter([
       { path: "contact-us", element: <ContactUs /> },
       { path: "register", element: <Register /> },
       { path: "login", element: <LoginForm /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
+      { path: "reset-password/:token", element: <ResetPassword /> },
       { path: "*", element: <PageNotFound /> },
     ],
   },

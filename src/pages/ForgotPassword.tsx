@@ -3,7 +3,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useAuthStore } from "@/store/authStore";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Form,
@@ -14,35 +13,42 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
+import axios from "axios";
 
 const formSchema = z.object({
   email: z.string().min(1, { message: "Debes ingresar tu email" }),
-  password: z.string().min(1, { message: "Debes ingresar tu contraseña" }),
 });
 
+// Backend API URL
+const API_URL =
+  `${import.meta.env.VITE_APP_API_URL}/auth` ||
+  "http://localhost:3000/api/auth";
+
 export default function LoginForm() {
-  const { login } = useAuthStore();
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const errorMessage = await login(values.email, values.password, () => {
-      toast.info("¡Bienvenido!");
-      navigate("/a/dashboard");
-    });
+    try {
+      const response = await axios.post(`${API_URL}/forgot-password`, values);
 
-    if (errorMessage) {
-      toast.error(
-        errorMessage ||
-          "🤦 Falló entrar en la app, por favor intenta de nuevo o contacta sporte."
+      console.log(response.data.message);
+
+      toast.info(response.data.message);
+      navigate("/");
+    } catch (error: any) {
+      console.error(
+        error.response.data.message || "😵 Something went wrong. Login failed."
       );
-      console.error(errorMessage || "😵 Something went wrong. Login failed.");
+      toast.error(
+        error.response.data.message ||
+          "🤦 Algo salió mal!, por favor intenta de nuevo o contacta soporte."
+      );
     }
   };
 
@@ -55,8 +61,11 @@ export default function LoginForm() {
           className='mx-auto h-10 w-auto'
         />
         <h2 className='mt-4 text-center text-2xl/9 font-bold tracking-tight text-gray-900'>
-          Ingresar
+          Restaurar Contraseña
         </h2>
+        <p className='text-sm text-center text-gray-600'>
+          Ingresa el correo electrónico con que te registraste.
+        </p>
       </div>
       <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
         <Form {...form}>
@@ -74,35 +83,12 @@ export default function LoginForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name='password'
-              render={({ field }) => (
-                <FormItem>
-                  <div className='flex items-center justify-between'>
-                    <FormLabel>Contraseña</FormLabel>
-                    <div className='text-sm'>
-                      <NavLink
-                        to='/forgot-password'
-                        className='font-semibold text-indigo-600 hover:text-indigo-500'
-                      >
-                        ¿Olvidaste tu contraseña?
-                      </NavLink>
-                    </div>
-                  </div>
-                  <FormControl>
-                    <Input type='password' className='inputs' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <Button
               type='submit'
               disabled={form.formState.isSubmitting}
               className='w-full'
             >
-              {form.formState.isSubmitting ? "Ingresando..." : "Ingresar"}
+              {form.formState.isSubmitting ? "Enviando..." : "Enviar"}
             </Button>
           </form>
         </Form>

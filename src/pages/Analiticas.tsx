@@ -81,7 +81,7 @@ export default function Analiticas() {
       <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
         {analiticas?.length === 0 ? (
           <EmptyState
-            message='Todavía no tienes analiticas.'
+            message='No tienes analiticas.'
             icon={<Clipboard size={32} />}
             buttonLabel='Subir analítica'
             onButtonClick={() => navigate("/a/subir-analitica")}
@@ -91,7 +91,7 @@ export default function Analiticas() {
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             {analiticas.map((analitica) => (
-              <CardView analitica={analitica} />
+              <CardView key={analitica._id} analitica={analitica} />
             ))}
           </div>
         )}

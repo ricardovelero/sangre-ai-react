@@ -8,7 +8,8 @@ import {
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
 import { useAuthStore } from "@/store/authStore";
-import { LoaderCircle, LogIn, LogOut } from "lucide-react";
+import { LoaderCircle, LogIn } from "lucide-react";
+import LogoutButton from "./LogoutButton";
 
 const navItems = [
   { label: "Inicio", href: "/" },
@@ -46,7 +47,7 @@ export default function NavBar() {
         </div>
         <div>
           {loading ? (
-            <LoaderCircle className='animate-spin' size={16} />
+            <LoaderCircle className='animate-spin' />
           ) : isAuthenticated ? (
             <>
               <NavLink
@@ -55,12 +56,7 @@ export default function NavBar() {
               >
                 Dashboard
               </NavLink>
-              <NavLink
-                to={"/logout"}
-                className={`flex gap-1 ${navigationMenuTriggerStyle()}`}
-              >
-                Salir <LogOut size={16} />
-              </NavLink>
+              <LogoutButton />
             </>
           ) : (
             <>
