@@ -142,7 +142,8 @@ export const useAuthStore = create<AuthState>()(
           return null;
         } catch (error: any) {
           console.error("Login Error:", error.response?.data?.message || error);
-          const errorMessage = error.response?.data?.message || "Login failed";
+          const errorMessage =
+            error.response?.data?.message || "Error de inicio de sesión";
           set({ error: errorMessage });
           return get().error;
         } finally {
