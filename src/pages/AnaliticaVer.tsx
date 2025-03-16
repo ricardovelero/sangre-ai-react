@@ -51,7 +51,9 @@ export default function VerAnalitica() {
     <div className='py-10'>
       <PageHeader title='Informe de tu analítica' />
       <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
-        <Markdown>{analitica?.markdown}</Markdown>
+        <article className='prose lg:prose-xl'>
+          <Markdown>{analitica?.markdown}</Markdown>
+        </article>
       </main>
     </div>
   );
