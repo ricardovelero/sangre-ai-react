@@ -4,10 +4,15 @@ import axios from "axios";
 import { useAuthStore } from "@/store/authStore";
 import Markdown from "react-markdown";
 import { Analitica } from "@/types/analitica.types";
-import PageHeader from "@/components/PageHeader";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import { Button } from "@/components/ui/button";
+import { Undo2 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function VerAnalitica() {
   const { id } = useParams();
@@ -51,14 +56,30 @@ export default function VerAnalitica() {
 
   return (
     <div className='py-10'>
-      <PageHeader title='Informe de tu analítica' />
-      <Button
-        type='button'
-        variant={"outline"}
-        onClick={() => navigate("/a/analiticas")}
-      >
-        Regresar a Analíticas
-      </Button>
+      <header className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-10'>
+        <div className='flex justify-between'>
+          <h1 className='text-3xl font-bold tracking-tight text-gray-900'>
+            Analíticas
+          </h1>
+          <div className='flex'>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type='button'
+                  variant={"outline"}
+                  onClick={() => navigate("/a/analiticas")}
+                >
+                  <Undo2 />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Regresar al listado de Analíticas</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </div>
+      </header>
+
       <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
         <article className='prose lg:prose-xl'>
           <Markdown>{analitica?.markdown}</Markdown>
