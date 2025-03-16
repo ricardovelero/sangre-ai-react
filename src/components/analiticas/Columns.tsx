@@ -1,8 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Analitica } from "@/types/analitica.types";
 import { Checkbox } from "../ui/checkbox";
-import Markdown from "react-markdown";
-import { NavLink } from "react-router-dom";
+import { format, parseISO, isValid } from "date-fns";
+import { es } from "date-fns/locale";
+import { toTitleCase } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 export const columns: ColumnDef<Analitica>[] = [
   {
@@ -28,21 +30,60 @@ export const columns: ColumnDef<Analitica>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "markdown",
-    header: "Reporte Analítica",
+    header: "Fecha Toma",
     cell: ({ row }) => {
-      const analisis = row.original.markdown;
+      const fecha = row.original.datos_analitica.paciente?.fecha_toma_muestra;
+
+      if (!fecha || fecha === "N/A") {
+        return <span>N/A</span>;
+      }
+      // Intentamos convertir la fecha en un objeto Date
+      const parsedDate = parseISO(fecha);
+      if (!isValid(parsedDate)) {
+        return <span>Fecha inválida</span>;
+      }
       return (
-        <NavLink to={`/a/analitica/${row.original._id}`}>
-          <div className='line-clamp-5 w-lg'>
-            <Markdown>{analisis}</Markdown>
-          </div>
-        </NavLink>
+        <span>{format(parsedDate, "d 'de' MMMM, yyyy", { locale: es })}</span>
       );
     },
   },
   {
-    accessorKey: "datos_analitica",
-    header: "Datos Analitica",
+    header: "Paciente",
+    cell: ({ row }) => {
+      const nombre = row.original.datos_analitica.paciente?.nombre;
+      const apellidos = row.original.datos_analitica.paciente?.apellidos;
+
+      return (
+        <span className='text-wrap'>
+          {toTitleCase(apellidos)}, {toTitleCase(nombre)}
+        </span>
+      );
+    },
+  },
+  {
+    header: "Laboratorio",
+    cell: ({ row }) => {
+      const lab = row.original.datos_analitica.paciente?.laboratorio;
+
+      return <span className='text-wrap'>{toTitleCase(lab)}</span>;
+    },
+  },
+  {
+    accessorKey: "resumen",
+    header: "Resumen",
+    cell: ({ row }) => {
+      return (
+        <Tooltip>
+          <TooltipTrigger>
+            <span className='block max-w-xs truncate'>
+              {row.original.resumen}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent className='w-md' sideOffset={5}>
+            {row.original.resumen}
+          </TooltipContent>
+        </Tooltip>
+      );
+    },
   },
 ];

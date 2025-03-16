@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthStore } from "@/store/authStore";
@@ -7,6 +7,7 @@ import { Analitica } from "@/types/analitica.types";
 import PageHeader from "@/components/PageHeader";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
+import { Button } from "@/components/ui/button";
 
 export default function VerAnalitica() {
   const { id } = useParams();
@@ -14,6 +15,7 @@ export default function VerAnalitica() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { getToken } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnalitica = async () => {
@@ -50,6 +52,13 @@ export default function VerAnalitica() {
   return (
     <div className='py-10'>
       <PageHeader title='Informe de tu analítica' />
+      <Button
+        type='button'
+        variant={"outline"}
+        onClick={() => navigate("/a/analiticas")}
+      >
+        Regresar a Analíticas
+      </Button>
       <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
         <article className='prose lg:prose-xl'>
           <Markdown>{analitica?.markdown}</Markdown>
