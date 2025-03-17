@@ -37,7 +37,7 @@ export const useAnaliticaData = ({ endpoint }: UseAnaliticaDataProps) => {
 
         const parametersSinFecha = parametersConFecha.filter(
           (item) => item !== "fecha"
-        );
+        ) as string[];
 
         setParameters(parametersSinFecha);
 
