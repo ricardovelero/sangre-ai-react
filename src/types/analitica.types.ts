@@ -107,3 +107,8 @@ export type Analitica = {
   };
   resumen: string | "N/A" | null;
 };
+
+export type DataPoint = {
+  date: string;
+  [key: string]: number | string;
+};
