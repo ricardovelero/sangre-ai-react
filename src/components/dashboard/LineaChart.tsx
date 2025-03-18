@@ -55,6 +55,11 @@ const LineaChart = ({
   const trend = useTrendAnalysis(data, selectedParam);
   const referenceValue = referenceValues[selectedParam];
 
+  // Format prediction with units if available
+  const formatPrediction = (value: number, unit?: string) => {
+    return `${value}${unit ? ` ${unit}` : ""}`;
+  };
+
   // Establece el primer parámetro como seleccionado por defecto
   useEffect(() => {
     setSelectedParam(parameters[0]);
@@ -215,10 +220,10 @@ const LineaChart = ({
                 type='natural'
                 stroke='hsl(var(--chart-3))'
                 strokeWidth={2}
-                dot={({ payload, ...props }) => {
+                dot={({ payload, index, ...props }) => {
                   return (
                     <Dot
-                      key={payload.browser}
+                      key={`dot-${index}-${payload[selectedParam]}`}
                       r={5}
                       cx={props.cx}
                       cy={props.cy}
@@ -238,14 +243,18 @@ const LineaChart = ({
             "Sin cambios significativos"
           ) : (
             <>
-              {trend.direction === "up" ? "Subió" : "Bajó"} un{" "}
-              {trend.percentage}%
+              Tendencia{" "}
+              {trend.direction === "up" ? "ascendente" : "descendente"}
               <TrendIcon className='h-4 w-4' />
             </>
           )}
         </div>
         <div className='leading-none text-muted-foreground'>
-          Mostrando las últimas {trend.recentCount} analíticas
+          Predicción en 6 meses:{" "}
+          {formatPrediction(trend.prediction, referenceValue?.unit)}
+        </div>
+        <div className='leading-none text-muted-foreground'>
+          Basado en las últimas {trend.recentCount} analíticas
         </div>
       </CardFooter>
     </Card>

@@ -3,6 +3,7 @@ interface ReferenceValue {
   max?: number; // Valor máximo normal (si aplica)
   label: string;
   type: "range" | "max" | "min" | "target";
+  unit?: string; // Unidad de medida (ej: mg/dL, g/L, etc.)
 }
 
 interface ReferenceConfig {
@@ -15,30 +16,112 @@ export const referenceValues: ReferenceConfig = {
     max: 200,
     label: "Valor máximo recomendado",
     type: "max",
+    unit: "mg/dL",
   },
-  LDL: { max: 100, label: "Valor máximo recomendado", type: "max" },
-  HDL: { min: 40, label: "Valor mínimo recomendado", type: "min" },
-  trigliceridos: { max: 130, label: "Valor máximo recomendado", type: "max" },
+  LDL: {
+    max: 100,
+    label: "Valor máximo recomendado",
+    type: "max",
+    unit: "mg/dL",
+  },
+  HDL: {
+    min: 40,
+    label: "Valor mínimo recomendado",
+    type: "min",
+    unit: "mg/dL",
+  },
+  trigliceridos: {
+    max: 130,
+    label: "Valor máximo recomendado",
+    type: "max",
+    unit: "mg/dL",
+  },
 
   // Serie Blanca (Rango de valores normales)
-  leucocitos: { min: 4.0, max: 11.0, label: "Rango normal", type: "range" },
-  neutrofilos: { min: 2.0, max: 7.5, label: "Rango normal", type: "range" },
-  linfocitos: { min: 1.0, max: 4.5, label: "Rango normal", type: "range" },
-  monocitos: { min: 0.2, max: 0.8, label: "Rango normal", type: "range" },
-  eosinofilos: { min: 0.0, max: 0.5, label: "Rango normal", type: "range" },
-  basofilos: { min: 0.0, max: 0.1, label: "Rango normal", type: "range" },
+  leucocitos: {
+    min: 4.0,
+    max: 11.0,
+    label: "Rango normal",
+    type: "range",
+    unit: "×10³/µL",
+  },
+  neutrofilos: {
+    min: 2.0,
+    max: 7.5,
+    label: "Rango normal",
+    type: "range",
+    unit: "×10³/µL",
+  },
+  linfocitos: {
+    min: 1.0,
+    max: 4.5,
+    label: "Rango normal",
+    type: "range",
+    unit: "×10³/µL",
+  },
+  monocitos: {
+    min: 0.2,
+    max: 0.8,
+    label: "Rango normal",
+    type: "range",
+    unit: "×10³/µL",
+  },
+  eosinofilos: {
+    min: 0.0,
+    max: 0.5,
+    label: "Rango normal",
+    type: "range",
+    unit: "×10³/µL",
+  },
+  basofilos: {
+    min: 0.0,
+    max: 0.1,
+    label: "Rango normal",
+    type: "range",
+    unit: "×10³/µL",
+  },
 
   // Serie Roja (Rango de valores normales)
-  hematies: { min: 4.2, max: 5.7, label: "Rango normal", type: "range" },
-  hemoglobina: { min: 12, max: 17, label: "Rango normal", type: "range" },
-  hematocrito: { min: 37, max: 50, label: "Rango normal", type: "range" },
-  VCM: { min: 80, max: 100, label: "Rango normal", type: "range" },
-  HCM: { min: 27, max: 32, label: "Rango normal", type: "range" },
-  CHCM: { min: 32, max: 36, label: "Rango normal", type: "range" },
+  hematies: {
+    min: 4.2,
+    max: 5.7,
+    label: "Rango normal",
+    type: "range",
+    unit: "×10⁶/µL",
+  },
+  hemoglobina: {
+    min: 12,
+    max: 17,
+    label: "Rango normal",
+    type: "range",
+    unit: "g/dL",
+  },
+  hematocrito: {
+    min: 37,
+    max: 50,
+    label: "Rango normal",
+    type: "range",
+    unit: "%",
+  },
+  VCM: { min: 80, max: 100, label: "Rango normal", type: "range", unit: "fL" },
+  HCM: { min: 27, max: 32, label: "Rango normal", type: "range", unit: "pg" },
+  CHCM: {
+    min: 32,
+    max: 36,
+    label: "Rango normal",
+    type: "range",
+    unit: "g/dL",
+  },
 
   // Serie Plaquetar
-  plaquetas: { min: 150000, max: 400000, label: "Rango normal", type: "range" },
-  VPM: { max: 12, label: "Valor máximo normal", type: "max" },
+  plaquetas: {
+    min: 150000,
+    max: 400000,
+    label: "Rango normal",
+    type: "range",
+    unit: "/µL",
+  },
+  VPM: { max: 12, label: "Valor máximo normal", type: "max", unit: "fL" },
 
   // Eritrosedimentación
   VSG: { max: 20, label: "Valor máximo normal", type: "max" },
