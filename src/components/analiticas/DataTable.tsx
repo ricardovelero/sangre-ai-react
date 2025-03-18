@@ -58,25 +58,39 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    <NavLink
-                      className='block hover:bg-gray-100'
-                      to={`/a/analitica/${(row.original as any)._id}`}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
+                {row.getVisibleCells().map((cell) => {
+                  // Check if it's an actions column
+                  const isActionsColumn = cell.column.id === "actions";
+
+                  return (
+                    <TableCell key={cell.id}>
+                      {isActionsColumn ? (
+                        // Don't wrap actions in NavLink
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )
+                      ) : (
+                        // For regular data columns, wrap in NavLink
+                        <NavLink
+                          className='block hover:bg-gray-100'
+                          to={`/a/analitica/${(row.original as any)._id}`}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </NavLink>
                       )}
-                    </NavLink>
-                  </TableCell>
-                ))}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className='h-24 text-center'>
-                No tienes analíticas. Carga una analítica apra empezar a
+                No tienes analíticas. Carga una analítica para empezar a
                 analizar.
               </TableCell>
             </TableRow>

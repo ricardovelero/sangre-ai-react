@@ -1,10 +1,7 @@
-import axios from "axios";
-import { Analitica } from "@/types/analitica.types";
 import { columns } from "@/components/analiticas/Columns";
 import { DataTable } from "@/components/analiticas/DataTable";
 import CardView from "@/components/analiticas/CardView";
-import { useEffect, useState } from "react";
-import { useAuthStore } from "@/store/authStore";
+import { useState } from "react";
 import EmptyState from "@/components/EmptyState";
 import { Clipboard, IdCard, Rows4 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -12,46 +9,25 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
+import { ConfirmationDialog } from "@/components/ConfirmationDialog";
+import { useAnalitica } from "@/hooks/useAnaliticas";
 
 export default function Analiticas() {
-  const { getToken } = useAuthStore();
-  const [loading, setLoading] = useState<boolean>();
-  const [error, setError] = useState<string>();
-  const [analiticas, setAnaliticas] = useState<Analitica[]>([]);
-  const [isTableView, setIsTableView] = useState(false);
+  const {
+    deleteDialogOpen,
+    setDeleteDialogOpen,
+    isProcessing,
+    error,
+    analiticas,
+    isLoading,
+    analiticaToDelete,
+    setAnaliticaToDelete,
+    handleDeleteAnalitica,
+  } = useAnalitica();
+  const [isTableView, setIsTableView] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchAnalitica = async () => {
-      try {
-        setLoading(true);
-
-        const token = await getToken();
-
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_URL}/analitica`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = Array.isArray(response.data) ? response.data : [];
-        setAnaliticas(data);
-
-        setIsTableView(data.length > 4);
-      } catch (err) {
-        setError("Error al obtener la analítica");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAnalitica();
-  }, []);
-
-  if (loading) return <LoadingState message='Cargando analíticas...' />;
+  if (isLoading) return <LoadingState message='Cargando analíticas...' />;
   if (error) return <ErrorState message={error} />;
   return (
     <div className='py-10'>
@@ -87,7 +63,13 @@ export default function Analiticas() {
             onButtonClick={() => navigate("/a/subir-analitica")}
           />
         ) : isTableView ? (
-          <DataTable columns={columns} data={analiticas || []} />
+          <DataTable
+            columns={columns((analitica) => {
+              setAnaliticaToDelete(analitica);
+              setDeleteDialogOpen(true);
+            })}
+            data={analiticas || []}
+          />
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             {analiticas.map((analitica) => (
@@ -96,6 +78,16 @@ export default function Analiticas() {
           </div>
         )}
       </main>
+      <ConfirmationDialog
+        isOpen={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleDeleteAnalitica}
+        title='Eliminar analítica'
+        description={`Estás seguro de querer eliminar la analítica ${analiticaToDelete?._id}?`}
+        confirmText='Eliminar'
+        confirmVariant='destructive'
+        isProcessing={isProcessing}
+      />
     </div>
   );
 }

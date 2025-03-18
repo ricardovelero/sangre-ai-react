@@ -1,34 +1,23 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Analitica } from "@/types/analitica.types";
-import { Checkbox } from "../ui/checkbox";
 import { format, parseISO, isValid } from "date-fns";
 import { es } from "date-fns/locale";
 import { toTitleCase } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
+import { Copy, Delete, MoreHorizontal } from "lucide-react";
 
-export const columns: ColumnDef<Analitica>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+export const columns = (
+  confirmDeleteAnalitica: (analitica: Analitica) => void
+): ColumnDef<Analitica>[] => [
   {
     header: "Fecha Toma",
     cell: ({ row }) => {
@@ -83,6 +72,51 @@ export const columns: ColumnDef<Analitica>[] = [
             {row.original.resumen}
           </TooltipContent>
         </Tooltip>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const analitica = row.original;
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Abrir menu</span>
+              <MoreHorizontal className='h-4 w-4' />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end'>
+            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() =>
+                navigator.clipboard.writeText(analitica?.resumen || "")
+              }
+            >
+              <Copy />
+              Copiar resumen
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {/* <DropdownMenuItem onClick={() => handleEditContact(analitica)}>
+              <Edit />
+              Editar
+            </DropdownMenuItem> */}
+            {/* <DropdownMenuItem onClick={() => confirmArchiveContact(analitica)}>
+              <Archive />
+              {analitica.archived
+                ? "Restaurar analitica"
+                : "Archivar analitica"}
+            </DropdownMenuItem> */}
+            <DropdownMenuItem
+              className='text-red-500'
+              onClick={() => confirmDeleteAnalitica(analitica)}
+            >
+              <Delete />
+              Eliminar
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
