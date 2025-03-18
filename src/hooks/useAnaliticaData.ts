@@ -17,7 +17,7 @@ const fetcher = async (url: string, token: string) => {
   });
 
   const parametersConFecha = Object.keys(
-    response.data[0]
+    response.data[0].valores
   ) as (keyof DataPoint)[];
   const parameters = parametersConFecha.filter(
     (item) => item !== "fecha"

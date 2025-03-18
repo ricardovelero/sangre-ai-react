@@ -2,9 +2,15 @@ import { useAnaliticaData } from "@/hooks/useAnaliticaData";
 import LineaChart from "./LineaChart";
 
 const DashboardCharts = () => {
-  const serieBlanca = useAnaliticaData({ endpoint: "/analitica/serie-blanca" });
-  const serieRoja = useAnaliticaData({ endpoint: "/analitica/serie-roja" });
-  const lipidos = useAnaliticaData({ endpoint: "/analitica/lipidos" });
+  const serieBlanca = useAnaliticaData({
+    endpoint: "/analitica/series?tipo=serie-blanca",
+  });
+  const serieRoja = useAnaliticaData({
+    endpoint: "/analitica/series?tipo=serie-roja",
+  });
+  const lipidos = useAnaliticaData({
+    endpoint: "/analitica/series?tipo=lipidos",
+  });
 
   return (
     <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>

@@ -137,7 +137,7 @@ const LineaChart = ({
           <ChartContainer config={chartConfig}>
             <LineChart
               accessibilityLayer
-              data={data}
+              data={data.map((item) => item.valores)}
               margin={{
                 top: 24,
                 left: 24,
