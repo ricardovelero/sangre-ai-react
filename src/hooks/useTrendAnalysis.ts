@@ -32,6 +32,7 @@ export const useTrendAnalysis = (
     .filter(
       (item) =>
         item.valores &&
+        parameter in item.valores &&
         item.valores[parameter] !== null &&
         item.valores[parameter] !== undefined
     );
