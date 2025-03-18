@@ -43,7 +43,7 @@ export default function AnaliticasCargar() {
       file: undefined,
     },
   });
-  const { getToken } = useAuthStore();
+  const { token } = useAuthStore();
 
   async function onSubmit(data: z.infer<typeof fileUploadSchema>) {
     const formData = new FormData();
@@ -52,7 +52,6 @@ export default function AnaliticasCargar() {
     console.log("Archivo PDF subido:", data.file);
     try {
       setLoading(true);
-      const token = await getToken();
 
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/upload`,

@@ -19,15 +19,13 @@ export default function VerAnalitica() {
   const [analitica, setAnalitica] = useState<Analitica | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { getToken } = useAuthStore();
+  const { token } = useAuthStore();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAnalitica = async () => {
       try {
         setLoading(true);
-
-        const token = await getToken();
 
         const response = await axios.get(
           `${import.meta.env.VITE_APP_API_URL}/analitica/${id}`,

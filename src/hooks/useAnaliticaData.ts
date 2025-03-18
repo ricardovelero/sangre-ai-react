@@ -3,7 +3,6 @@ import axios from "axios";
 import { format } from "date-fns";
 import { useAuthStore } from "@/store/authStore";
 import { DataPoint } from "@/types/analitica.types";
-import { useEffect, useState } from "react";
 
 interface UseAnaliticaDataProps {
   endpoint: string;
@@ -35,16 +34,7 @@ const fetcher = async (url: string, token: string) => {
 };
 
 export const useAnaliticaData = ({ endpoint }: UseAnaliticaDataProps) => {
-  const { getToken } = useAuthStore();
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchToken = async () => {
-      const newToken = await getToken();
-      setToken(newToken);
-    };
-    fetchToken();
-  }, [getToken]);
+  const { token } = useAuthStore();
 
   const { data, error, isLoading } = useSWR(
     token ? [`${import.meta.env.VITE_APP_API_URL}${endpoint}`, token] : null,

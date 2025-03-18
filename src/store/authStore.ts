@@ -23,7 +23,6 @@ type AuthState = {
     onSuccess?: () => void
   ) => Promise<string | null>;
   logout: () => void;
-  getToken: () => Promise<string | null>;
   initializeAuth: () => Promise<void>;
   error: string | null;
   loading: boolean;
@@ -168,11 +167,6 @@ export const useAuthStore = create<AuthState>()(
         } finally {
           set({ loading: false });
         }
-      },
-
-      // Get token
-      getToken: async () => {
-        return get().token;
       },
     }),
     {
