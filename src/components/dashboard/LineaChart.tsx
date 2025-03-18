@@ -33,12 +33,13 @@ import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { useTrendAnalysis } from "@/hooks/useTrendAnalysis";
 import { referenceValues } from "@/lib/referenceValues";
 import { cn } from "@/lib/utils";
+import { BloodTestResultBySeries } from "@/types/analitica.types";
 
 type LineaChartProps = {
   title: string;
   description: string;
   parameters: string[];
-  data: any[];
+  data: BloodTestResultBySeries[];
   loading: boolean;
   error: string | null;
 };
@@ -142,7 +143,10 @@ const LineaChart = ({
           <ChartContainer config={chartConfig}>
             <LineChart
               accessibilityLayer
-              data={data.map((item) => item.valores)}
+              data={data.map((item) => ({
+                ...item.valores,
+                fecha: item.fecha.slice(6, 10),
+              }))}
               margin={{
                 top: 24,
                 left: 24,
@@ -164,7 +168,6 @@ const LineaChart = ({
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
-                tickFormatter={(value) => value.slice(6, 10)}
               />
               {referenceValue && (
                 <>

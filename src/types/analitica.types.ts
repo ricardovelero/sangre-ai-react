@@ -112,3 +112,11 @@ export type DataPoint = {
   date: string;
   [key: string]: number | string;
 };
+
+export type BloodTestResultBySeries = {
+  id: string;
+  fecha: string;
+  valores: {
+    [key: string]: number | null;
+  };
+};
