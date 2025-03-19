@@ -37,7 +37,10 @@ export type DataPoint = {
 export type BloodTestResultBySeries = {
   id: string;
   fecha: string;
-  valores: {
-    [key: string]: number | null;
-  };
+  resultados: Analito[];
+};
+
+export type AnaliticaResponse = {
+  fecha: string;
+  resultados: Analito[];
 };
