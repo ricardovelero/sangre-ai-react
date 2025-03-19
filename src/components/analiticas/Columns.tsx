@@ -13,13 +13,24 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { Copy, Delete, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, Copy, Delete, MoreHorizontal } from "lucide-react";
 
 export const columns = (
   confirmDeleteAnalitica: (analitica: Analitica) => void
 ): ColumnDef<Analitica>[] => [
   {
-    header: "Fecha Toma",
+    accessorKey: "fecha_toma_muestra",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Fecha Toma
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const fecha = row.original.fecha_toma_muestra;
 
@@ -35,6 +46,7 @@ export const columns = (
         <span>{format(parsedDate, "d 'de' MMMM, yyyy", { locale: es })}</span>
       );
     },
+    filterFn: "includesString",
   },
   {
     header: "Paciente",
