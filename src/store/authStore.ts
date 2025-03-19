@@ -44,7 +44,6 @@ export const useAuthStore = create<AuthState>()(
 
       // Initialiaze authentication state
       initializeAuth: async () => {
-        console.log("🔥 Checking JWT authentication...");
         const token = Cookies.get("token");
         set({ loading: true });
 
@@ -62,7 +61,7 @@ export const useAuthStore = create<AuthState>()(
           const response = await axios.get<User>(`${API_URL}/user`, {
             headers: { Authorization: `Bearer ${token}` },
           });
-          console.log("✅ User authenticated:", response.data);
+
           set({
             user: response.data,
             token,
