@@ -18,6 +18,12 @@ export const referenceValues: ReferenceConfig = {
     type: "max",
     unit: "mg/dL",
   },
+  colesterol: {
+    max: 200,
+    label: "Valor máximo recomendado",
+    type: "max",
+    unit: "mg/dL",
+  },
   LDL: {
     max: 100,
     label: "Valor máximo recomendado",
