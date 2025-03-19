@@ -33,7 +33,7 @@ const fileUploadSchema = z.object({
     }),
 });
 
-export default function AnaliticasCargar() {
+export default function AnaliticasSubir() {
   const [analisis, setAnalisis] = useState<Analitica>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
