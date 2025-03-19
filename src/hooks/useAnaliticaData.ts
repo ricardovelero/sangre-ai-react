@@ -2,29 +2,34 @@ import useSWR from "swr";
 import axios from "axios";
 import { format } from "date-fns";
 import { useAuthStore } from "@/store/authStore";
-import { DataPoint } from "@/types/analitica.types";
+import { AnaliticaResponse } from "@/types/analitica.types";
+import { toTitleCase } from "@/lib/utils";
 
 interface UseAnaliticaDataProps {
   endpoint: string;
 }
 
 const fetcher = async (url: string, token: string) => {
-  const response = await axios.get(url, {
+  const response = await axios.get<AnaliticaResponse[]>(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  const parametersConFecha = Object.keys(
-    response.data[0].valores
-  ) as (keyof DataPoint)[];
-  const parameters = parametersConFecha.filter(
-    (item) => item !== "fecha"
-  ) as string[];
+  if (response.data.length === 0) {
+    return {
+      data: [],
+      parameters: [],
+    };
+  }
+
+  const parameters = response.data[0].resultados.map(
+    (resultado: { nombre: string }) => toTitleCase(resultado.nombre)
+  );
 
   const formattedData = response.data.map((entry: any) => ({
     ...entry,
-    fecha: format(new Date(entry.fecha), "dd/MM/yyyy"),
+    fecha: format(new Date(entry.fecha_toma_muestra), "dd/MM/yyyy"),
   }));
 
   return {
