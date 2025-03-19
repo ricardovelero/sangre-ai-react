@@ -34,7 +34,9 @@ const fetcher = async (url: string, token: string) => {
 
   return {
     data: formattedData,
-    parameters,
+    parameters: parameters.filter(
+      (param): param is string => param !== undefined
+    ),
   };
 };
 
