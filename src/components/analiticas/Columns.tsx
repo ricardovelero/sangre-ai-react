@@ -21,10 +21,10 @@ export const columns = (
   {
     header: "Fecha Toma",
     cell: ({ row }) => {
-      const fecha = row.original.datos_analitica.paciente?.fecha_toma_muestra;
+      const fecha = row.original.fecha_toma_muestra;
 
       if (!fecha || fecha === "N/A") {
-        return <span>N/A</span>;
+        return <span>N/D</span>;
       }
       // Intentamos convertir la fecha en un objeto Date
       const parsedDate = parseISO(fecha);
@@ -39,8 +39,12 @@ export const columns = (
   {
     header: "Paciente",
     cell: ({ row }) => {
-      const nombre = row.original.datos_analitica.paciente?.nombre;
-      const apellidos = row.original.datos_analitica.paciente?.apellidos;
+      const nombre = row.original.paciente?.nombre;
+      const apellidos = row.original.paciente?.apellidos;
+
+      if (!nombre || !apellidos) {
+        return <span>N/D</span>;
+      }
 
       return (
         <span className='text-wrap'>
@@ -52,7 +56,11 @@ export const columns = (
   {
     header: "Laboratorio",
     cell: ({ row }) => {
-      const lab = row.original.datos_analitica.paciente?.laboratorio;
+      const lab = row.original.laboratorio;
+
+      if (!lab) {
+        return <span>N/D</span>;
+      }
 
       return <span className='text-wrap'>{toTitleCase(lab)}</span>;
     },
@@ -61,15 +69,19 @@ export const columns = (
     accessorKey: "resumen",
     header: "Resumen",
     cell: ({ row }) => {
+      const resumen = row.original.resumen;
+
+      if (!resumen) {
+        return <span>N/D</span>;
+      }
+
       return (
         <Tooltip>
           <TooltipTrigger>
-            <span className='block max-w-xs truncate'>
-              {row.original.resumen}
-            </span>
+            <span className='block max-w-xs truncate'>{resumen}</span>
           </TooltipTrigger>
           <TooltipContent className='w-md' sideOffset={5}>
-            {row.original.resumen}
+            {resumen}
           </TooltipContent>
         </Tooltip>
       );
