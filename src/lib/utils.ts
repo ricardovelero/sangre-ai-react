@@ -10,8 +10,9 @@ export function toTitleCase(str: string) {
     return str
       .toLowerCase()
       .replace(/[-_]/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
+      .replace(
+        /(^|\s)([a-záéíóúüñ])/g,
+        (_, boundary, char) => boundary + char.toUpperCase()
+      );
   }
-
-  return str;
 }
