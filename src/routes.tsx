@@ -12,7 +12,7 @@ import Register from "@/pages/Register";
 import LoginForm from "@/pages/Login";
 import HowItWorks from "@/pages/HowItWorks";
 import Analiticas from "@/pages/Analiticas";
-import AnaliticasSubir from "@/pages/AnaliticasCargar";
+import AnaliticasSubir from "@/pages/AnaliticasSubir";
 import Settings from "@/pages/Settings";
 import Test from "@/pages/Test";
 import VerAnalitica from "@/pages/AnaliticaVer";
