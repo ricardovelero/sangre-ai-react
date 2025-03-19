@@ -149,7 +149,9 @@ const LineaChart = ({
                   fecha: item.fecha.slice(6, 10),
                 };
                 item.resultados.forEach((resultado) => {
-                  dataPoint[toTitleCase(resultado.nombre)] = resultado.valor;
+                  dataPoint[
+                    toTitleCase(resultado.nombre) as keyof typeof dataPoint
+                  ] = resultado.valor;
                 });
                 return dataPoint;
               })}
