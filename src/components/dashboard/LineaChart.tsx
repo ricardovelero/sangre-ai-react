@@ -32,7 +32,7 @@ import {
 import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { useTrendAnalysis } from "@/hooks/useTrendAnalysis";
 import { referenceValues } from "@/lib/referenceValues";
-import { cn } from "@/lib/utils";
+import { cn, toTitleCase } from "@/lib/utils";
 import { BloodTestResultBySeries } from "@/types/analitica.types";
 
 type LineaChartProps = {
@@ -66,6 +66,7 @@ const LineaChart = ({
     setSelectedParam(parameters[0]);
   }, [parameters]);
 
+  // Establece el icono de la tendencia
   const TrendIcon =
     trend.direction === "up"
       ? TrendingUp
@@ -143,10 +144,15 @@ const LineaChart = ({
           <ChartContainer config={chartConfig}>
             <LineChart
               accessibilityLayer
-              data={data.map((item) => ({
-                ...item.valores,
-                fecha: item.fecha.slice(6, 10),
-              }))}
+              data={data.map((item) => {
+                const dataPoint: Record<string, any> = {
+                  fecha: item.fecha.slice(6, 10),
+                };
+                item.resultados.forEach((resultado) => {
+                  dataPoint[toTitleCase(resultado.nombre)] = resultado.valor;
+                });
+                return dataPoint;
+              })}
               margin={{
                 top: 24,
                 left: 24,
