@@ -18,9 +18,8 @@ import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
-import CardView from "@/components/analiticas/CardView";
-import { Analitica } from "@/types/analitica.types";
 import { useAuthStore } from "@/store/authStore";
+import { useNavigate } from "react-router-dom";
 
 const fileUploadSchema = z.object({
   file: z
@@ -34,7 +33,6 @@ const fileUploadSchema = z.object({
 });
 
 export default function AnaliticasSubir() {
-  const [analisis, setAnalisis] = useState<Analitica>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const form = useForm<z.infer<typeof fileUploadSchema>>({
@@ -44,6 +42,7 @@ export default function AnaliticasSubir() {
     },
   });
   const { token } = useAuthStore();
+  const navigate = useNavigate();
 
   async function onSubmit(data: z.infer<typeof fileUploadSchema>) {
     const formData = new FormData();
@@ -64,23 +63,18 @@ export default function AnaliticasSubir() {
         }
       );
 
-      if (response.data) {
-        setAnalisis(response.data);
-        toast.success(response.data.message);
-      }
       console.log("El texto recibido", response.data.text);
-    } catch (error: any) {
-      if (error) {
+      toast.success("Analítica subida correctamente");
+      navigate("/a/analiticas");
+    } catch (err: any) {
+      if (err) {
         setError(
-          error.response?.data.message ||
+          err.response?.data.message ||
             "Algo malo pasó. Error al subir el archivo"
         );
-        toast.error(
-          error.response?.data.message ||
-            "Algo malo pasó. Error al subir el archivo"
-        );
+        toast.error(err.response?.data.message || "Error al subir el archivo");
       }
-      console.log("Algo malo pasó");
+      console.log(err.response?.data.message || "Error al subir el archivo");
     } finally {
       setLoading(false);
     }
@@ -91,7 +85,7 @@ export default function AnaliticasSubir() {
 
   return (
     <div className='py-10'>
-      <PageHeader title='Cargar Analítica' />
+      <PageHeader title='Subir Analítica' />
       <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
         <Form {...form}>
           <form
@@ -124,7 +118,6 @@ export default function AnaliticasSubir() {
             </Button>
           </form>
         </Form>
-        {analisis && <CardView analitica={analisis} />}
       </main>
     </div>
   );

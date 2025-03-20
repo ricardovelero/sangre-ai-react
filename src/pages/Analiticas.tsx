@@ -1,7 +1,7 @@
 import { columns } from "@/components/analiticas/Columns";
 import { DataTable } from "@/components/analiticas/DataTable";
 import CardView from "@/components/analiticas/CardView";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmptyState from "@/components/EmptyState";
 import { Clipboard, IdCard, Rows4 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,12 @@ export default function Analiticas() {
   } = useAnalitica();
   const [isTableView, setIsTableView] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (analiticas?.length <= 4 && analiticas?.length > 0) {
+      setIsTableView(false);
+    }
+  }, [analiticas]);
 
   if (isLoading) return <LoadingState message='Cargando analíticas...' />;
   if (error) return <ErrorState message={error} />;
