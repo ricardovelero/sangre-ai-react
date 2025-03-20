@@ -16,6 +16,7 @@ export type Analito = {
   };
   indicador: "Alto" | "Bajo" | "Normal";
   observaciones: string;
+  nombre_normalizado: string;
 };
 
 export type Analitica = {
