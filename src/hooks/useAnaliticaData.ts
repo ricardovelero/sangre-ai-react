@@ -3,7 +3,6 @@ import axios from "axios";
 import { format } from "date-fns";
 import { useAuthStore } from "@/store/authStore";
 import { AnaliticaResponse } from "@/types/analitica.types";
-import { toTitleCase } from "@/lib/utils";
 
 interface UseAnaliticaDataProps {
   endpoint: string;
@@ -24,7 +23,7 @@ const fetcher = async (url: string, token: string) => {
   }
 
   const parameters = response.data[0].resultados.map(
-    (resultado: { nombre: string }) => toTitleCase(resultado.nombre)
+    (resultado: { nombre: string }) => resultado.nombre
   );
 
   const formattedData = response.data.map((entry: any) => ({
