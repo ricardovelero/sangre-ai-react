@@ -32,14 +32,14 @@ import {
 import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { useTrendAnalysis } from "@/hooks/useTrendAnalysis";
 import { referenceValues } from "@/lib/referenceValues";
-import { cn, toTitleCase } from "@/lib/utils";
-import { BloodTestResultBySeries } from "@/types/analitica.types";
+import { cn, normalizeStringAndFixSomeNames, toTitleCase } from "@/lib/utils";
+import { Analitica } from "@/types/analitica.types";
 
 type LineaChartProps = {
   title: string;
   description: string;
   parameters: string[];
-  data: BloodTestResultBySeries[];
+  data: Analitica[];
   loading: boolean;
   error: string | null;
 };
@@ -53,8 +53,28 @@ const LineaChart = ({
   error,
 }: LineaChartProps) => {
   const [selectedParam, setSelectedParam] = useState(parameters[0] || "");
-  const trend = useTrendAnalysis(data, selectedParam);
-  const referenceValue = referenceValues[selectedParam];
+  const referenceValue = referenceValues[selectedParam || ""];
+
+  const valores = data.map((analitica) => {
+    const resultadoObj = {
+      fecha: analitica.fecha_toma_muestra,
+    };
+
+    analitica.resultados.forEach((resultado) => {
+      if (resultado.nombre_normalizado) {
+        (resultadoObj as Record<string, number | string>)[
+          resultado.nombre_normalizado
+        ] = parseFloat(resultado.valor);
+      }
+    });
+
+    return resultadoObj;
+  });
+
+  const trend = useTrendAnalysis(
+    valores,
+    normalizeStringAndFixSomeNames(selectedParam || "")
+  );
 
   // Format prediction with units if available
   const formatPrediction = (value: number, unit?: string) => {

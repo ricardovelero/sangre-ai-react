@@ -21,6 +21,7 @@ export type Analito = {
 
 export type Analitica = {
   _id: string;
+  fecha: string;
   paciente: Paciente;
   fecha_toma_muestra: string;
   laboratorio: string;
@@ -33,12 +34,6 @@ export type Analitica = {
 export type DataPoint = {
   date: string;
   [key: string]: number | string;
-};
-
-export type BloodTestResultBySeries = {
-  id: string;
-  fecha: string;
-  resultados: Analito[];
 };
 
 export type AnaliticaResponse = {

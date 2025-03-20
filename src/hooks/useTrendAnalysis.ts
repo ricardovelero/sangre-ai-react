@@ -31,15 +31,15 @@ export const useTrendAnalysis = (
     .slice(-sampleSize)
     .filter(
       (item) =>
-        item.valores &&
-        parameter in item.valores &&
-        item.valores[parameter] !== null &&
-        item.valores[parameter] !== undefined
+        item &&
+        parameter in item &&
+        item[parameter] !== null &&
+        item[parameter] !== undefined
     );
 
   const recentSamples = recentData.map((item, index) => ({
     x: index,
-    y: Number(item.valores[parameter]),
+    y: Number(item[parameter]),
   }));
 
   if (recentSamples.length < 2) {

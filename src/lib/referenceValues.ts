@@ -12,7 +12,7 @@ interface ReferenceConfig {
 
 export const referenceValues: ReferenceConfig = {
   // Lípidos
-  colesterol_total: {
+  "colesterol total": {
     max: 200,
     label: "Valor máximo recomendado",
     type: "max",
