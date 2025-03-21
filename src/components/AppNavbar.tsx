@@ -17,7 +17,7 @@ const navItems = [
 
 export default function NavBar() {
   return (
-    <div className='flex items-center justify-between border-b border-gray-200 bg-white h-16 px-4 sm:px-6 lg:px-8'>
+    <div className='flex items-center justify-between border-b border-gray-200 bg-white h-16 px-4 sm:px-6 lg:px-8 print:hidden'>
       <div className='max-w-7xl px-4 sm:px-6 lg:px-8'>
         <NavigationMenu className='flex h-16 justify-between'>
           <div className='flex shrink-0 items-center'>
