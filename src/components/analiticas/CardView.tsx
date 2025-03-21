@@ -11,8 +11,7 @@ import Markdown from "react-markdown";
 import { Button } from "../ui/button";
 import remarkGfm from "remark-gfm";
 import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { formatDateToSpanish } from "@/lib/utils";
 import { toTitleCase } from "@/lib/utils";
 
 type CardViewProps = {
@@ -22,19 +21,12 @@ type CardViewProps = {
 export default function CardView({ analitica }: CardViewProps) {
   const navigate = useNavigate();
 
-  // Parse the date and check if it's valid
-  const fechaTomaMuestra = new Date(analitica.fecha_toma_muestra);
-  const isValidDate = !isNaN(fechaTomaMuestra.getTime());
-
   return (
     <Card key={analitica._id}>
       <CardHeader>
         <CardTitle>Informe de analítica</CardTitle>
         <CardDescription>
-          Fecha:{" "}
-          {isValidDate
-            ? format(fechaTomaMuestra, "PPPP", { locale: es })
-            : "N/D"}
+          Fecha: {formatDateToSpanish(analitica.fecha_toma_muestra)}
           <br />
           Laboratorio: {toTitleCase(analitica.laboratorio) || "N/D"}
           <br />
