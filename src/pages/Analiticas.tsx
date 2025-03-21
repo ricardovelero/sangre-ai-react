@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
-import { useAnalitica } from "@/hooks/useAnaliticas";
+import { useAnaliticas } from "@/hooks/useAnaliticas";
 
 export default function Analiticas() {
   const {
@@ -23,7 +23,7 @@ export default function Analiticas() {
     analiticaToDelete,
     setAnaliticaToDelete,
     handleDeleteAnalitica,
-  } = useAnalitica();
+  } = useAnaliticas();
   const [isTableView, setIsTableView] = useState(true);
   const navigate = useNavigate();
 

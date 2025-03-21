@@ -4,7 +4,7 @@ import { useAuthStore } from "@/store/authStore";
 import { toast } from "sonner";
 import { Analitica } from "@/types/analitica.types";
 
-export function useAnalitica() {
+export function useAnaliticas() {
   const { token, isAuthenticated } = useAuthStore();
   const [analiticaToDelete, setAnaliticaToDelete] = useState<{
     _id: string;
@@ -44,39 +44,6 @@ export function useAnalitica() {
   // Add safety check for the returned data
   const analiticas = data ? (data as Analitica[]) : [];
 
-  // Delete analitica
-  const handleDeleteAnalitica = async () => {
-    if (!analiticaToDelete || !token) return;
-    setIsProcessing(true);
-
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/analitica/${
-          analiticaToDelete._id
-        }`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (res.status !== 200 && res.status !== 204) {
-        throw new Error("Error deleting analítica.");
-      }
-
-      mutate();
-      toast.success("Analítica eliminada correctamente");
-      setDeleteDialogOpen(false);
-      setAnaliticaToDelete(null);
-    } catch (error) {
-      toast.error("Error al eliminar analítica", {
-        description: (error as Error).message,
-      });
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
   // Fetch a single analitica by ID
   const fetchAnaliticaById = useCallback(
     async (id: string): Promise<Analitica | null> => {
@@ -105,6 +72,88 @@ export function useAnalitica() {
     [token]
   );
 
+  const useAnaliticaById = (id: string) => {
+    const { data, error, mutate } = useSWR(
+      id ? `${import.meta.env.VITE_APP_API_URL}/analitica/${id}` : null,
+      authenticatedFetcher
+    );
+
+    return {
+      analitica: data,
+      isLoading: !error && !data,
+      isError: error,
+      mutate,
+    };
+  };
+
+  // Update analitica
+  const updateAnalitica = useCallback(
+    async (analitica: Analitica) => {
+      setIsProcessing(true);
+      if (!token) {
+        toast.error("No estás identificado para actualizar la analítica");
+        return;
+      }
+      if (!analitica._id) {
+        toast.error("ID de analítica no disponible");
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_APP_API_URL}/analitica/${analitica._id}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(analitica),
+          }
+        );
+
+        if (!res.ok) throw new Error("Hubo un error actualizando analítica.");
+        toast.success("Analítica actualizada correctamente");
+      } catch (error) {
+        toast.error("Error al actualizar analítica", {
+          description: (error as Error).message,
+        });
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [token, mutate]
+  );
+  // Delete analitica
+  const handleDeleteAnalitica = async () => {
+    if (!analiticaToDelete || !token) return;
+    setIsProcessing(true);
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_API_URL}/analitica/${
+          analiticaToDelete._id
+        }`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!res.ok) throw new Error("Error updating analítica");
+      await mutate();
+      toast.success("Analítica eliminada correctamente");
+      setDeleteDialogOpen(false);
+      setAnaliticaToDelete(null);
+    } catch (error) {
+      toast.error("Error al eliminar analítica", {
+        description: (error as Error).message,
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return {
     analiticas,
     isLoading,
@@ -117,5 +166,7 @@ export function useAnalitica() {
     setAnaliticaToDelete,
     isProcessing,
     fetchAnaliticaById,
+    useAnaliticaById,
+    updateAnalitica,
   };
 }
