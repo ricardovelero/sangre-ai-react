@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,4 +38,40 @@ export function normalizeStringAndFixSomeNames(str: string) {
     .replace(/indice de distribucion plaquetaria/g, "idp")
     .replace(/vsg primera hora \(velocidad de sedimentacion globular\)/g, "vsg")
     .replace(/\s*\(.*?\)/g, "");
+}
+
+/**
+ * Formats a date string to a human-readable format in Spanish locale.
+ * @param dateString - The date string to format.
+ * @returns The formatted date string or "N/D" if the date is invalid.
+ */
+export function formatDateToSpanish(
+  dateString: string | null | undefined
+): string {
+  if (!dateString) return "N/D";
+
+  const date = new Date(dateString);
+  const isValidDate = !isNaN(date.getTime());
+
+  return isValidDate ? format(date, "PPPP", { locale: es }) : "N/D";
+}
+
+/**
+ * Outputs the full name of a patient.
+ * @param paciente - The patient object.
+ * @returns The full name of the patient or "N/D" if the patient is invalid.
+ */
+type Paciente = {
+  apellidos?: string | null;
+  nombre?: string | null;
+};
+
+export function getFullName(paciente: Paciente): string {
+  const { apellidos, nombre } = paciente;
+
+  if (!apellidos || !nombre) {
+    return "N/D";
+  }
+
+  return `${apellidos}, ${nombre}`;
 }
