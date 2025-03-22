@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Edit, Printer } from "lucide-react";
+import { ArrowLeft, Edit, Notebook, Printer } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -20,6 +20,7 @@ export default function VerAnalitica() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
+  const [addNota, setAddNota] = useState(false);
   const { useAnaliticaById } = useAnaliticas();
   const { analitica, setAnalitica } = useAnaliticaStore();
 
@@ -73,7 +74,26 @@ export default function VerAnalitica() {
                 <TooltipTrigger asChild>
                   <Button
                     variant={"outline"}
-                    onClick={() => setOpenDialog(true)}
+                    onClick={() => {
+                      setOpenDialog(true);
+                      setAddNota(true);
+                    }}
+                  >
+                    <Notebook />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Agregar nota</p>
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    onClick={() => {
+                      setOpenDialog(true);
+                      setAddNota(false);
+                    }}
                   >
                     <Edit />
                   </Button>
@@ -106,7 +126,11 @@ export default function VerAnalitica() {
           </article>
         </main>
       </div>
-      <DialogDrawerEditAnalitica setOpen={setOpenDialog} open={openDialog} />
+      <DialogDrawerEditAnalitica
+        setOpen={setOpenDialog}
+        open={openDialog}
+        addNota={addNota}
+      />
     </>
   );
 }

@@ -29,6 +29,7 @@ export type Analitica = {
   resumen: string | null;
   markdown: string | null;
   resultados: Analito[];
+  notas?: string[];
 };
 
 export type DataPoint = {
