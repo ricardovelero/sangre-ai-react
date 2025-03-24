@@ -9,7 +9,7 @@ import { useAnaliticaStore } from "@/store/analiticaStore";
 import NotesForm from "@/components/analiticas/NotesForm";
 import NotesList from "@/components/analiticas/NotesList";
 import AnaliticaVerHeader from "@/components/analiticas/AnaliticaVerHeader";
-import TagTextArea from "@/components/analiticas/TagTextArea";
+// import TagTextArea from "@/components/analiticas/TagTextArea";
 
 export default function VerAnalitica() {
   const { id } = useParams();
