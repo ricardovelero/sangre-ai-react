@@ -4,9 +4,9 @@ import { useCallback, useState } from "react";
 import { Tag } from "@/types/tag.types";
 import { toast } from "sonner";
 
-export function useNotes(analiticaId: string) {
+export function useTags(analiticaId: string) {
   const { token, isAuthenticated } = useAuthStore();
-  const [noteToDelete, setNoteToDelete] = useState<{
+  const [tagToDelete, setTagToDelete] = useState<{
     _id: string;
   } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -22,7 +22,7 @@ export function useNotes(analiticaId: string) {
         },
       });
 
-      if (!response.ok) throw new Error("Error loading notes");
+      if (!response.ok) throw new Error("Error loading tags");
       return response.json();
     },
     [token]
@@ -30,7 +30,7 @@ export function useNotes(analiticaId: string) {
 
   const { data, isLoading, error, mutate } = useSWR(
     isAuthenticated && token
-      ? `${import.meta.env.VITE_APP_API_URL}/analitica/${analiticaId}/notes`
+      ? `${import.meta.env.VITE_APP_API_URL}/tags`
       : null,
     authenticatedFetcher,
     {
@@ -39,40 +39,35 @@ export function useNotes(analiticaId: string) {
     }
   );
 
-  const notes = data ? (data as Nota[]) : [];
+  const tags = data ? (data as Tag[]) : [];
 
-  const handleAddNote = async (analiticaId: string, content: string) => {
+  const handleAddTag = async (analiticaId: string, name: string) => {
     setIsProcessing(true);
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/analitica/${analiticaId}/notes`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ content }),
-        }
-      );
-      if (!response.ok) throw new Error("Error adding note");
-      toast.success("Nota agregada correctamente");
+      const response = await fetch(`${import.meta.env.VITE_APP_API_URL}/tags`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name }),
+      });
+      if (!response.ok) throw new Error("Error adding tag");
+      toast.success("Etiqueta agregada correctamente");
       await mutate();
     } catch (error) {
-      console.error("Error adding note:", error);
-      toast.error("Error al agregar nota");
+      console.error("Error adding tage:", error);
+      toast.error("Error al agregar etiqueta");
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const handleDeleteNote = async (noteId: string) => {
+  const handleDeleteTag = async (tagId: string) => {
     setIsProcessing(true);
     try {
       const response = await fetch(
-        `${
-          import.meta.env.VITE_APP_API_URL
-        }/analitica/${analiticaId}/notes/${noteId}`,
+        `${import.meta.env.VITE_APP_API_URL}/tags/${tagId}`,
         {
           method: "DELETE",
           headers: {
@@ -80,28 +75,28 @@ export function useNotes(analiticaId: string) {
           },
         }
       );
-      if (!response.ok) throw new Error("Error deleting note");
-      toast.success("Nota eliminada correctamente");
+      if (!response.ok) throw new Error("Error deleting tag");
+      toast.success("Etiqueta eliminada correctamente");
       await mutate();
     } catch (error) {
-      console.error("Error deleting note:", error);
-      toast.error("Error al eliminar nota");
+      console.error("Error deleting tag:", error);
+      toast.error("Error al eliminar etiqueta");
     } finally {
       setIsProcessing(false);
     }
   };
 
   return {
-    notes,
+    tags,
     isLoading,
     error,
     mutate,
-    handleAddNote,
-    handleDeleteNote,
+    handleAddTag,
+    handleDeleteTag,
     isProcessing,
     deleteDialogOpen,
     setDeleteDialogOpen,
-    noteToDelete,
-    setNoteToDelete,
+    tagToDelete,
+    setTagToDelete,
   };
 }
