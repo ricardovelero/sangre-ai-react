@@ -19,6 +19,11 @@ export type Analito = {
   nombre_normalizado: string;
 };
 
+export type Nota = {
+  _id: string;
+  content: string;
+};
+
 export type Analitica = {
   _id: string;
   fecha: string;
@@ -29,7 +34,7 @@ export type Analitica = {
   resumen: string | null;
   markdown: string | null;
   resultados: Analito[];
-  notas?: string[];
+  notas?: Nota[];
 };
 
 export type DataPoint = {
