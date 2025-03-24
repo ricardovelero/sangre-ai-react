@@ -40,7 +40,7 @@ export default function VerAnalitica() {
               <Markdown>{analitica?.markdown}</Markdown>
             </article>
             <aside className='w-full md:w-1/4 pl-4 print:hidden'>
-              <TagTextArea analiticaId={id || ""} />
+              {/* <TagTextArea analiticaId={id || ""} /> */}
               <NotesForm analiticaId={id || ""} />
               <NotesList analiticaId={id || ""} />
             </aside>
