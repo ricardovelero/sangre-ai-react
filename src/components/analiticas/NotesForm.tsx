@@ -18,7 +18,12 @@ const addNotaSchema = z.object({
   }),
 });
 
-export default function NotesForm({ analiticaId }: { analiticaId: string }) {
+type NotesFormProps = {
+  analiticaId: string;
+  setOpen?: (open: boolean) => void;
+};
+
+export default function NotesForm({ analiticaId, setOpen }: NotesFormProps) {
   const form = useForm<z.infer<typeof addNotaSchema>>({
     resolver: zodResolver(addNotaSchema),
     defaultValues: {
@@ -29,6 +34,7 @@ export default function NotesForm({ analiticaId }: { analiticaId: string }) {
   const { handleAddNote, mutate } = useNotes(analiticaId);
 
   async function onSubmit(data: z.infer<typeof addNotaSchema>) {
+    setOpen?.(false);
     await handleAddNote(analiticaId, data.nota || "");
     form.reset();
     await mutate();

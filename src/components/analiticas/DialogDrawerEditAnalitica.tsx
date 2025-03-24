@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +18,9 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import EditAnaliticaForm from "./EditAnaliticaForm";
+import NotesForm from "./NotesForm";
+import { useAnaliticaStore } from "@/store/analiticaStore";
+import { Analitica } from "@/types/analitica.types";
 
 type DialogDrawerEditAnaliticaProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,7 +34,7 @@ export function DialogDrawerEditAnalitica({
   addNota,
 }: DialogDrawerEditAnaliticaProps) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
-
+  const { analitica } = useAnaliticaStore();
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
@@ -48,7 +49,14 @@ export function DialogDrawerEditAnalitica({
                 : "Realiza cambios en la analítica aquí."}
             </DialogDescription>
           </DialogHeader>
-          <EditAnaliticaForm setOpen={setOpen} addNota={addNota} />
+          {addNota ? (
+            <NotesForm analiticaId={analitica?._id || ""} setOpen={setOpen} />
+          ) : (
+            <EditAnaliticaForm
+              setOpen={setOpen}
+              analitica={analitica || ({} as Analitica)}
+            />
+          )}
         </DialogContent>
       </Dialog>
     );
@@ -70,11 +78,15 @@ export function DialogDrawerEditAnalitica({
               : "Realiza cambios en la analítica aquí."}
           </DrawerDescription>
         </DrawerHeader>
-        <EditAnaliticaForm
-          className='px-4'
-          setOpen={setOpen}
-          addNota={addNota}
-        />
+        {addNota ? (
+          <NotesForm analiticaId={analitica?._id || ""} setOpen={setOpen} />
+        ) : (
+          <EditAnaliticaForm
+            className='px-4'
+            setOpen={setOpen}
+            analitica={analitica || ({} as Analitica)}
+          />
+        )}
         <DrawerFooter className='pt-2'>
           <DrawerClose asChild>
             <Button variant='outline'>Cancel</Button>
