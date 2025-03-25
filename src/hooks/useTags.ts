@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { Tag } from "@/types/tag.types";
 import { toast } from "sonner";
 
-export function useTags(analiticaId: string) {
+export function useTags() {
   const { token, isAuthenticated } = useAuthStore();
   const [tagToDelete, setTagToDelete] = useState<{
     _id: string;
@@ -50,7 +50,7 @@ export function useTags(analiticaId: string) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, analiticaId }),
       });
       if (!response.ok) throw new Error("Error adding tag");
       toast.success("Etiqueta agregada correctamente");
@@ -63,11 +63,34 @@ export function useTags(analiticaId: string) {
     }
   };
 
+  const handleRemoveTag = async (analiticaId: string, tagId: string) => {
+    setIsProcessing(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_API_URL}/tags/${tagId}/${analiticaId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Error removing tag");
+      toast.success("Etiqueta eliminada de Analítica");
+      await mutate();
+    } catch (error) {
+      console.error("Error quitando tag:", error);
+      toast.error("Error al eliminar etiqueta de Analitica");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const handleDeleteTag = async (tagId: string) => {
     setIsProcessing(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/tags/${tagId}`,
+        `${import.meta.env.VITE_APP_API_URL}/tags/${tagId}/`,
         {
           method: "DELETE",
           headers: {
@@ -93,6 +116,7 @@ export function useTags(analiticaId: string) {
     mutate,
     handleAddTag,
     handleDeleteTag,
+    handleRemoveTag,
     isProcessing,
     deleteDialogOpen,
     setDeleteDialogOpen,
