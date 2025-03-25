@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./PublicNavbar";
 import MobileNavBar from "./PublicMobileSheet";
+import Footer from "./Footer";
 
 export default function PublicLayout() {
   return (
@@ -12,6 +13,7 @@ export default function PublicLayout() {
         <MobileNavBar />
       </div>
       <Outlet />
+      <Footer />
     </div>
   );
 }
