@@ -18,6 +18,8 @@ import Test from "@/pages/Test";
 import VerAnalitica from "@/pages/AnaliticaVer";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +31,8 @@ export const router = createBrowserRouter([
       { path: "how-it-works", element: <HowItWorks /> },
       { path: "about-us", element: <AboutUs /> },
       { path: "contact-us", element: <ContactUs /> },
+      { path: "terms-and-conditions", element: <TermsAndConditions /> },
+      { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "register", element: <Register /> },
       { path: "login", element: <LoginForm /> },
       { path: "forgot-password", element: <ForgotPassword /> },
