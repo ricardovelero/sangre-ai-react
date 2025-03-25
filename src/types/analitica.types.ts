@@ -1,3 +1,5 @@
+import { Tag } from "./tag.types";
+
 export type Paciente = {
   id: string;
   nombre: string;
@@ -35,6 +37,7 @@ export type Analitica = {
   markdown: string | null;
   resultados: Analito[];
   notas?: Nota[];
+  tags?: Tag[];
 };
 
 export type DataPoint = {

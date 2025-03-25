@@ -1,5 +1,5 @@
 export type Tag = {
   _id: string;
   name: string;
-  analiticaId: string;
+  owner: string;
 };
