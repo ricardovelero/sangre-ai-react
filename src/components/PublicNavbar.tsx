@@ -7,18 +7,10 @@ import {
 } from "./ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
-import { useAuthStore } from "@/store/authStore";
-import { LoaderCircle, LogIn } from "lucide-react";
-import LogoutButton from "./LogoutButton";
-
-const navItems = [
-  { label: "Inicio", href: "/" },
-  { label: "¿Cómo funciona?", href: "/how-it-works" },
-  { label: "Quienes somos", href: "/about-us" },
-];
+import PublicAuthBottons from "./PublicAuthBottons";
+import { navItems } from "@/lib/naItems";
 
 export default function NavBar() {
-  const { isAuthenticated, loading } = useAuthStore();
   return (
     <header>
       <div className='flex items-center justify-between'>
@@ -45,36 +37,7 @@ export default function NavBar() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div>
-          {loading ? (
-            <LoaderCircle className='animate-spin' />
-          ) : isAuthenticated ? (
-            <>
-              <NavLink
-                to={"/a/dashboard"}
-                className='bg-accent-foreground text-accent text-sm px-4 py-2 mr-2 rounded-md hover:bg-accent hover:text-accent-foreground'
-              >
-                Dashboard
-              </NavLink>
-              <LogoutButton />
-            </>
-          ) : (
-            <>
-              <NavLink
-                to={"/login"}
-                className={`flex gap-1 mr-2 ${navigationMenuTriggerStyle()}`}
-              >
-                Ingresar <LogIn size={16} />
-              </NavLink>
-              <NavLink
-                to={"/register"}
-                className='bg-accent-foreground text-accent text-sm px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground'
-              >
-                Registrarse
-              </NavLink>
-            </>
-          )}
-        </div>
+        <PublicAuthBottons />
       </div>
     </header>
   );
