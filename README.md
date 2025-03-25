@@ -24,6 +24,7 @@ Aplicación web para subir análisis de sangre en formato PDF o imagen, extraer 
 - Zustand (gestión de estado)
 - SWR (data fetching y revalidación)
 - Tailwind CSS (estilos)
+- Componentes Shadcn/ui
 
 ### Backend
 
