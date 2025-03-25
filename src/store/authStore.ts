@@ -156,15 +156,12 @@ export const useAuthStore = create<AuthState>()(
           await axios.post(`${API_URL}/logout`, {
             refreshToken: Cookies.get("refreshToken"),
           });
-
-          Cookies.remove("token");
-          Cookies.remove("refreshToken");
-
-          set({ user: null, isAuthenticated: false });
         } catch (error: any) {
           console.error("Logout Error:", error.response?.data || error);
         } finally {
-          set({ loading: false });
+          Cookies.remove("token");
+          Cookies.remove("refreshToken");
+          set({ user: null, isAuthenticated: false, loading: false });
         }
       },
     }),
