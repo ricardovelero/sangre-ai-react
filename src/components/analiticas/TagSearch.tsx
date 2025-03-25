@@ -42,6 +42,8 @@ export default function TagSearch({ analitica }: TagSearchProps) {
     }
   };
 
+  if (error) return <div>Hubo un error...</div>;
+
   return (
     <div className='w-full max-w-md mx-auto mb-6'>
       <Input
