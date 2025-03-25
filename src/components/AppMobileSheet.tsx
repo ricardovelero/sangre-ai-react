@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import Logo from "./Logo";
-import PublicAuthBottons from "./PublicAuthBottons";
-import { navItems } from "@/lib/navItems";
 import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { appNavItems } from "../lib/navItems";
+import LogoutButton from "./LogoutButton";
 
 export default function PublicMobileSheet() {
   const location = useLocation();
@@ -34,7 +34,7 @@ export default function PublicMobileSheet() {
               Cuida tu salud con una analítica anual.
             </SheetDescription>
           </SheetHeader>
-          {navItems.map((item, index) => {
+          {appNavItems.map((item, index) => {
             const isActive = location.pathname === item.href;
             return (
               <SheetClose asChild key={index}>
@@ -52,7 +52,7 @@ export default function PublicMobileSheet() {
           })}
           <SheetFooter>
             <SheetClose asChild>
-              <PublicAuthBottons />
+              <LogoutButton />
             </SheetClose>
           </SheetFooter>
         </SheetContent>

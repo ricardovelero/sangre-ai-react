@@ -42,22 +42,26 @@ export default function Analiticas() {
           <h1 className='text-3xl font-bold tracking-tight text-gray-900'>
             Analíticas
           </h1>
-          <div className='flex'>
-            <Button
-              variant={"link"}
-              className={cn(!isTableView && "bg-accent-foreground text-white")}
-              onClick={() => setIsTableView(false)}
-            >
-              <IdCard />
-            </Button>
-            <Button
-              variant={"link"}
-              className={cn(isTableView && "bg-accent-foreground text-white")}
-              onClick={() => setIsTableView(true)}
-            >
-              <Rows4 />
-            </Button>
-          </div>
+          {analiticas?.length > 0 && (
+            <div className='flex'>
+              <Button
+                variant={"link"}
+                className={cn(
+                  !isTableView && "bg-accent-foreground text-white"
+                )}
+                onClick={() => setIsTableView(false)}
+              >
+                <IdCard />
+              </Button>
+              <Button
+                variant={"link"}
+                className={cn(isTableView && "bg-accent-foreground text-white")}
+                onClick={() => setIsTableView(true)}
+              >
+                <Rows4 />
+              </Button>
+            </div>
+          )}
         </div>
       </header>
       <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>

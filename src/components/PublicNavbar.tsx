@@ -8,7 +8,7 @@ import {
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
 import PublicAuthBottons from "./PublicAuthBottons";
-import { navItems } from "@/lib/naItems";
+import { navItems } from "@/lib/navItems";
 
 export default function NavBar() {
   return (

@@ -7,13 +7,7 @@ import {
 } from "./ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
-
-const navItems = [
-  { label: "Dashboard", href: "/a/dashboard" },
-  { label: "Analíticas", href: "/a/analiticas" },
-  { label: "Subir Analítica", href: "/a/subir-analitica" },
-  // { label: "Ajustes", href: "/a/settings" },
-];
+import { appNavItems } from "../lib/navItems";
 
 export default function NavBar() {
   return (
@@ -24,7 +18,7 @@ export default function NavBar() {
             <Logo />
           </div>
           <NavigationMenuList className='hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8'>
-            {navItems.map((item, index) => (
+            {appNavItems.map((item, index) => (
               <NavigationMenuItem key={index}>
                 <NavLink
                   to={item.href}
