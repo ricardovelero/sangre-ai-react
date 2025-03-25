@@ -53,8 +53,8 @@ Aplicación web para subir análisis de sangre en formato PDF o imagen, extraer 
 ## Instalación local
 
 ```bash
-git clone https://github.com/tuusuario/sangreai.git
-cd sangreai
+git clone https://github.com/tuusuario/sangre-ai-react.git
+cd sangre-ai-react
 pnpm install
 pnpm dev
 ```
