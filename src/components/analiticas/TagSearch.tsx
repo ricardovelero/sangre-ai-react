@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
 import { useTags } from "@/hooks/useTags";
-import { X } from "lucide-react";
+import { CircleAlert, X } from "lucide-react";
 import { Analitica } from "@/types";
+import { Skeleton } from "../ui/skeleton";
+import { Badge } from "../ui/badge";
 
 type TagSearchProps = {
   analitica?: Analitica;
@@ -11,7 +13,7 @@ type TagSearchProps = {
 export default function TagSearch({ analitica }: TagSearchProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<string[]>([]);
-  const { tags, error, handleAddTag, handleRemoveTag } = useTags();
+  const { tags, error, isLoading, handleAddTag, handleRemoveTag } = useTags();
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   useEffect(() => {
@@ -42,7 +44,23 @@ export default function TagSearch({ analitica }: TagSearchProps) {
     }
   };
 
-  if (error) return <div>Hubo un error...</div>;
+  if (isLoading)
+    return (
+      <div className='flex flex-col'>
+        <Skeleton className='h-10 w-full mb-4' />
+        <div className='flex gap-2'>
+          <Skeleton className='h-7 w-1/2 mb-4' />
+          <Skeleton className='h-7 w-1/2 mb-4' />
+        </div>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className='flex gap-2 mb-10 animate-pulse text-red-500'>
+        <CircleAlert /> Hubo un error cargando las etiquetas...
+      </div>
+    );
 
   return (
     <div className='w-full max-w-md mx-auto mb-6'>
@@ -57,13 +75,10 @@ export default function TagSearch({ analitica }: TagSearchProps) {
       {selectedTags.length > 0 && (
         <div className='mt-2 flex flex-wrap gap-2'>
           {selectedTags.map((tag) => (
-            <div
-              key={tag}
-              className='bg-gray-400 text-sm pl-3 py-1 rounded text-white'
-            >
+            <Badge key={tag} className='py-1 pr-0'>
               #{tag}
               <button
-                className='ml-2 text-white hover:text-red-500 focus:outline-none transition-transform duration-200 transform hover:scale-125 cursor-pointer'
+                className='text-white hover:text-red-500 focus:outline-none transition-transform duration-200 transform hover:scale-125 cursor-pointer'
                 onClick={() => {
                   setSelectedTags(selectedTags.filter((t) => t !== tag));
                   const tagToRemove =
@@ -75,7 +90,7 @@ export default function TagSearch({ analitica }: TagSearchProps) {
               >
                 <X height={10} />
               </button>
-            </div>
+            </Badge>
           ))}
         </div>
       )}

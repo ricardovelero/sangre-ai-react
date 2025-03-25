@@ -2,14 +2,19 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useNotes } from "@/hooks/useNotes";
 import { Loader2, X } from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
 type NotesListProps = {
   analiticaId: string;
 };
 
 export default function NotesList({ analiticaId }: NotesListProps) {
-  const { notes, handleDeleteNote, isProcessing, mutate } =
+  const { notes, isLoading, handleDeleteNote, isProcessing, mutate } =
     useNotes(analiticaId);
+
+  if (isLoading) {
+    return <Skeleton className='h-8 w-full mt-4' />;
+  }
 
   return notes.length === 0 ? (
     <NoNotas />
