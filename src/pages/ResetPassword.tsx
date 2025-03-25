@@ -54,16 +54,12 @@ export default function ResetPassword() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(token, values.password);
-
     const data = {
       token,
       newPassword: values.password,
     };
     try {
       const response = await axios.post(`${API_URL}/reset-password`, data);
-
-      console.log(response.data.message);
 
       toast.info(response.data.message);
       navigate("/login");
