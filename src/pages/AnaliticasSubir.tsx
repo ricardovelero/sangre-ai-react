@@ -19,7 +19,10 @@ import PageHeader from "@/components/PageHeader";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import { useAuthStore } from "@/store/authStore";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Checkbox } from "@/components/ui/checkbox";
+
+const hasRememberedConsent = localStorage.getItem("rememberConsent") === "true";
 
 const fileUploadSchema = z.object({
   file: z
@@ -30,6 +33,12 @@ const fileUploadSchema = z.object({
     .refine((file) => file.size < 1 * 1024 * 1024, {
       message: "El archivo debe pesar menos de 1MB",
     }),
+  consent: hasRememberedConsent
+    ? z.boolean().optional()
+    : z.boolean().refine((val) => val === true, {
+        message: "Debes aceptar la política de privacidad.",
+      }),
+  rememberConsent: z.boolean().optional(),
 });
 
 export default function AnaliticasSubir() {
@@ -39,6 +48,8 @@ export default function AnaliticasSubir() {
     resolver: zodResolver(fileUploadSchema),
     defaultValues: {
       file: undefined,
+      consent: hasRememberedConsent,
+      rememberConsent: false,
     },
   });
   const { token } = useAuthStore();
@@ -78,6 +89,10 @@ export default function AnaliticasSubir() {
     } finally {
       setLoading(false);
     }
+
+    if (data.rememberConsent) {
+      localStorage.setItem("rememberConsent", "true");
+    }
   }
 
   if (loading) return <LoadingState message='Procesando analítica...' />;
@@ -90,7 +105,7 @@ export default function AnaliticasSubir() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='w-2/3 space-y-6'
+            className='sm:w-2/3 space-y-6'
           >
             <FormField
               control={form.control}
@@ -113,6 +128,55 @@ export default function AnaliticasSubir() {
                 </FormItem>
               )}
             />
+
+            {!hasRememberedConsent && (
+              <>
+                <FormField
+                  control={form.control}
+                  name='consent'
+                  render={({ field }) => (
+                    <FormItem className='flex items-center'>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className='text-xs'>
+                        <NavLink
+                          to='/privacy-policy'
+                          className='underline text-accent-foreground'
+                        >
+                          Acepto la Política de Privacidad y doy mi
+                          consentimiento
+                        </NavLink>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='rememberConsent'
+                  render={({ field }) => (
+                    <FormItem className='flex items-center'>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className='text-xs'>
+                        No volver a preguntarme sobre el consentimiento
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+
             <Button type='submit' disabled={loading}>
               {loading ? "Subiendo..." : "Subir"}
             </Button>

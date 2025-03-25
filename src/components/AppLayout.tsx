@@ -13,7 +13,7 @@ export default function AppLayout() {
   }, [initializeAuth]);
 
   return (
-    <div className='container mx-auto sm:px-6 lg:px-8'>
+    <div className='container mx-auto pr-4 sm:px-6 lg:px-8'>
       <div className='min-h-full'>
         <div className='hidden sm:block'>
           <AppNavbar />
