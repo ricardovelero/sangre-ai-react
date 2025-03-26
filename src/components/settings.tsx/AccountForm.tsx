@@ -32,13 +32,13 @@ const formSchema = z.object({
 export type UpdateUserFormData = z.infer<typeof formSchema>;
 
 export default function AccountForm() {
-  const { updateUser } = useAuthStore();
+  const { updateUser, user } = useAuthStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      //   email: "",
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      //   email: user.email,
       //   password: "",
     },
   });

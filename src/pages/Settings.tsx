@@ -1,4 +1,5 @@
 import PageHeader from "@/components/PageHeader";
+import AccountForm from "@/components/settings.tsx/AccountForm";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserCircleIcon, Fingerprint, SquareCheckBig } from "lucide-react";
@@ -25,41 +26,43 @@ export default function Settings() {
     <div className='py-10'>
       <PageHeader title={"Ajustes"} />
       <main className='p-4'>
-        <Tabs defaultValue='account' orientation='vertical'>
-          <TabsList>
-            <TabsTrigger value='account'>
-              <UserCircleIcon /> General
-            </TabsTrigger>
-            <TabsTrigger value='password'>
-              <Fingerprint /> Seguridad
-            </TabsTrigger>
-            <TabsTrigger value='consent'>
-              <SquareCheckBig /> Consentimiento
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value='account'>
-            Formulario de cambiar nombre y mail
-          </TabsContent>
-          <TabsContent value='password'>
-            Formulario cambiar contraseña.
-          </TabsContent>
-          <TabsContent value='consent'>
-            <div className='p-4 max-w-xl mx-auto'>
-              {rememberedConsent ? (
-                <Button
-                  onClick={handleRevokeConsent}
-                  className='bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700'
-                >
-                  Revocar consentimiento para el procesamiento de datos
-                </Button>
-              ) : (
-                <p className='text-sm text-gray-600'>
-                  No has guardado el consentimiento o ya ha sido revocado.
-                </p>
-              )}
-            </div>
-          </TabsContent>
-        </Tabs>
+        <div className='flex flex-col items-center justify-center px-6 py-12 lg:px-8'>
+          <Tabs defaultValue='account' orientation='vertical'>
+            <TabsList>
+              <TabsTrigger value='account'>
+                <UserCircleIcon /> General
+              </TabsTrigger>
+              <TabsTrigger value='password'>
+                <Fingerprint /> Seguridad
+              </TabsTrigger>
+              <TabsTrigger value='consent'>
+                <SquareCheckBig /> Consentimiento
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value='account' className='py-6'>
+              <AccountForm />
+            </TabsContent>
+            <TabsContent value='password'>
+              Formulario cambiar contraseña.
+            </TabsContent>
+            <TabsContent value='consent' className='py-6'>
+              <div className='py-6'>
+                {rememberedConsent ? (
+                  <Button
+                    onClick={handleRevokeConsent}
+                    className='bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700'
+                  >
+                    Revocar consentimiento para el procesamiento de datos
+                  </Button>
+                ) : (
+                  <p className='flex-wrap'>
+                    No has guardado el consentimiento o ya ha sido revocado.
+                  </p>
+                )}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
       </main>
     </div>
   );

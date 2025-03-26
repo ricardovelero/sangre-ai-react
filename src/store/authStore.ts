@@ -60,8 +60,12 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
             loading: false,
           });
+
+          // Optional: Redirect to login page or take additional action
+          window.location.href = "/login"; // Redirect to login page
           return;
         }
+
         try {
           const response = await axios.get<User>(`${API_URL}/user`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -80,6 +84,9 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
           });
           Cookies.remove("token");
+
+          // Optional: Redirect to login page or take additional action
+          window.location.href = "/login"; // Redirect to login page
         } finally {
           set({ loading: false });
         }
@@ -174,7 +181,10 @@ export const useAuthStore = create<AuthState>()(
       updateUser: async (data, onSuccess) => {
         set({ loading: true });
         try {
-          const response = await axios.post(`${API_URL}/update`, data);
+          const token = Cookies.get("token");
+          const response = await axios.put(`${API_URL}/user`, data, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
 
           console.log("Update data:", response.data);
 
