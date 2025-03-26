@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { FormData } from "@/pages/Register";
 import { UpdateUserFormData } from "@/components/settings/AccountForm";
+import { UpdatePasswordFormData } from "@/components/settings/ChangePasswordForm";
 
 export type User = {
   _id: string;
@@ -20,6 +21,10 @@ type AuthState = {
   register: (data: FormData, onSuccess?: () => void) => Promise<string | null>;
   updateUser: (
     data: UpdateUserFormData,
+    onSuccess?: () => void
+  ) => Promise<string | null>;
+  changePassword: (
+    data: UpdatePasswordFormData,
     onSuccess?: () => void
   ) => Promise<string | null>;
   login: (
@@ -199,6 +204,30 @@ export const useAuthStore = create<AuthState>()(
           );
           const errorMessage =
             error.response?.data?.message || "User Update failed";
+          set({ error: errorMessage });
+          return get().error;
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      changePassword: async (data, onSuccess) => {
+        set({ loading: true });
+        try {
+          const token = Cookies.get("token");
+          await axios.put(`${API_URL}/user/password`, data, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (onSuccess) onSuccess();
+          return null;
+        } catch (error: any) {
+          console.error(
+            "Change password error:",
+            error.response?.data?.message || error
+          );
+          const errorMessage =
+            error.response?.data?.message || "Change password failed";
           set({ error: errorMessage });
           return get().error;
         } finally {

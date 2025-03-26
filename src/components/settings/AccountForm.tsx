@@ -61,81 +61,84 @@ export default function AccountForm() {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-        <FormField
-          control={form.control}
-          name='firstName'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nombre</FormLabel>
-              <FormControl>
-                <Input
-                  type='text'
-                  className='inputs'
-                  placeholder='opcional'
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='lastName'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Apellidos</FormLabel>
-              <FormControl>
-                <Input
-                  type='text'
-                  className='inputs'
-                  {...field}
-                  placeholder='opcional'
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <div className='space-y-4'>
+      <h2 className='text-2xl'>Cambia tus datos personales</h2>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+          <FormField
+            control={form.control}
+            name='firstName'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre</FormLabel>
+                <FormControl>
+                  <Input
+                    type='text'
+                    className='inputs'
+                    placeholder='opcional'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='lastName'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Apellidos</FormLabel>
+                <FormControl>
+                  <Input
+                    type='text'
+                    className='inputs'
+                    {...field}
+                    placeholder='opcional'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        {/* <FormField
-          control={form.control}
-          name='email'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type='email' className='inputs' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
+          {/* <FormField
+      control={form.control}
+      name='email'
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Email</FormLabel>
+          <FormControl>
+            <Input type='email' className='inputs' {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    /> */}
 
-        {/* <FormField
-          control={form.control}
-          name='password'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contraseña</FormLabel>
-              <FormControl>
-                <Input type='password' className='inputs' {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
+          {/* <FormField
+      control={form.control}
+      name='password'
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Contraseña</FormLabel>
+          <FormControl>
+            <Input type='password' className='inputs' {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    /> */}
 
-        <Button
-          type='submit'
-          disabled={form.formState.isSubmitting}
-          className='w-full'
-        >
-          {form.formState.isSubmitting ? "Guardando..." : "Guardar"}
-        </Button>
-      </form>
-    </Form>
+          <Button
+            type='submit'
+            disabled={form.formState.isSubmitting}
+            className='w-full'
+          >
+            {form.formState.isSubmitting ? "Guardando..." : "Guardar"}
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 }
