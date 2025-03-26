@@ -1,5 +1,5 @@
 import PageHeader from "@/components/PageHeader";
-import AccountForm from "@/components/settings.tsx/AccountForm";
+import AccountForm from "@/components/settings/AccountForm";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserCircleIcon, Fingerprint, SquareCheckBig } from "lucide-react";

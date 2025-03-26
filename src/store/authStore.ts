@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { FormData } from "@/pages/Register";
-import { UpdateUserFormData } from "@/components/settings.tsx/AccountForm";
+import { UpdateUserFormData } from "@/components/settings/AccountForm";
 
 export type User = {
   _id: string;
