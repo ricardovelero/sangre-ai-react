@@ -33,7 +33,7 @@ export default function Newsletter() {
           <p className='mt-4 text-sm/6 text-gray-900'>
             Nos importa tu privacidad. Lee nuestra{" "}
             <NavLink
-              to='/politica-de-privacidad'
+              to='/privacy-policy'
               className='font-semibold text-indigo-600 hover:text-indigo-500'
             >
               política de privacidad
