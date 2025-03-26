@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { FormData } from "@/pages/Register";
+import { UpdateUserFormData } from "@/components/settings.tsx/AccountForm";
 
 export type User = {
   _id: string;
@@ -17,6 +18,10 @@ type AuthState = {
   token: string | null;
   isAuthenticated: boolean;
   register: (data: FormData, onSuccess?: () => void) => Promise<string | null>;
+  updateUser: (
+    data: UpdateUserFormData,
+    onSuccess?: () => void
+  ) => Promise<string | null>;
   login: (
     email: string,
     password: string,
@@ -162,6 +167,32 @@ export const useAuthStore = create<AuthState>()(
           Cookies.remove("token");
           Cookies.remove("refreshToken");
           set({ user: null, isAuthenticated: false, loading: false });
+        }
+      },
+
+      // Change Name & Lastname
+      updateUser: async (data, onSuccess) => {
+        set({ loading: true });
+        try {
+          const response = await axios.post(`${API_URL}/update`, data);
+
+          console.log("Update data:", response.data);
+
+          set({ user: response.data.user });
+
+          if (onSuccess) onSuccess();
+          return null;
+        } catch (error: any) {
+          console.error(
+            "User Update Error:",
+            error.response?.data?.message || error
+          );
+          const errorMessage =
+            error.response?.data?.message || "User Update failed";
+          set({ error: errorMessage });
+          return get().error;
+        } finally {
+          set({ loading: false });
         }
       },
     }),
