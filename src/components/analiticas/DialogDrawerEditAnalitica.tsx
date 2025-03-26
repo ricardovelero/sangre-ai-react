@@ -15,7 +15,6 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
 import EditAnaliticaForm from "./EditAnaliticaForm";
 import NotesForm from "./NotesForm";
@@ -64,9 +63,6 @@ export function DialogDrawerEditAnalitica({
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant='outline'>Editar analítica</Button>
-      </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className='text-left'>
           <DrawerTitle>

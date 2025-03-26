@@ -39,10 +39,16 @@ export default function VerAnalitica() {
             <article className='w-full md:w-3/4 prose lg:prose-xl print:prose-sm print:max-w-none dark:prose-invert'>
               <Markdown>{analitica?.markdown}</Markdown>
             </article>
-            <aside className='w-full md:w-1/4 pl-4 print:hidden'>
-              <TagSearch analitica={analitica || undefined} />
-              <NotesForm analiticaId={id || ""} />
-              <NotesList analiticaId={id || ""} />
+            <aside className='w-full md:w-1/4 py-4 sm:pl-4 print:hidden'>
+              <div className='space-y-2'>
+                <h3>Agregále una etiqueta a tu analítica:</h3>
+                <TagSearch analitica={analitica || undefined} />
+              </div>
+              <div className='space-y-2'>
+                <h3>Escribe una nota para tu anaítica:</h3>
+                <NotesForm analiticaId={id || ""} />
+                <NotesList analiticaId={id || ""} />
+              </div>
             </aside>
           </div>
         </main>

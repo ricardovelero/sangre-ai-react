@@ -11,14 +11,15 @@ import { DialogDrawerEditAnalitica } from "./DialogDrawerEditAnalitica";
 import { useAnaliticaStore } from "@/store/analiticaStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 export default function AnaliticaVerHeader() {
   const { analitica } = useAnaliticaStore();
   const [openDialog, setOpenDialog] = useState(false);
   const [addNota, setAddNota] = useState(false);
   const navigate = useNavigate();
   return (
-    <header className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-10 print:px-0 print:py-4 print:mb-0'>
-      <div className='flex justify-between print:flex print:justify-between'>
+    <header className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 sm:mb-4 print:px-0 print:py-4 print:mb-0'>
+      <div className='flex flex-col-reverse gap-6 sm:flex sm:justify-between print:flex-row print:justify-between'>
         <div className='hidden print:block'>
           <Logo />
         </div>
@@ -34,7 +35,7 @@ export default function AnaliticaVerHeader() {
           <p>Laboratorio: {analitica?.laboratorio || "N/D"}</p>
           <p>Medico: {analitica?.medico || "N/D"}</p>
         </div>
-        <div className='flex gap-2 print:hidden'>
+        <div className='flex gap-2 self-end print:hidden'>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant={"outline"} onClick={() => window.print()}>
@@ -45,22 +46,24 @@ export default function AnaliticaVerHeader() {
               <p>Imprimir informe</p>
             </TooltipContent>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant={"outline"}
-                onClick={() => {
-                  setOpenDialog(true);
-                  setAddNota(true);
-                }}
-              >
-                <Notebook />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Agregar nota</p>
-            </TooltipContent>
-          </Tooltip>
+          <div className='sm:hidden'>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  onClick={() => {
+                    setOpenDialog(true);
+                    setAddNota(true);
+                  }}
+                >
+                  <Notebook />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Agregar nota</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button

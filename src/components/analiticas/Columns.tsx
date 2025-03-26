@@ -43,7 +43,14 @@ export const columns = (
         return <span>Fecha inválida</span>;
       }
       return (
-        <span>{format(parsedDate, "d 'de' MMMM, yyyy", { locale: es })}</span>
+        <>
+          <span className='sm:hidden'>
+            {format(parsedDate, "d MMM, yyyy", { locale: es })}
+          </span>
+          <span className='hidden sm:block'>
+            {format(parsedDate, "d 'de' MMMM, yyyy", { locale: es })}
+          </span>
+        </>
       );
     },
     filterFn: "includesString",

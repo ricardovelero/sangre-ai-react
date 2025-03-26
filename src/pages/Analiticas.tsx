@@ -3,7 +3,7 @@ import { DataTable } from "@/components/analiticas/DataTable";
 import CardView from "@/components/analiticas/CardView";
 import { useEffect, useState } from "react";
 import EmptyState from "@/components/EmptyState";
-import { Clipboard, IdCard, Rows4 } from "lucide-react";
+import { Clipboard, LayoutList, Table } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -51,14 +51,14 @@ export default function Analiticas() {
                 )}
                 onClick={() => setIsTableView(false)}
               >
-                <IdCard />
+                <LayoutList />
               </Button>
               <Button
                 variant={"link"}
                 className={cn(isTableView && "bg-accent-foreground text-white")}
                 onClick={() => setIsTableView(true)}
               >
-                <Rows4 />
+                <Table />
               </Button>
             </div>
           )}

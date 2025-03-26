@@ -48,7 +48,7 @@ const chartConfig = {
 
 export function ChartEmpty() {
   return (
-    <>
+    <div>
       <p>
         No tienes analíticas en base de datos, sin embargo, te mostramos algunos
         gráficos que podrías empezar a visualizar al subir varias analíticas.
@@ -159,6 +159,6 @@ export function ChartEmpty() {
           </div>
         </CardFooter>
       </Card>
-    </>
+    </div>
   );
 }
