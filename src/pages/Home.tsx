@@ -22,8 +22,9 @@ export default function Home() {
             Descifra tu analítica con IA
           </h1>
           <p className='mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8'>
-            Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-            lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.
+            Sube tu archivo y deja que nuestro sistema traduzca los datos
+            médicos en información comprensible. Porque entender tu salud no
+            debería requerir un diccionario médico.
           </p>
           <div className='mt-10 flex items-center justify-center gap-x-6'>
             <NavLink
