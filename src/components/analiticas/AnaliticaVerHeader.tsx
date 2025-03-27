@@ -20,10 +20,10 @@ export default function AnaliticaVerHeader() {
   return (
     <header className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 sm:mb-4 print:px-0 print:py-4 print:mb-0'>
       <div className='flex flex-col-reverse gap-6 sm:flex sm:justify-between print:flex-row print:justify-between'>
-        <div className='hidden print:block'>
+        <div className='hidden print:block print:w-1/2'>
           <Logo />
         </div>
-        <div className='print:text-xs'>
+        <div className='print:text-xs print:w-1/2 print:text-wrap'>
           <h1 className='text-3xl font-bold tracking-tight text-gray-900'>
             Informe de Analítica
           </h1>
