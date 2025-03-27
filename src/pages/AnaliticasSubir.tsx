@@ -78,7 +78,11 @@ export default function AnaliticasSubir() {
       toast.success("Analítica subida correctamente");
       navigate("/a/analiticas");
     } catch (err: any) {
-      if (err) {
+      if (err?.response?.status === 422) {
+        toast.error(
+          "El archivo no es una analítica. Por favor, revisa el archivo o contacta a soporte."
+        );
+      } else {
         setError(
           err.response?.data.message ||
             "Algo malo pasó. Error al subir el archivo"
