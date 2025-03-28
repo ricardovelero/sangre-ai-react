@@ -69,7 +69,7 @@ export default function AnaliticasSubir() {
         },
       });
 
-      toast.success("Analítica subida correctamente");
+      toast.success("Analítica procesada correctamente.");
       navigate("/a/analiticas");
     } catch (err: any) {
       if (err?.response?.status === 422) {

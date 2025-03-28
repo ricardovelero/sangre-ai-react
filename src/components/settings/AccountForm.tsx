@@ -45,7 +45,6 @@ export default function AccountForm() {
 
   const onSubmit = async (values: UpdateUserFormData) => {
     const errorMessage = await updateUser(values, () => {
-      console.log("Registration successful!");
       toast.success("Datos guardados con éxito.");
     });
 
@@ -54,9 +53,7 @@ export default function AccountForm() {
         errorMessage ||
           "🤦 Falló el registro, por favor intenta de nuevo o contacta sporte."
       );
-      console.error(
-        errorMessage || "😵 Something went wrong. Registration failed"
-      );
+      console.error(errorMessage || "😵 Something went wrong. Update failed");
     }
   };
 

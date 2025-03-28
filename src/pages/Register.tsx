@@ -48,7 +48,7 @@ export default function RegisterForm() {
   const onSubmit = async (values: FormData) => {
     const errorMessage = await register(values, () => {
       console.log("Registration successful!");
-      toast.success("Registro con éxito.");
+      toast.success("Te has registrado con éxito.");
       navigate("/a/dashboard");
     });
 

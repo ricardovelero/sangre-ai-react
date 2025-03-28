@@ -48,7 +48,6 @@ export default function AccountForm() {
 
   const onSubmit = async (values: UpdatePasswordFormData) => {
     const errorMessage = await changePassword(values, () => {
-      console.log("Registration successful!");
       toast.success("Datos guardados con éxito.");
       form.reset();
     });
