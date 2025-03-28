@@ -19,7 +19,7 @@ import ErrorState from "@/components/ErrorState";
 import { useAuthStore } from "@/store/authStore";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ProcessingMessages } from "@/components/ProcessingMessages";
+import { ProcessingMessagesWithProgress } from "@/components/ProcessingMessagesWithProgress.tsx";
 
 const hasRememberedConsent = localStorage.getItem("rememberConsent") === "true";
 
@@ -93,7 +93,7 @@ export default function AnaliticasSubir() {
     }
   }
 
-  if (loading) return <ProcessingMessages />;
+  if (loading) return <ProcessingMessagesWithProgress />;
   if (error) return <ErrorState message={error} />;
 
   return (
