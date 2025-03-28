@@ -106,6 +106,7 @@ export default function TagSearch({ analitica }: TagSearchProps) {
               if (analitica) {
                 await handleAddTag(analitica._id, result);
               }
+              setQuery("");
             }}
           >
             #{result}
