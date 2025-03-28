@@ -15,11 +15,11 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
-import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import { useAuthStore } from "@/store/authStore";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ProcessingMessages } from "@/components/ProcessingMessages";
 
 const hasRememberedConsent = localStorage.getItem("rememberConsent") === "true";
 
@@ -93,7 +93,7 @@ export default function AnaliticasSubir() {
     }
   }
 
-  if (loading) return <LoadingState message='Procesando analítica...' />;
+  if (loading) return <ProcessingMessages />;
   if (error) return <ErrorState message={error} />;
 
   return (
