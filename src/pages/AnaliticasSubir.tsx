@@ -1,16 +1,15 @@
 import { useForm } from "react-hook-form";
+import { useDropzone } from "react-dropzone";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   Form,
   FormField,
   FormItem,
-  FormLabel,
   FormControl,
   FormDescription,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import axios from "axios";
@@ -63,18 +62,13 @@ export default function AnaliticasSubir() {
     try {
       setLoading(true);
 
-      const response = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.post(`${import.meta.env.VITE_APP_API_URL}/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      console.log("El texto recibido", response.data.text);
       toast.success("Analítica subida correctamente");
       navigate("/a/analiticas");
     } catch (err: any) {
@@ -116,13 +110,10 @@ export default function AnaliticasSubir() {
               name='file'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Selecciona tu archivo</FormLabel>
                   <FormControl>
-                    <Input
-                      accept='application/pdf'
-                      type='file'
-                      placeholder='analitica.pdf'
-                      onChange={(e) => field.onChange(e.target.files?.[0])}
+                    <Dropzone
+                      onFileSelected={field.onChange}
+                      value={field.value}
                     />
                   </FormControl>
                   <FormDescription>
@@ -187,6 +178,45 @@ export default function AnaliticasSubir() {
           </form>
         </Form>
       </main>
+    </div>
+  );
+}
+
+function Dropzone({
+  onFileSelected,
+  value,
+}: {
+  onFileSelected: (file: File) => void;
+  value: File | undefined;
+}) {
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    multiple: false,
+    accept: {
+      "application/pdf": [".pdf"],
+    },
+    maxFiles: 1,
+    onDrop: (acceptedFiles) => {
+      if (acceptedFiles.length > 0) {
+        onFileSelected(acceptedFiles[0]);
+      }
+    },
+  });
+
+  return (
+    <div
+      {...getRootProps()}
+      className='border border-dashed border-gray-400 rounded-md p-6 text-center cursor-pointer'
+    >
+      <input {...getInputProps()} />
+      {isDragActive ? (
+        <p>Suelta el archivo aquí...</p>
+      ) : value ? (
+        <p className='text-sm text-green-700'>📄 {value.name}</p>
+      ) : (
+        <p className='text-sm'>
+          Arrastra un archivo aquí o haz clic para seleccionar uno
+        </p>
+      )}
     </div>
   );
 }
