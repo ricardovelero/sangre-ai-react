@@ -32,7 +32,7 @@ import {
 import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { useTrendAnalysis } from "@/hooks/useTrendAnalysis";
 import { referenceValues } from "@/lib/referenceValues";
-import { cn, normalizeStringAndFixSomeNames, toTitleCase } from "@/lib/utils";
+import { cn, normalizeStringAndFixSomeNames } from "@/lib/utils";
 import { Analitica } from "@/types/analitica.types";
 
 type LineaChartProps = {
@@ -169,9 +169,8 @@ const LineaChart = ({
                   fecha: item.fecha.slice(6, 10),
                 };
                 item.resultados.forEach((resultado) => {
-                  dataPoint[
-                    toTitleCase(resultado.nombre) as keyof typeof dataPoint
-                  ] = resultado.valor;
+                  dataPoint[resultado.nombre as keyof typeof dataPoint] =
+                    resultado.valor;
                 });
                 return dataPoint;
               })}
