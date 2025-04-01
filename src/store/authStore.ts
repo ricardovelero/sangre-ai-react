@@ -11,6 +11,7 @@ export type User = {
   email: string;
   firstName?: string;
   lastName?: string;
+  profilePicture?: string;
 };
 
 // Define Zustand state and actions
@@ -18,6 +19,7 @@ type AuthState = {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  fullName: string | null;
   register: (data: FormData, onSuccess?: () => void) => Promise<string | null>;
   updateUser: (
     data: UpdateUserFormData,
@@ -51,6 +53,7 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: !!Cookies.get("token"), // Initially check for a token,
       error: null,
       loading: false,
+      fullName: null,
 
       // Initialiaze authentication state
       initializeAuth: async () => {
@@ -80,6 +83,9 @@ export const useAuthStore = create<AuthState>()(
             user: response.data,
             token,
             isAuthenticated: true,
+            fullName: response.data.firstName
+              ? response.data.firstName + " " + response.data.lastName
+              : null,
           });
         } catch (error) {
           console.error("🚨 Invalid token, logging out:", error);

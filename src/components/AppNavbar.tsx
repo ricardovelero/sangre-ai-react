@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import LogoutButton from "./LogoutButton";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -8,6 +7,7 @@ import {
 import { cn } from "@/lib/utils";
 import Logo from "./Logo";
 import { appNavItems } from "../lib/navItems";
+import UserMenu from "./UserMenu";
 
 export default function NavBar() {
   return (
@@ -39,7 +39,7 @@ export default function NavBar() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <LogoutButton />
+      <UserMenu />
     </div>
   );
 }

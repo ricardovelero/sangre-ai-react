@@ -27,7 +27,7 @@ const LogoutButton = () => {
   return (
     isAuthenticated && (
       <Button variant={"ghost"} onClick={handleLogout} disabled={loading}>
-        {loading ? "Saliendo..." : "Salir"} <LogOut size={16} />
+        <LogOut size={16} /> {loading ? "Saliendo..." : "Salir"}
       </Button>
     )
   );
