@@ -61,7 +61,10 @@ export default function AccountForm() {
     <div className='space-y-4'>
       <h2 className='text-2xl'>Cambia tus datos personales</h2>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className='w-full sm:w-xs space-y-6'
+        >
           <FormField
             control={form.control}
             name='firstName'

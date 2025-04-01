@@ -13,7 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { ArrowUpDown, Copy, Delete, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  BookCopy,
+  Copy,
+  Delete,
+  MoreHorizontal,
+} from "lucide-react";
 
 export const columns = (
   confirmDeleteAnalitica: (analitica: Analitica) => void
@@ -120,6 +126,14 @@ export const columns = (
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() =>
+                navigator.clipboard.writeText(analitica?.markdown || "")
+              }
+            >
+              <BookCopy />
+              Copiar Informe
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() =>
                 navigator.clipboard.writeText(analitica?.resumen || "")

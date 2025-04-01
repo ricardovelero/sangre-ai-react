@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
 import { toast } from "sonner";
+import { Switch } from "../ui/switch";
 
 export default function ConsentForm() {
   const [rememberedConsent, setRememberedConsent] = useState(false);
@@ -10,29 +10,38 @@ export default function ConsentForm() {
     setRememberedConsent(remembered);
   }, []);
 
-  const handleRevokeConsent = () => {
-    localStorage.removeItem("rememberConsent");
-    setRememberedConsent(false);
-    toast.success(
-      "Se ha revocado el consentimiento. Se te volverá a preguntar al subir una analítica."
-    );
+  const handleToggleConsent = (checked: boolean) => {
+    if (checked) {
+      localStorage.setItem("rememberConsent", "true");
+      setRememberedConsent(true);
+      toast.success("Consentimiento guardado. No se te volverá a preguntar.");
+    } else {
+      localStorage.removeItem("rememberConsent");
+      setRememberedConsent(false);
+      toast.success(
+        "Se ha revocado el consentimiento. Se te volverá a preguntar al subir una analítica."
+      );
+    }
   };
 
   return (
     <div className='space-y-4'>
-      <h2 className='text-2xl'>Consentimiento procesamiento de datos</h2>
-      {rememberedConsent ? (
-        <Button
-          onClick={handleRevokeConsent}
-          className='bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700'
-        >
-          Revocar consentimiento para el procesamiento de datos
-        </Button>
-      ) : (
-        <p className='flex-wrap'>
-          No has guardado el consentimiento o ya ha sido revocado.
-        </p>
-      )}
+      <h2 className='text-2xl'>Tu consentimiento</h2>
+      <div className='flex flex-row items-center justify-between w-full sm:w-lg rounded-lg border p-3 shadow-sm'>
+        <div>
+          <h3 className='font-semibold'>
+            Consentimiento para el procesamiento de datos
+          </h3>
+          <p className='text-sm text-muted-foreground'>
+            Al activarla, no se te volverá a preguntar al subir una analítica.
+          </p>
+        </div>
+        <Switch
+          checked={rememberedConsent}
+          onCheckedChange={handleToggleConsent}
+          className='cursor-pointer'
+        />
+      </div>
     </div>
   );
 }
