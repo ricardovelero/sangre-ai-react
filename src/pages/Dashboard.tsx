@@ -1,20 +1,21 @@
 import AnalyticsChart from "@/components/dashboard/AnalyticsChart";
 import UserGlance from "@/components/dashboard/UserGlance";
 import EmptyState from "@/components/EmptyState";
+import LoadingState from "@/components/LoadingState";
 import PageHeader from "@/components/PageHeader";
 import { useAnaliticas } from "@/hooks/useAnaliticas";
 import { HeartCrack, Clipboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
-  const { analiticas } = useAnaliticas();
+  const { analiticas, isLoading } = useAnaliticas();
   const navigate = useNavigate();
 
   return (
     <div className='py-10'>
       <PageHeader title='Dashboard' />
       <main>
-        {analiticas.length > 0 ? (
+        {analiticas && analiticas.length > 0 ? (
           <div className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-4'>
             <div className='space-y-4 mb-12'>
               <h2 className='text-2xl font-semibold'>
@@ -45,6 +46,8 @@ export default function Dashboard() {
               <AnalyticsChart />
             </div>
           </div>
+        ) : isLoading ? (
+          <LoadingState />
         ) : (
           <div className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-4'>
             <div className='w-xl mx-auto space-y-4'>

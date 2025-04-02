@@ -83,7 +83,12 @@ export default function Analiticas() {
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             {analiticas.map((analitica) => (
-              <CardView key={analitica._id} analitica={analitica} />
+              <CardView
+                key={analitica._id}
+                analitica={analitica}
+                setAnaliticaToDelete={setAnaliticaToDelete}
+                setDeleteDialogOpen={setDeleteDialogOpen}
+              />
             ))}
           </div>
         )}
