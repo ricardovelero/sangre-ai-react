@@ -31,17 +31,52 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
   console.log(valores[0]);
 
   let riesgoCnh, cnh, tri, riesgoTri, hdl, riesgoHdl, ldl, riesgoLdl;
+
   if (valores[0]) {
-    cnh =
-      (valores[0]["colesterol total"] as number) -
-      (valores[0]["hdl (colesterol bueno)"] as number);
-    riesgoCnh = evaluarRiesgoNoHDL(cnh);
-    tri = valores[0]["trigliceridos"] as number;
-    riesgoTri = evaluarRiesgoTrigliceridos(tri);
-    hdl = valores[0]["hdl (colesterol bueno)"] as number;
-    riesgoHdl = evaluarRiesgoHdl(hdl);
-    ldl = valores[0]["ldl"] as number;
-    riesgoLdl = evaluarRiesgoLdl(ldl);
+    const colesterolTotal = parseFloat(
+      valores[0]["colesterol total"] as string
+    );
+    const hdlValue = parseFloat(valores[0]["hdl"] as string);
+    const trigliceridosValue = parseFloat(
+      valores[0]["trigliceridos"] as string
+    );
+    const ldlValue = parseFloat(valores[0]["ldl"] as string);
+
+    // Colesterol no HDL
+    if (!isNaN(colesterolTotal) && !isNaN(hdlValue)) {
+      cnh = colesterolTotal - hdlValue;
+      riesgoCnh = evaluarRiesgoNoHDL(cnh);
+    } else {
+      cnh = "N/D";
+      riesgoCnh = "Datos insuficientes";
+    }
+
+    // Triglicéridos
+    if (!isNaN(trigliceridosValue)) {
+      tri = trigliceridosValue;
+      riesgoTri = evaluarRiesgoTrigliceridos(tri);
+    } else {
+      tri = "N/D";
+      riesgoTri = "Datos insuficientes";
+    }
+
+    // HDL
+    if (!isNaN(hdlValue)) {
+      hdl = hdlValue;
+      riesgoHdl = evaluarRiesgoHdl(hdl);
+    } else {
+      hdl = "N/D";
+      riesgoHdl = "Datos insuficientes";
+    }
+
+    // LDL
+    if (!isNaN(ldlValue)) {
+      ldl = ldlValue;
+      riesgoLdl = evaluarRiesgoLdl(ldl);
+    } else {
+      ldl = "N/D";
+      riesgoLdl = "Datos insuficientes";
+    }
   }
 
   return (

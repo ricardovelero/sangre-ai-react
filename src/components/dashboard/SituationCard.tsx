@@ -9,7 +9,7 @@ import {
 type SituationCardProps = {
   title: string;
   description: string;
-  value?: number;
+  value?: number | string;
   unit: string;
   risk?: string;
   recomendation?: string;
