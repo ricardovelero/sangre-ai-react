@@ -146,4 +146,7 @@
   .form-error {
     @apply text-red-500 mb-2 text-xs mt-1;
   }
+  .link {
+    @apply underline hover:border-b-2 hover:border-blue-500 hover:no-underline;
+  }
 }

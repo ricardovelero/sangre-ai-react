@@ -80,7 +80,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
   }
 
   return (
-    <div className='flex gap-4'>
+    <div className='flex flex-col items-center sm:flex-row sm:justify-between gap-4'>
       <SituationCard
         title='Colesterol no HDL'
         description='Colesterol total menos HDL'
@@ -103,7 +103,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
         value={hdl}
         unit={"mg/dL"}
         risk={riesgoHdl}
-        recomendation='Entre 40-80 mg/dL'
+        recomendation='recomendado entre 40-80 mg/dL'
       />
       <SituationCard
         title='Colesterol LDL'
@@ -111,7 +111,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
         value={ldl}
         unit={"mg/dL"}
         risk={riesgoLdl}
-        recomendation='Entre 40-80'
+        recomendation='recomendado entre 40-80'
       />
     </div>
   );

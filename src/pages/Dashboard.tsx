@@ -5,7 +5,7 @@ import LoadingState from "@/components/LoadingState";
 import PageHeader from "@/components/PageHeader";
 import { useAnaliticas } from "@/hooks/useAnaliticas";
 import { HeartCrack, Clipboard } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const { analiticas, isLoading } = useAnaliticas();
@@ -22,7 +22,7 @@ export default function Dashboard() {
                 Vista rápida de tu última analítica
               </h2>
               <p>
-                Una vista de pájaro de algunos valores tomados de tu última
+                Una vista de pájaro de los lípidos tomados de tu última
                 analítica. Siempre es importante contar con la consulta de un
                 médico especializado. La evaluación del riesgo de estos valores
                 son según la opinión del{" "}
@@ -32,7 +32,14 @@ export default function Dashboard() {
                   className='underline hover:border-b-2 hover:border-blue-500 hover:no-underline'
                 >
                   Dr. Peter Attia.
-                </a>
+                </a>{" "}
+                Haz click aquí para{" "}
+                <NavLink
+                  to={`/a/analitica/${analiticas[0]._id}`}
+                  className='underline hover:border-b-2 hover:border-blue-500 hover:no-underline'
+                >
+                  ver tu última analítica.
+                </NavLink>
               </p>
               <UserGlance analiticas={analiticas} />
             </div>

@@ -1,4 +1,3 @@
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Fingerprint, SquareCheckBig, UserCircleIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
@@ -14,16 +13,11 @@ const settingsOptions = [
 ];
 
 export default function SettingsSidebar() {
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
   const [activeSection, setActiveSection] = useState("general");
 
   return (
-    <div className={`flex ${isDesktop ? "flex-row" : "flex-col"} gap-6`}>
-      <aside
-        className={`${isDesktop ? "w-64 min-h-screen" : "w-full"} p-4 flex ${
-          isDesktop ? "flex-col" : "flex-row"
-        } gap-4`}
-      >
+    <div className={"flex flex-col sm:flex-row sm:justify-center gap-6"}>
+      <aside className={"flex flex-col sm:w-64 sm:min-h-screen sm:gap-4"}>
         {settingsOptions.map(({ name, icon: Icon }) => (
           <Button
             variant='ghost'
