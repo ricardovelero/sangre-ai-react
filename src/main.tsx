@@ -5,11 +5,16 @@ import { router } from "./routes";
 import "./index.css";
 import { Toaster } from "./components/ui/sonner";
 import CookieConsent from "./components/CookieConsent";
+import { ThemeProvider } from "./theme/ThemeProvider";
+import ThemeToggle from "./theme/ThemeToggle";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-    <Toaster />
-    <CookieConsent />
+    <ThemeProvider>
+      <RouterProvider router={router} />
+      <Toaster />
+      <CookieConsent />
+      <ThemeToggle />
+    </ThemeProvider>
   </React.StrictMode>
 );

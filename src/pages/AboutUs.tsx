@@ -1,6 +1,6 @@
 export default function AboutUs() {
   return (
-    <div className='relative isolate overflow-hidden bg-white py-12 sm:py-24'>
+    <div className='relative isolate overflow-hidden py-12 sm:py-24'>
       <div
         aria-hidden='true'
         className='absolute -top-80 left-[max(6rem,33%)] -z-10 transform-gpu blur-3xl sm:left-1/2 md:top-20 lg:ml-20 xl:top-3 xl:ml-56'
@@ -15,13 +15,13 @@ export default function AboutUs() {
       </div>
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
         <div className='mx-auto max-w-2xl lg:mx-0'>
-          <p className='text-base/7 font-semibold text-indigo-600'>
+          <p className='text-base/7 font-semibold text-primary'>
             Nos gustan los datos
           </p>
-          <h1 className='mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl'>
+          <h1 className='mt-2 text-4xl font-semibold tracking-tight text-pretty text-accent-foreground sm:text-5xl'>
             ¿Quienes somos?
           </h1>
-          <p className='mt-6 text-xl/8 text-gray-700'>
+          <p className='mt-6 text-xl/8 text-muted-foreground'>
             Inteligencia artificial para entender, mejorar y optimizar tu
             bienestar.
           </p>
@@ -30,7 +30,7 @@ export default function AboutUs() {
           <div className='relative lg:order-last lg:col-span-5'>
             <svg
               aria-hidden='true'
-              className='absolute -top-[40rem] left-1 -z-10 h-[64rem] w-[175.5rem] -translate-x-1/2 stroke-gray-900/10 [mask-image:radial-gradient(64rem_64rem_at_111.5rem_0%,white,transparent)]'
+              className='absolute -top-[40rem] left-1 -z-10 h-[64rem] w-[175.5rem] -translate-x-1/2 stroke-atext-accent-foreground/10 [mask-image:radial-gradient(64rem_64rem_at_111.5rem_0%,white,transparent)]'
             >
               <defs>
                 <pattern
@@ -50,7 +50,7 @@ export default function AboutUs() {
               />
             </svg>
           </div>
-          <div className='max-w-xl text-base/7 text-gray-700 lg:col-span-7'>
+          <div className='max-w-xl text-base/7 text-muted-foreground lg:col-span-7'>
             <p>
               La salud es un juego de precisión, pero demasiadas veces nos
               enfrentamos a nuestros análisis de sangre sin una guía clara para

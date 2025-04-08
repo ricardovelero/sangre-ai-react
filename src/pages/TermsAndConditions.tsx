@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 export default function TermsAndConditions() {
   return (
-    <main className='max-w-3xl mx-auto p-6 text-gray-800'>
+    <main className='max-w-3xl mx-auto p-6 text-accent-foreground'>
       <h1 className='text-2xl font-bold mb-4'>Términos y Condiciones de Uso</h1>
 
       <p className='mb-4'>Última actualización: 25 de marzo de 2025</p>

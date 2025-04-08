@@ -27,16 +27,16 @@ const features = [
 
 export default function Example() {
   return (
-    <div className='bg-white py-24 sm:py-32'>
+    <div className='py-24 sm:py-32'>
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
         <div className='mx-auto max-w-2xl lg:text-center'>
-          <h2 className='text-base/7 font-semibold text-indigo-600'>
+          <h2 className='text-base/7 font-semibold text-primary'>
             Otra perspectiva de tu salud
           </h2>
-          <p className='mt-2 text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl lg:text-balance'>
+          <p className='mt-2 text-4xl font-semibold tracking-tight text-pretty text-accent-foreground sm:text-5xl lg:text-balance'>
             Visualiza tu análisis de sangre
           </p>
-          <p className='mt-6 text-lg/8 text-gray-600'>
+          <p className='mt-6 text-lg/8 text-muted-foreground'>
             Transforma tu análisis de sangre en información útil en cuestión de
             segundos. Nuestra aplicación utiliza inteligencia artificial
             avanzada para interpretar tus resultados de forma rápida, segura y
@@ -47,19 +47,21 @@ export default function Example() {
           <dl className='grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3'>
             {features.map((feature) => (
               <div key={feature.name} className='flex flex-col'>
-                <dt className='flex items-center gap-x-3 text-base/7 font-semibold text-gray-900'>
+                <dt className='flex items-center gap-x-3 text-base/7 font-semibold text-accent-foreground'>
                   <feature.icon
                     aria-hidden='true'
-                    className='size-5 flex-none text-indigo-600'
+                    className='size-5 flex-none text-primary'
                   />
                   {feature.name}
                 </dt>
-                <dd className='mt-4 flex flex-auto flex-col text-base/7 text-gray-600'>
-                  <p className='flex-auto'>{feature.description}</p>
+                <dd className='mt-4 flex flex-auto flex-col text-base/7'>
+                  <p className='flex-auto text-muted-foreground'>
+                    {feature.description}
+                  </p>
                   <p className='mt-6'>
                     <NavLink
                       to={feature.href}
-                      className='text-sm/6 font-semibold text-indigo-600'
+                      className='text-sm/6 font-semibold text-primary'
                     >
                       Explora más <span aria-hidden='true'>→</span>
                     </NavLink>

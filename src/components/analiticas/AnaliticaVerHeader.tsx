@@ -24,7 +24,7 @@ export default function AnaliticaVerHeader() {
           <Logo />
         </div>
         <div className='print:text-xs print:w-1/2 print:text-wrap'>
-          <h1 className='text-3xl font-bold tracking-tight text-gray-900'>
+          <h1 className='text-3xl font-bold tracking-tight text-accent-foreground'>
             Informe de Analítica
           </h1>
           <p>Fecha: {formatDateToSpanish(analitica?.fecha_toma_muestra)}</p>
