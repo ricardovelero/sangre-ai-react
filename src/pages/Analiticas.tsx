@@ -47,7 +47,7 @@ export default function Analiticas() {
               <Button
                 variant={"link"}
                 className={cn(
-                  !isTableView && "bg-accent-foreground text-white"
+                  !isTableView && "bg-accent text-accent-foreground"
                 )}
                 onClick={() => setIsTableView(false)}
               >
@@ -55,7 +55,9 @@ export default function Analiticas() {
               </Button>
               <Button
                 variant={"link"}
-                className={cn(isTableView && "bg-accent-foreground text-white")}
+                className={cn(
+                  isTableView && "bg-accent text-accent-foreground"
+                )}
                 onClick={() => setIsTableView(true)}
               >
                 <Table />

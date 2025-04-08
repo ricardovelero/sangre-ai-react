@@ -105,7 +105,10 @@ export const columns = (
           <TooltipTrigger>
             <span className='block max-w-xs truncate'>{resumen}</span>
           </TooltipTrigger>
-          <TooltipContent className='w-md' sideOffset={5}>
+          <TooltipContent
+            className='w-md bg-accent text-accent-foreground'
+            sideOffset={5}
+          >
             {resumen}
           </TooltipContent>
         </Tooltip>
@@ -154,10 +157,10 @@ export const columns = (
                 : "Archivar analitica"}
             </DropdownMenuItem> */}
             <DropdownMenuItem
-              className='text-red-500'
+              className='text-destructive'
               onClick={() => confirmDeleteAnalitica(analitica)}
             >
-              <Delete />
+              <Delete className='text-destructive' />
               Eliminar
             </DropdownMenuItem>
           </DropdownMenuContent>

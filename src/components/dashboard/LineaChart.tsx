@@ -248,20 +248,29 @@ const LineaChart = ({
               <Line
                 dataKey={selectedParam}
                 type='natural'
-                stroke='hsl(var(--chart-3))'
+                stroke='var(--primary)'
                 strokeWidth={2}
                 dot={({ payload, index, ...props }) => {
                   return (
                     <Dot
                       key={`dot-${index}-${payload[selectedParam]}`}
-                      r={5}
+                      r={3}
                       cx={props.cx}
                       cy={props.cy}
-                      fill={payload.fill}
-                      stroke={payload.fill}
+                      fill='white'
+                      stroke='var(--primary)'
                     />
                   );
                 }}
+                activeDot={({ ...props }) => (
+                  <Dot
+                    r={5}
+                    cx={props.cx}
+                    cy={props.cy}
+                    fill='var(--chart-1)'
+                    stroke='var(--chart-1)'
+                  />
+                )}
               />
             </LineChart>
           </ChartContainer>

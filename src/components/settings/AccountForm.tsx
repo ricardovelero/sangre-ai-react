@@ -72,12 +72,7 @@ export default function AccountForm() {
               <FormItem>
                 <FormLabel>Nombre</FormLabel>
                 <FormControl>
-                  <Input
-                    type='text'
-                    className='inputs'
-                    placeholder='opcional'
-                    {...field}
-                  />
+                  <Input type='text' placeholder='opcional' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -90,12 +85,7 @@ export default function AccountForm() {
               <FormItem>
                 <FormLabel>Apellidos</FormLabel>
                 <FormControl>
-                  <Input
-                    type='text'
-                    className='inputs'
-                    {...field}
-                    placeholder='opcional'
-                  />
+                  <Input type='text' {...field} placeholder='opcional' />
                 </FormControl>
                 <FormMessage />
               </FormItem>

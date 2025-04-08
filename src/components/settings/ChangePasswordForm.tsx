@@ -78,7 +78,7 @@ export default function AccountForm() {
               <FormItem>
                 <FormLabel>Contraseña actual</FormLabel>
                 <FormControl>
-                  <Input type='password' className='inputs' {...field} />
+                  <Input type='password' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -91,7 +91,7 @@ export default function AccountForm() {
               <FormItem>
                 <FormLabel>Nueva contraseña</FormLabel>
                 <FormControl>
-                  <Input type='password' className='inputs' {...field} />
+                  <Input type='password' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -104,7 +104,7 @@ export default function AccountForm() {
               <FormItem>
                 <FormLabel>Confirma contraseña</FormLabel>
                 <FormControl>
-                  <Input type='password' className='inputs' {...field} />
+                  <Input type='password' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

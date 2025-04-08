@@ -83,7 +83,7 @@ export function DataTable<TData, TValue>({
                       ) : (
                         // For regular data columns, wrap in NavLink
                         <NavLink
-                          className='block hover:bg-gray-100'
+                          className='block hover:underline'
                           to={`/a/analitica/${(row.original as any)._id}`}
                         >
                           {flexRender(
