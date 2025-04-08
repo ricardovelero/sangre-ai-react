@@ -27,7 +27,7 @@ export default function PublicMobileSheet() {
             <Menu />
           </Button>
         </SheetTrigger>
-        <SheetContent className='p-4'>
+        <SheetContent className='p-4 bg-opacity-80 backdrop-blur-[0.5rem]'>
           <SheetHeader>
             <SheetTitle>Menú Principal</SheetTitle>
             <SheetDescription>

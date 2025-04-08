@@ -31,7 +31,7 @@ export default function PublicAuthBottons() {
           </NavLink>
           <NavLink
             to={"/register"}
-            className='bg-accent-foreground text-accent text-sm px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground'
+            className='bg-primary text-primary-foreground text-sm px-4 py-2 rounded-md hover:bg-primary/90'
           >
             Registrarse
           </NavLink>
