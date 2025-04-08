@@ -5,8 +5,6 @@ import { MoonIcon, SunIcon } from "lucide-react";
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
 
-  console.log(theme);
-
   return (
     <Button
       type='button'
