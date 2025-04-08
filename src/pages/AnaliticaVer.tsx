@@ -36,7 +36,7 @@ export default function VerAnalitica() {
         <AnaliticaVerHeader />
         <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
           <div className='md:flex gap-4'>
-            <article className='w-full md:w-3/4 prose lg:prose-xl print:prose-sm print:max-w-none dark:prose-invert'>
+            <article className='w-full md:w-3/4 prose lg:prose-xl print:prose-sm print:max-w-none'>
               <Markdown>{analitica?.markdown}</Markdown>
             </article>
             <aside className='w-full md:w-1/4 py-4 sm:pl-4 print:hidden'>
