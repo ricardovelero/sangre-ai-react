@@ -29,8 +29,8 @@ const fileUploadSchema = z.object({
     .refine((file) => file.type === "application/pdf", {
       message: "Solo se permiten archivos PDF",
     })
-    .refine((file) => file.size < 1 * 1024 * 1024, {
-      message: "El archivo debe pesar menos de 1MB",
+    .refine((file) => file.size < 5 * 1024 * 1024, {
+      message: "El archivo debe pesar menos de 5MB",
     }),
   consent: hasRememberedConsent
     ? z.boolean().optional()
