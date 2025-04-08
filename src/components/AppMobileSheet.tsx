@@ -14,7 +14,7 @@ import Logo from "./Logo";
 import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { appNavItems } from "../lib/navItems";
-import LogoutButton from "./LogoutButton";
+import UserMenu from "./UserMenu";
 
 export default function PublicMobileSheet() {
   const location = useLocation();
@@ -52,7 +52,7 @@ export default function PublicMobileSheet() {
           })}
           <SheetFooter>
             <SheetClose asChild>
-              <LogoutButton />
+              <UserMenu />
             </SheetClose>
           </SheetFooter>
         </SheetContent>
