@@ -57,7 +57,7 @@ export default function TagSearch({ analitica }: TagSearchProps) {
 
   if (error)
     return (
-      <div className='flex gap-2 mb-10 animate-pulse text-red-500'>
+      <div className='flex gap-2 mb-10 animate-pulse text-destructive'>
         <CircleAlert /> Hubo un error cargando las etiquetas...
       </div>
     );
@@ -78,7 +78,7 @@ export default function TagSearch({ analitica }: TagSearchProps) {
             <Badge key={tag} className='py-1 pr-0'>
               #{tag}
               <button
-                className='text-white hover:text-red-500 focus:outline-none transition-transform duration-200 transform hover:scale-125 cursor-pointer'
+                className='text-destructive-foreground hover:text-destructive focus:outline-none transition-transform duration-200 transform hover:scale-125 cursor-pointer'
                 onClick={() => {
                   setSelectedTags(selectedTags.filter((t) => t !== tag));
                   const tagToRemove =
@@ -98,7 +98,7 @@ export default function TagSearch({ analitica }: TagSearchProps) {
         {results.map((result) => (
           <li
             key={result}
-            className='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200 cursor-pointer'
+            className='px-3 py-1 rounded bg-muted hover:bg-muted-foreground cursor-pointer'
             onClick={async () => {
               if (!selectedTags.includes(result)) {
                 setSelectedTags([...selectedTags, result]);
