@@ -24,20 +24,20 @@ export const referenceValues: ReferenceConfig = {
     type: "max",
     unit: "mg/dL",
   },
-  LDL: {
+  ldl: {
     max: 100,
     label: "Valor máximo recomendado",
     type: "max",
     unit: "mg/dL",
   },
-  HDL: {
-    min: 40,
+  hdl: {
+    min: 60,
     label: "Valor mínimo recomendado",
     type: "min",
     unit: "mg/dL",
   },
   trigliceridos: {
-    max: 130,
+    max: 100,
     label: "Valor máximo recomendado",
     type: "max",
     unit: "mg/dL",
@@ -49,42 +49,42 @@ export const referenceValues: ReferenceConfig = {
     max: 11.0,
     label: "Rango normal",
     type: "range",
-    unit: "×10³/µL",
+    unit: "/µL",
   },
   neutrofilos: {
     min: 2.0,
     max: 7.5,
     label: "Rango normal",
     type: "range",
-    unit: "×10³/µL",
+    unit: "/µL",
   },
   linfocitos: {
     min: 1.0,
     max: 4.5,
     label: "Rango normal",
     type: "range",
-    unit: "×10³/µL",
+    unit: "/µL",
   },
   monocitos: {
     min: 0.2,
     max: 0.8,
     label: "Rango normal",
     type: "range",
-    unit: "×10³/µL",
+    unit: "/µL",
   },
   eosinofilos: {
     min: 0.0,
     max: 0.5,
     label: "Rango normal",
     type: "range",
-    unit: "×10³/µL",
+    unit: "/µL",
   },
   basofilos: {
     min: 0.0,
     max: 0.1,
     label: "Rango normal",
     type: "range",
-    unit: "×10³/µL",
+    unit: "/µL",
   },
 
   // Serie Roja (Rango de valores normales)
@@ -109,9 +109,9 @@ export const referenceValues: ReferenceConfig = {
     type: "range",
     unit: "%",
   },
-  VCM: { min: 80, max: 100, label: "Rango normal", type: "range", unit: "fL" },
-  HCM: { min: 27, max: 32, label: "Rango normal", type: "range", unit: "pg" },
-  CHCM: {
+  vcm: { min: 80, max: 100, label: "Rango normal", type: "range", unit: "fL" },
+  hcm: { min: 27, max: 32, label: "Rango normal", type: "range", unit: "pg" },
+  chcm: {
     min: 32,
     max: 36,
     label: "Rango normal",
@@ -127,10 +127,10 @@ export const referenceValues: ReferenceConfig = {
     type: "range",
     unit: "/µL",
   },
-  VPM: { max: 12, label: "Valor máximo normal", type: "max", unit: "fL" },
+  vpm: { max: 12, label: "Valor máximo normal", type: "max", unit: "fL" },
 
   // Eritrosedimentación
-  VSG: { max: 20, label: "Valor máximo normal", type: "max" },
+  vsg: { max: 20, label: "Valor máximo normal", type: "max" },
 
   // Bioquímica Clínica
   glucosa: { min: 70, max: 100, label: "Rango normal", type: "range" },
@@ -144,9 +144,9 @@ export const referenceValues: ReferenceConfig = {
   acido_urico: { min: 3.4, max: 7, label: "Rango normal", type: "range" },
 
   // Transaminasas
-  TGO_AST: { max: 40, label: "Valor máximo normal", type: "max" },
-  TGP_ALT: { max: 40, label: "Valor máximo normal", type: "max" },
-  GGT: { max: 60, label: "Valor máximo normal", type: "max" },
+  tgo_ast: { max: 40, label: "Valor máximo normal", type: "max" },
+  tgp_alt: { max: 40, label: "Valor máximo normal", type: "max" },
+  ggt: { max: 60, label: "Valor máximo normal", type: "max" },
   fosfatasa_alcalina: {
     min: 40,
     max: 150,
@@ -171,14 +171,14 @@ export const referenceValues: ReferenceConfig = {
     label: "Valor máximo normal",
     type: "max",
   },
-  antiCCP: { max: 20, label: "Valor máximo normal", type: "max" },
+  anticcp: { max: 20, label: "Valor máximo normal", type: "max" },
 
   // Hormonas
-  TSH: { min: 0.5, max: 4.5, label: "Rango normal", type: "range" },
-  T3: { min: 2.3, max: 4.2, label: "Rango normal", type: "range" },
-  T4: { min: 0.8, max: 1.8, label: "Rango normal", type: "range" },
-  FSH: { min: 1.5, max: 12, label: "Rango normal", type: "range" },
-  LH: { min: 1.0, max: 9, label: "Rango normal", type: "range" },
+  tsh: { min: 0.5, max: 4.5, label: "Rango normal", type: "range" },
+  t3: { min: 2.3, max: 4.2, label: "Rango normal", type: "range" },
+  t4: { min: 0.8, max: 1.8, label: "Rango normal", type: "range" },
+  fsh: { min: 1.5, max: 12, label: "Rango normal", type: "range" },
+  lh: { min: 1.0, max: 9, label: "Rango normal", type: "range" },
   testosterona: { min: 300, max: 1000, label: "Rango normal", type: "range" },
   estradiol: { min: 10, max: 50, label: "Rango normal", type: "range" },
   progesterona: { min: 0.2, max: 20, label: "Rango normal", type: "range" },
@@ -186,15 +186,15 @@ export const referenceValues: ReferenceConfig = {
   vitamina_d3: { min: 30, max: 100, label: "Rango normal", type: "range" },
 
   // Marcadores Tumorales
-  PSA: { max: 4, label: "Valor máximo recomendado", type: "max" },
-  CEA: { max: 3, label: "Valor máximo recomendado", type: "max" },
-  AFP: { max: 10, label: "Valor máximo recomendado", type: "max" },
-  CA_125: { max: 35, label: "Valor máximo recomendado", type: "max" },
-  CA_19_9: { max: 37, label: "Valor máximo recomendado", type: "max" },
+  psa: { max: 4, label: "Valor máximo recomendado", type: "max" },
+  cea: { max: 3, label: "Valor máximo recomendado", type: "max" },
+  afp: { max: 10, label: "Valor máximo recomendado", type: "max" },
+  ca_125: { max: 35, label: "Valor máximo recomendado", type: "max" },
+  ca_19_9: { max: 37, label: "Valor máximo recomendado", type: "max" },
 
   // Otros (Orina)
   densidad: { min: 1.005, max: 1.025, label: "Rango normal", type: "range" },
-  pH: { min: 4.5, max: 8.0, label: "Rango normal", type: "range" },
+  ph: { min: 4.5, max: 8.0, label: "Rango normal", type: "range" },
   hematies_orina: { max: 5, label: "Valor máximo normal", type: "max" },
   leucocitos_orina: { max: 5, label: "Valor máximo normal", type: "max" },
 

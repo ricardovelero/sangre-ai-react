@@ -53,7 +53,8 @@ const LineaChart = ({
   error,
 }: LineaChartProps) => {
   const [selectedParam, setSelectedParam] = useState(parameters[0] || "");
-  const referenceValue = referenceValues[selectedParam || ""];
+  const referenceValue =
+    referenceValues[normalizeStringAndFixSomeNames(selectedParam || "")];
 
   const valores = data.map((analitica) => {
     const resultadoObj = {
@@ -95,21 +96,21 @@ const LineaChart = ({
       : Minus;
 
   const trendColor = (() => {
-    if (!referenceValue) return "text-gray-500"; // Si no hay referencia, usar color neutral
+    if (!referenceValue) return "text-muted-foreground"; // Si no hay referencia, usar color neutral
 
-    if (trend.direction === "stable") return "text-gray-500";
+    if (trend.direction === "stable") return "text-muted-foreground";
 
     // Si el parámetro tiene un valor máximo recomendado (tipo "max"), es bueno que baje
     if (referenceValue.type === "max") {
-      return trend.direction === "down" ? "text-green-500" : "text-red-500";
+      return trend.direction === "down" ? "text-green-500" : "text-red-700";
     }
 
     // Si el parámetro tiene un valor mínimo recomendado (tipo "min"), es bueno que suba
     if (referenceValue.type === "min") {
-      return trend.direction === "up" ? "text-green-500" : "text-red-500";
+      return trend.direction === "up" ? "text-green-500" : "text-red-700";
     }
 
-    return "text-gray-500"; // Default para "target" u otros casos
+    return "text-muted-foreground"; // Default para "target" u otros casos
   })();
 
   const getReferenceLineColor = (type: "max" | "min" | "target") => {
@@ -128,7 +129,7 @@ const LineaChart = ({
   const chartConfig = {
     [selectedParam]: {
       label: selectedParam,
-      color: "hsl(var(--chart-1))",
+      color: "var(--chart-1)",
     },
   } satisfies ChartConfig;
 
@@ -158,7 +159,7 @@ const LineaChart = ({
           <Skeleton className='w-full h-[200px] mt-4' />
         ) : error ? (
           <div className='flex items-center justify-center h-[200px]'>
-            <p className='text-red-500'>{error}</p>
+            <p className='text-destructive'>{error}</p>
           </div>
         ) : (
           <ChartContainer config={chartConfig}>
@@ -206,7 +207,7 @@ const LineaChart = ({
                       strokeDasharray='3 3'
                       label={{
                         value: `Mín: ${referenceValue.min}`,
-                        position: "right",
+                        position: "insideTopRight",
                         fill: getReferenceLineColor("min"),
                         fontSize: 10,
                       }}
@@ -221,7 +222,7 @@ const LineaChart = ({
                       strokeDasharray='3 3'
                       label={{
                         value: `Máx: ${referenceValue.max}`,
-                        position: "right",
+                        position: "insideTopRight",
                         fill: getReferenceLineColor("max"),
                         fontSize: 10,
                       }}
@@ -237,7 +238,7 @@ const LineaChart = ({
                         strokeDasharray='3 3'
                         label={{
                           value: referenceValue.label,
-                          position: "right",
+                          position: "insideTopLeft",
                           fill: getReferenceLineColor("target"),
                           fontSize: 10,
                         }}
