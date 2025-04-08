@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./PublicNavbar";
 import MobileNavBar from "./PublicMobileSheet";
 import Footer from "./Footer";
+import PageTransition from "./PageTransition";
 
 export default function PublicLayout() {
   return (
@@ -12,7 +13,9 @@ export default function PublicLayout() {
       <div className='sm:hidden'>
         <MobileNavBar />
       </div>
-      <Outlet />
+      <PageTransition>
+        <Outlet />
+      </PageTransition>
       <Footer />
     </div>
   );

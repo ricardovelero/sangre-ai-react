@@ -11,6 +11,7 @@ import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { useAnaliticas } from "@/hooks/useAnaliticas";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Analiticas() {
   const {
@@ -67,33 +68,58 @@ export default function Analiticas() {
         </div>
       </header>
       <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
-        {analiticas?.length === 0 ? (
-          <EmptyState
-            message='No tienes analiticas.'
-            icon={<Clipboard size={32} />}
-            buttonLabel='Subir analítica'
-            onButtonClick={() => navigate("/a/subir-analitica")}
-          />
-        ) : isTableView ? (
-          <DataTable
-            columns={columns((analitica) => {
-              setAnaliticaToDelete(analitica);
-              setDeleteDialogOpen(true);
-            })}
-            data={analiticas || []}
-          />
-        ) : (
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-            {analiticas.map((analitica) => (
-              <CardView
-                key={analitica._id}
-                analitica={analitica}
-                setAnaliticaToDelete={setAnaliticaToDelete}
-                setDeleteDialogOpen={setDeleteDialogOpen}
+        <AnimatePresence mode='wait'>
+          {analiticas?.length === 0 ? (
+            <motion.div
+              key='empty'
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <EmptyState
+                message='No tienes analiticas.'
+                icon={<Clipboard size={32} />}
+                buttonLabel='Subir analítica'
+                onButtonClick={() => navigate("/a/subir-analitica")}
               />
-            ))}
-          </div>
-        )}
+            </motion.div>
+          ) : isTableView ? (
+            <motion.div
+              key='table'
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <DataTable
+                columns={columns((analitica) => {
+                  setAnaliticaToDelete(analitica);
+                  setDeleteDialogOpen(true);
+                })}
+                data={analiticas || []}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key='cards'
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.3 }}
+              className='grid grid-cols-1 md:grid-cols-2 gap-4'
+            >
+              {analiticas.map((analitica) => (
+                <CardView
+                  key={analitica._id}
+                  analitica={analitica}
+                  setAnaliticaToDelete={setAnaliticaToDelete}
+                  setDeleteDialogOpen={setDeleteDialogOpen}
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
       <ConfirmationDialog
         isOpen={deleteDialogOpen}
