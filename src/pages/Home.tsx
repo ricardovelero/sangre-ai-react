@@ -19,7 +19,7 @@ export default function Home() {
       <div className='mx-auto max-w-2xl h-screen py-32 sm:py-48 lg:py-56'>
         <div className='text-center'>
           <h1 className='text-5xl font-semibold tracking-tight text-balance text-accent-foreground sm:text-7xl'>
-            Descifra tu analítica con IA
+            Descifra tu analítica de sangre con IA
           </h1>
           <p className='mt-8 text-lg font-medium text-pretty text-muted-foreground sm:text-xl/8'>
             Sube tu archivo y deja que nuestro sistema traduzca los datos
