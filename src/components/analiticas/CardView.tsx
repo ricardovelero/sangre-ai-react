@@ -50,6 +50,7 @@ export default function CardView({
               <br />
               Paciente: {toTitleCase(analitica.paciente.apellidos) ||
                 "N/D"}, {toTitleCase(analitica.paciente.nombre) || "N/D"}
+              <br />
               Laboratorio: {toTitleCase(analitica.laboratorio) || "N/D"}
               <br />
               Medico: {toTitleCase(analitica.medico) || "N/D"}
