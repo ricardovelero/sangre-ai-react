@@ -52,8 +52,8 @@ export default function AnaliticasSubir() {
     resolver: zodResolver(fileUploadSchema),
     defaultValues: {
       file: undefined,
-      consent: hasRememberedConsent,
       style: "attia",
+      consent: hasRememberedConsent,
       rememberConsent: false,
     },
   });
@@ -68,12 +68,16 @@ export default function AnaliticasSubir() {
     try {
       setLoading(true);
 
-      await axios.post(`${import.meta.env.VITE_APP_API_URL}/upload`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.post(
+        `${import.meta.env.VITE_APP_API_URL}/upload?prompt=${data.style}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       toast.success("Analítica procesada correctamente.");
       navigate("/a/analiticas");
@@ -107,10 +111,7 @@ export default function AnaliticasSubir() {
       <PageHeader title='Subir Analítica' />
       <main className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8'>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className='sm:w-2/3 space-y-6'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
             <FormField
               control={form.control}
               name='file'
@@ -147,16 +148,44 @@ export default function AnaliticasSubir() {
                           <RadioGroupItem value='attia' />
                         </FormControl>
                         <FormLabel className='font-normal'>
-                          Dr. Peter Attia
+                          Dr. Peter Attia{" "}
                         </FormLabel>
+                        <div className='text-xs'>
+                          El{" "}
+                          <a
+                            href='https://peterattiamd.com/'
+                            target='_blank'
+                            className='underline'
+                          >
+                            Dr. Peter Attia
+                          </a>{" "}
+                          es un médico centrado en la longevidad, que combina
+                          ciencia de vanguardia, medicina preventiva y
+                          rendimiento físico para optimizar la salud a largo
+                          plazo.
+                        </div>
                       </FormItem>
                       <FormItem className='flex items-center space-x-2 space-y-0'>
                         <FormControl>
                           <RadioGroupItem value='jaramillo' />
                         </FormControl>
                         <FormLabel className='font-normal'>
-                          Dr. Carlos Jaramillo
+                          Dr. Carlos Jaramillo{" "}
                         </FormLabel>
+                        <div className='text-xs'>
+                          El{" "}
+                          <a
+                            href='https://drcarlosjaramillo.com/'
+                            target='_blank'
+                            className='underline'
+                          >
+                            Dr. Carlos Jaramillo
+                          </a>{" "}
+                          es un médico colombiano especializado en medicina
+                          funcional y bioquímica nutricional, y por su labor en
+                          educar sobre salud y bienestar a través de una amplia
+                          comunidad digital.
+                        </div>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
