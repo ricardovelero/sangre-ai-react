@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 export default function PublicMobileSheet() {
   const location = useLocation();
   return (
-    <div className='m-4 flex justify-between'>
+    <header className='m-4 flex justify-between'>
       <Logo />
       <Sheet>
         <SheetTrigger asChild>
@@ -57,6 +57,6 @@ export default function PublicMobileSheet() {
           </SheetFooter>
         </SheetContent>
       </Sheet>
-    </div>
+    </header>
   );
 }
