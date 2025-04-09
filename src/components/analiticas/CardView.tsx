@@ -48,6 +48,8 @@ export default function CardView({
             <CardDescription>
               Fecha: {formatDateToSpanish(analitica.fecha_toma_muestra)}
               <br />
+              Paciente: {toTitleCase(analitica.paciente.apellidos) ||
+                "N/D"}, {toTitleCase(analitica.paciente.nombre) || "N/D"}
               Laboratorio: {toTitleCase(analitica.laboratorio) || "N/D"}
               <br />
               Medico: {toTitleCase(analitica.medico) || "N/D"}
