@@ -9,6 +9,7 @@ import {
   FormControl,
   FormDescription,
   FormMessage,
+  FormLabel,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -19,6 +20,7 @@ import ErrorState from "@/components/ErrorState";
 import { useAuthStore } from "@/store/authStore";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ProcessingMessagesWithProgress } from "@/components/ProcessingMessagesWithProgress.tsx";
 
 const hasRememberedConsent = localStorage.getItem("rememberConsent") === "true";
@@ -37,6 +39,9 @@ const fileUploadSchema = z.object({
     : z.boolean().refine((val) => val === true, {
         message: "Debes aceptar la política de privacidad.",
       }),
+  style: z.enum(["attia", "jaramillo"], {
+    required_error: "Debes seleccionar un estilo de análisis.",
+  }),
   rememberConsent: z.boolean().optional(),
 });
 
@@ -48,6 +53,7 @@ export default function AnaliticasSubir() {
     defaultValues: {
       file: undefined,
       consent: hasRememberedConsent,
+      style: "attia",
       rememberConsent: false,
     },
   });
@@ -110,6 +116,7 @@ export default function AnaliticasSubir() {
               name='file'
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Adjunta tu analítica:</FormLabel>
                   <FormControl>
                     <Dropzone
                       onFileSelected={field.onChange}
@@ -119,13 +126,48 @@ export default function AnaliticasSubir() {
                   <FormDescription>
                     Por ahora, solo aceptamos archivos PDF
                   </FormDescription>
-                  <FormMessage />
+                  <FormMessage className='text-destructive' />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='style'
+              render={({ field }) => (
+                <FormItem className='space-y-2'>
+                  <FormLabel>Quiero que la analices al estilo de:</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className='flex flex-col space-y-1'
+                    >
+                      <FormItem className='flex items-center space-x-2 space-y-0'>
+                        <FormControl>
+                          <RadioGroupItem value='attia' />
+                        </FormControl>
+                        <FormLabel className='font-normal'>
+                          Dr. Peter Attia
+                        </FormLabel>
+                      </FormItem>
+                      <FormItem className='flex items-center space-x-2 space-y-0'>
+                        <FormControl>
+                          <RadioGroupItem value='jaramillo' />
+                        </FormControl>
+                        <FormLabel className='font-normal'>
+                          Dr. Carlos Jaramillo
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage className='text-destructive' />
                 </FormItem>
               )}
             />
 
             {!hasRememberedConsent && (
               <>
+                <FormLabel>Aceptar política de privacidad:</FormLabel>
                 <FormField
                   control={form.control}
                   name='consent'
@@ -145,7 +187,7 @@ export default function AnaliticasSubir() {
                           Acepto la Política de Privacidad y doy mi
                           consentimiento
                         </NavLink>
-                        <FormMessage />
+                        <FormMessage className='text-destructive' />
                       </div>
                     </FormItem>
                   )}
@@ -164,7 +206,7 @@ export default function AnaliticasSubir() {
                       </FormControl>
                       <div className='text-xs'>
                         No volver a preguntarme sobre el consentimiento
-                        <FormMessage />
+                        <FormMessage className='text-destructive' />
                       </div>
                     </FormItem>
                   )}
