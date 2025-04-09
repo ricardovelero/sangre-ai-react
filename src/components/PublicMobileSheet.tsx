@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 export default function PublicMobileSheet() {
   const location = useLocation();
   return (
-    <header className='m-4 flex justify-between'>
+    <header className='sm:hidden m-4 flex justify-between'>
       <Logo />
       <Sheet>
         <SheetTrigger asChild>

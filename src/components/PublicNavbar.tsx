@@ -12,7 +12,7 @@ import { navItems } from "@/lib/navItems";
 
 export default function NavBar() {
   return (
-    <header>
+    <header className='hidden sm:block'>
       <div className='flex items-center justify-between sm:px-6 lg:px-8'>
         <div className='flex items-center justify-evenly'>
           <NavigationMenu className='mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8'>
