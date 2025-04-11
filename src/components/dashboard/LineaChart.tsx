@@ -32,7 +32,7 @@ import {
 import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { useTrendAnalysis } from "@/hooks/useTrendAnalysis";
 import { referenceValues } from "@/lib/referenceValues";
-import { cn, normalizeStringAndFixSomeNames } from "@/lib/utils";
+import { cn, toTitleCase } from "@/lib/utils";
 import { Analitica } from "@/types/analitica.types";
 
 type LineaChartProps = {
@@ -53,8 +53,7 @@ const LineaChart = ({
   error,
 }: LineaChartProps) => {
   const [selectedParam, setSelectedParam] = useState(parameters[0] || "");
-  const referenceValue =
-    referenceValues[normalizeStringAndFixSomeNames(selectedParam || "")];
+  const referenceValue = referenceValues[selectedParam || ""];
 
   const valores = data.map((analitica) => {
     const resultadoObj = {
@@ -72,10 +71,7 @@ const LineaChart = ({
     return resultadoObj;
   });
 
-  const trend = useTrendAnalysis(
-    valores,
-    normalizeStringAndFixSomeNames(selectedParam || "")
-  );
+  const trend = useTrendAnalysis(valores, selectedParam || "");
 
   // Format prediction with units if available
   const formatPrediction = (value: number, unit?: string) => {
@@ -150,7 +146,7 @@ const LineaChart = ({
           <SelectContent>
             {parameters.map((parameter) => (
               <SelectItem key={parameter} value={parameter}>
-                {parameter}
+                {toTitleCase(parameter)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -170,8 +166,9 @@ const LineaChart = ({
                   fecha: item.fecha.slice(6, 10),
                 };
                 item.resultados.forEach((resultado) => {
-                  dataPoint[resultado.nombre as keyof typeof dataPoint] =
-                    resultado.valor;
+                  dataPoint[
+                    resultado.nombre_normalizado as keyof typeof dataPoint
+                  ] = resultado.valor;
                 });
                 return dataPoint;
               })}

@@ -23,7 +23,7 @@ const fetcher = async (url: string, token: string) => {
   }
 
   const parameters = response.data[0].resultados.map(
-    (resultado: { nombre: string }) => resultado.nombre
+    (resultado: { nombre_normalizado: string }) => resultado.nombre_normalizado
   );
 
   const formattedData = response.data.map((entry: any) => ({
