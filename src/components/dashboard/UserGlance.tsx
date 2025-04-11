@@ -99,7 +99,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
       />
       <SituationCard
         title='Colesterol HDL'
-        description='El colesterlo "bueno"'
+        description='El colesterol "bueno"'
         value={hdl}
         unit={"mg/dL"}
         risk={riesgoHdl}
@@ -107,7 +107,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
       />
       <SituationCard
         title='Colesterol LDL'
-        description='El colesterlo malo'
+        description='El colesterol malo'
         value={ldl}
         unit={"mg/dL"}
         risk={riesgoLdl}
