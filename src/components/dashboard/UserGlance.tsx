@@ -33,8 +33,8 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
   let riesgoCnh, cnh, tri, riesgoTri, hdl, riesgoHdl, ldl, riesgoLdl;
 
   if (valores[0]) {
-    const colesterolTotal = parseFloat(
-      valores[0]["colesterol total"] as string
+    const colesterolNoHdl = parseFloat(
+      valores[0]["colesterol no hdl"] as string
     );
     const hdlValue = parseFloat(valores[0]["hdl"] as string);
     const trigliceridosValue = parseFloat(
@@ -43,8 +43,8 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     const ldlValue = parseFloat(valores[0]["ldl"] as string);
 
     // Colesterol no HDL
-    if (!isNaN(colesterolTotal) && !isNaN(hdlValue)) {
-      cnh = colesterolTotal - hdlValue;
+    if (!isNaN(colesterolNoHdl)) {
+      cnh = colesterolNoHdl;
       riesgoCnh = evaluarRiesgoNoHDL(cnh);
     } else {
       cnh = "N/D";
