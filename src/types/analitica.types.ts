@@ -12,12 +12,6 @@ export type Analito = {
   nombre: string;
   valor: string;
   unidad: string;
-  rango_referencia: {
-    minimo: number;
-    maximo: number;
-  };
-  indicador: "Alto" | "Bajo" | "Normal";
-  observaciones: string;
   nombre_normalizado: string;
 };
 

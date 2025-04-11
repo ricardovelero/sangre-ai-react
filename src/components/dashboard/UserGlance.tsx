@@ -28,8 +28,6 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     return resultadoObj;
   });
 
-  console.log(valores[0]);
-
   let riesgoCnh, cnh, tri, riesgoTri, hdl, riesgoHdl, ldl, riesgoLdl;
 
   if (valores[0]) {
