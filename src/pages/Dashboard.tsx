@@ -1,4 +1,5 @@
 import AnalyticsChart from "@/components/dashboard/AnalyticsChart";
+import GraficoLinea from "@/components/dashboard/GraficoLinea";
 import UserGlance from "@/components/dashboard/UserGlance";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
@@ -44,6 +45,9 @@ export default function Dashboard() {
               <UserGlance analiticas={analiticas} />
             </div>
             <div className='flex flex-col gap-8'>
+              <h2 className='text-2xl'>Evolución Valores</h2>
+              <h3 className='text-xl'>Lípidos</h3>
+              <GraficoLinea />
               <h2 className='text-2xl font-semibold'>Gráficas</h2>
               <p>
                 Tomando en cuenta tus últimas analíticas, elaboramos algunos
