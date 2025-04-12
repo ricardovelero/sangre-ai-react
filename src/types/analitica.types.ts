@@ -40,6 +40,11 @@ export type DataPoint = {
 };
 
 export type AnaliticaResponse = {
-  fecha: string;
+  parameters: string[];
+  results: SeriesResult[];
+};
+
+export type SeriesResult = {
+  fecha_toma_muestra: Date;
   resultados: Analito[];
 };

@@ -1,6 +1,5 @@
 import useSWR from "swr";
 import axios from "axios";
-import { format } from "date-fns";
 import { useAuthStore } from "@/store/authStore";
 import { AnaliticaResponse } from "@/types/analitica.types";
 
@@ -9,33 +8,22 @@ interface UseAnaliticaDataProps {
 }
 
 const fetcher = async (url: string, token: string) => {
-  const response = await axios.get<AnaliticaResponse[]>(url, {
+  const response = await axios.get<AnaliticaResponse>(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
-  if (response.data.length === 0) {
+  if (response.data.results.length === 0) {
     return {
       data: [],
       parameters: [],
     };
   }
 
-  const parameters = response.data[0].resultados.map(
-    (resultado: { nombre_normalizado: string }) => resultado.nombre_normalizado
-  );
-
-  const formattedData = response.data.map((entry: any) => ({
-    ...entry,
-    fecha: format(new Date(entry.fecha_toma_muestra), "dd/MM/yyyy"),
-  }));
-
   return {
-    data: formattedData,
-    parameters: parameters.filter(
-      (param): param is string => param !== undefined
-    ),
+    data: response.data.results,
+    parameters: response.data.parameters,
   };
 };
 

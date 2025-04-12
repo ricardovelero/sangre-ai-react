@@ -33,13 +33,14 @@ import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { useTrendAnalysis } from "@/hooks/useTrendAnalysis";
 import { referenceValues } from "@/lib/referenceValues";
 import { cn, toTitleCase } from "@/lib/utils";
-import { Analitica } from "@/types/analitica.types";
+import { SeriesResult } from "@/types/analitica.types";
+import { format } from "date-fns";
 
 type LineaChartProps = {
   title: string;
   description: string;
   parameters: string[];
-  data: Analitica[];
+  data: SeriesResult[];
   loading: boolean;
   error: string | null;
 };
@@ -55,12 +56,17 @@ const LineaChart = ({
   const [selectedParam, setSelectedParam] = useState(parameters[0] || "");
   const referenceValue = referenceValues[selectedParam || ""];
 
-  const valores = data.map((analitica) => {
+  // Establece el primer parámetro como seleccionado por defecto
+  useEffect(() => {
+    setSelectedParam(parameters[0]);
+  }, [parameters]);
+
+  const valores = data.map((d) => {
     const resultadoObj = {
-      fecha: analitica.fecha_toma_muestra,
+      fecha: format(d.fecha_toma_muestra, "dd-MM-yyyy"),
     };
 
-    analitica.resultados.forEach((resultado) => {
+    d.resultados.forEach((resultado) => {
       if (resultado.nombre_normalizado) {
         (resultadoObj as Record<string, number | string>)[
           resultado.nombre_normalizado
@@ -77,11 +83,6 @@ const LineaChart = ({
   const formatPrediction = (value: number, unit?: string) => {
     return `${value}${unit ? ` ${unit}` : ""}`;
   };
-
-  // Establece el primer parámetro como seleccionado por defecto
-  useEffect(() => {
-    setSelectedParam(parameters[0]);
-  }, [parameters]);
 
   // Establece el icono de la tendencia
   const TrendIcon =
@@ -161,17 +162,7 @@ const LineaChart = ({
           <ChartContainer config={chartConfig}>
             <LineChart
               accessibilityLayer
-              data={data.map((item) => {
-                const dataPoint: Record<string, any> = {
-                  fecha: item.fecha.slice(6, 10),
-                };
-                item.resultados.forEach((resultado) => {
-                  dataPoint[
-                    resultado.nombre_normalizado as keyof typeof dataPoint
-                  ] = resultado.valor;
-                });
-                return dataPoint;
-              })}
+              data={valores}
               margin={{
                 top: 24,
                 left: 24,
@@ -190,6 +181,7 @@ const LineaChart = ({
               />
               <XAxis
                 dataKey='fecha'
+                tickFormatter={(value) => value.split("-").pop()}
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
