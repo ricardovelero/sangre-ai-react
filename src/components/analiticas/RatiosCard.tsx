@@ -1,3 +1,4 @@
+import { RiskResponse } from "@/lib/riksAssestment";
 import {
   Card,
   CardContent,
@@ -11,10 +12,7 @@ type RatiosCardProps = {
   title: string;
   description: string;
   value?: string;
-  risk: {
-    mensaje: string;
-    nivel: "low" | "medium" | "high" | "invalid";
-  };
+  risk: RiskResponse;
 };
 
 export default function RatiosCard({

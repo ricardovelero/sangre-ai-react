@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -5,13 +6,14 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { RiskResponse } from "@/lib/riksAssestment";
 
 type SituationCardProps = {
   title: string;
   description: string;
   value?: number | string;
   unit: string;
-  risk?: string;
+  risk: RiskResponse;
   recomendation?: string;
 };
 
@@ -23,6 +25,12 @@ export default function SituationCard({
   risk,
   recomendation,
 }: SituationCardProps) {
+  const riskColorClass = {
+    low: "text-green-500",
+    medium: "text-yellow-500",
+    high: "text-red-500",
+    invalid: "text-gray-500",
+  }[risk.nivel];
   return (
     <Card className='w-64'>
       <CardHeader>
@@ -35,7 +43,7 @@ export default function SituationCard({
           <span className='text-xs'>{unit}</span>
         </div>
         <div>
-          <p className='text-sm'>{risk}</p>
+          <p className={cn("text-sm", riskColorClass)}>{risk.mensaje}</p>
           <p className='text-xs'>{recomendation}</p>
         </div>
       </CardContent>

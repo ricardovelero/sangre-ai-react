@@ -5,6 +5,7 @@ import {
   evaluarRiesgoLdl,
   evaluarRiesgoNoHDL,
   evaluarRiesgoTrigliceridos,
+  RiskResponse,
 } from "@/lib/riksAssestment";
 
 type UserGlanceProps = {
@@ -28,7 +29,14 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     return resultadoObj;
   });
 
-  let riesgoCnh, cnh, tri, riesgoTri, hdl, riesgoHdl, ldl, riesgoLdl;
+  let riesgoCnh: RiskResponse = { mensaje: "", nivel: "invalid" },
+    cnh,
+    tri,
+    riesgoTri: RiskResponse = { mensaje: "", nivel: "invalid" },
+    hdl,
+    riesgoHdl: RiskResponse = { mensaje: "", nivel: "invalid" },
+    ldl,
+    riesgoLdl: RiskResponse = { mensaje: "", nivel: "invalid" };
 
   if (valores[0]) {
     const colesterolNoHdl = parseFloat(
@@ -46,7 +54,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
       riesgoCnh = evaluarRiesgoNoHDL(cnh);
     } else {
       cnh = "N/D";
-      riesgoCnh = "Datos insuficientes";
+      riesgoCnh = { mensaje: "Datos insuficientes", nivel: "invalid" };
     }
 
     // Triglicéridos
@@ -55,7 +63,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
       riesgoTri = evaluarRiesgoTrigliceridos(tri);
     } else {
       tri = "N/D";
-      riesgoTri = "Datos insuficientes";
+      riesgoTri = { mensaje: "Datos insuficientes", nivel: "invalid" };
     }
 
     // HDL
@@ -64,7 +72,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
       riesgoHdl = evaluarRiesgoHdl(hdl);
     } else {
       hdl = "N/D";
-      riesgoHdl = "Datos insuficientes";
+      riesgoHdl = { mensaje: "Datos insuficientes", nivel: "invalid" };
     }
 
     // LDL
@@ -73,7 +81,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
       riesgoLdl = evaluarRiesgoLdl(ldl);
     } else {
       ldl = "N/D";
-      riesgoLdl = "Datos insuficientes";
+      riesgoLdl = { mensaje: "Datos insuficientes", nivel: "invalid" };
     }
   }
 

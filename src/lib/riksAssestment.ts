@@ -1,4 +1,4 @@
-type RiskResponse = {
+export type RiskResponse = {
   mensaje: string;
   nivel: "low" | "medium" | "high" | "invalid";
 };
@@ -22,60 +22,69 @@ export function evaluarRiesgoNoHDL(noHDL: number): RiskResponse {
   }
 }
 
-export function evaluarRiesgoTrigliceridos(trigliceridos: number) {
+export function evaluarRiesgoTrigliceridos(
+  trigliceridos: number
+): RiskResponse {
   switch (true) {
     case trigliceridos < 80:
-      return "Óptimo (riesgo muy bajo)";
+      return { mensaje: "Óptimo (riesgo muy bajo)", nivel: "low" };
 
     case trigliceridos >= 80 && trigliceridos < 100:
-      return "Bueno (riesgo bajo)";
+      return { mensaje: "Bueno (riesgo bajo)", nivel: "medium" };
 
     case trigliceridos >= 100:
-      return "Alto riesgo cardiovascular y resistencia a la insulina";
+      return {
+        mensaje: "Alto riesgo cardiovascular y resistencia a la insulina",
+        nivel: "high",
+      };
 
     default:
-      return "Valor inválido";
+      return { mensaje: "Valor inválido", nivel: "invalid" };
   }
 }
 
-export function evaluarRiesgoHdl(hdl: number) {
+export function evaluarRiesgoHdl(hdl: number): RiskResponse {
   switch (true) {
     case hdl < 40:
-      return "Riesgo cardiovascular";
+      return { mensaje: "Riesgo cardiovascular", nivel: "high" };
 
     case hdl >= 40 && hdl < 80:
-      return "Óptimo";
+      return { mensaje: "Óptimo", nivel: "low" };
 
     case hdl >= 80 && hdl <= 100:
-      return "Podría indicar disfunción metabólica";
+      return { mensaje: "Podría indicar disfunción metabólica", nivel: "high" };
 
     default:
-      return "Valor inválido";
+      return { mensaje: "Valor inválido", nivel: "invalid" };
   }
 }
 
-export function evaluarRiesgoLdl(ldl: number) {
+export function evaluarRiesgoLdl(ldl: number): RiskResponse {
   switch (true) {
     case ldl < 55:
-      return "Extremadamente óptimo (si eres alto riesgo o con enfermedad cardiovascular existente)";
+      return {
+        mensaje:
+          "Extremadamente óptimo (si eres alto riesgo o con enfermedad cardiovascular existente)",
+        nivel: "low",
+      };
 
     case ldl < 70:
-      return "Muy óptimo";
+      return { mensaje: "Muy óptimo", nivel: "low" };
 
     case ldl < 100:
-      return "Óptimo";
+      return { mensaje: "Óptimo", nivel: "low" };
 
     case ldl >= 100 && ldl <= 130:
-      return "Riesgo moderado";
+      return { mensaje: "Riesgo moderado", nivel: "medium" };
 
-    case ldl > 130:
-      return "Alto riesgo";
+    case ldl > 130 && ldl <= 160:
+      return { mensaje: "Alto riesgo", nivel: "high" };
 
     case ldl > 160:
-      return "Muy alto riesgo";
+      return { mensaje: "Muy alto riesgo", nivel: "high" };
 
     default:
-      return "Valor inválido";
+      return { mensaje: "Valor inválido", nivel: "invalid" };
   }
 }
 
