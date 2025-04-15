@@ -11,7 +11,10 @@ type RatiosCardProps = {
   title: string;
   description: string;
   value?: string;
-  risk: string;
+  risk: {
+    mensaje: string;
+    nivel: "low" | "medium" | "high" | "invalid";
+  };
 };
 
 export default function RatiosCard({
@@ -20,6 +23,12 @@ export default function RatiosCard({
   value,
   risk,
 }: RatiosCardProps) {
+  const riskColorClass = {
+    low: "text-green-500",
+    medium: "text-yellow-500",
+    high: "text-red-500",
+    invalid: "text-gray-500",
+  }[risk.nivel];
   return (
     <Card>
       <CardHeader>
@@ -30,7 +39,7 @@ export default function RatiosCard({
         <h2 className='text-5xl'>{value}</h2>
       </CardContent>
       <CardFooter>
-        <p>{risk}</p>
+        <p className={riskColorClass}>{risk.mensaje}</p>
       </CardFooter>
     </Card>
   );

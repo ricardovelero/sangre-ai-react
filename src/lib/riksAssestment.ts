@@ -1,19 +1,24 @@
-export function evaluarRiesgoNoHDL(noHDL: number) {
+type RiskResponse = {
+  mensaje: string;
+  nivel: "low" | "medium" | "high" | "invalid";
+};
+
+export function evaluarRiesgoNoHDL(noHDL: number): RiskResponse {
   switch (true) {
     case noHDL < 100:
-      return "Óptimo (riesgo muy bajo)";
+      return { mensaje: "Óptimo (riesgo muy bajo)", nivel: "low" };
 
     case noHDL >= 100 && noHDL < 130:
-      return "Bueno (riesgo bajo)";
+      return { mensaje: "Bueno (riesgo bajo)", nivel: "medium" };
 
     case noHDL >= 130 && noHDL < 160:
-      return "Intermedio (riesgo moderado)";
+      return { mensaje: "Intermedio (riesgo moderado)", nivel: "medium" };
 
     case noHDL >= 160:
-      return "Alto riesgo cardiovascular";
+      return { mensaje: "Alto riesgo cardiovascular", nivel: "high" };
 
     default:
-      return "Valor inválido";
+      return { mensaje: "Valor inválido", nivel: "invalid" };
   }
 }
 
@@ -71,5 +76,37 @@ export function evaluarRiesgoLdl(ldl: number) {
 
     default:
       return "Valor inválido";
+  }
+}
+
+export function evaluarRiesgoTotalHDL(totalHDL: number): RiskResponse {
+  switch (true) {
+    case totalHDL < 3.5:
+      return { mensaje: "Óptimo (muy bajo)", nivel: "low" };
+
+    case totalHDL >= 3.5 && totalHDL < 4.9:
+      return { mensaje: "Riesgo moderado", nivel: "medium" };
+
+    case totalHDL >= 5:
+      return { mensaje: "Alto riesgo", nivel: "high" };
+
+    default:
+      return { mensaje: "Valor inválido", nivel: "invalid" };
+  }
+}
+
+export function evaluarRiesgoLdlHDL(ldlHdl: number): RiskResponse {
+  switch (true) {
+    case ldlHdl < 2:
+      return { mensaje: "Óptimo (riesgo muy bajo)", nivel: "low" };
+
+    case ldlHdl >= 2 && ldlHdl < 3.5:
+      return { mensaje: "Bueno (riesgo bajo)", nivel: "medium" };
+
+    case ldlHdl >= 3.5:
+      return { mensaje: "Alto riesgo cardiovascular", nivel: "high" };
+
+    default:
+      return { mensaje: "Valor inválido", nivel: "invalid" };
   }
 }
