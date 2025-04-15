@@ -41,11 +41,11 @@ export default function VerAnalitica() {
             </article>
             <aside className='w-full md:w-1/4 py-4 sm:pl-4 print:hidden'>
               <div className='space-y-2'>
-                <h3>Agregále una etiqueta a tu analítica:</h3>
+                <h3>Agrégale una etiqueta a tu analítica:</h3>
                 <TagSearch analitica={analitica || undefined} />
               </div>
               <div className='space-y-2'>
-                <h3>Escribe una nota para tu anaítica:</h3>
+                <h3>Escribe una nota para tu analítica:</h3>
                 <NotesForm analiticaId={id || ""} />
                 <NotesList analiticaId={id || ""} />
               </div>
