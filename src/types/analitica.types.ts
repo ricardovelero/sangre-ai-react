@@ -10,7 +10,7 @@ export type Paciente = {
 
 export type Analito = {
   nombre: string;
-  valor: string;
+  valor: number;
   unidad: string;
   nombre_normalizado: string;
 };

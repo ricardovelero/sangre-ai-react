@@ -10,6 +10,7 @@ import NotesForm from "@/components/analiticas/NotesForm";
 import NotesList from "@/components/analiticas/NotesList";
 import AnaliticaVerHeader from "@/components/analiticas/AnaliticaVerHeader";
 import TagSearch from "@/components/analiticas/TagSearch";
+import RatiosSidebar from "@/components/analiticas/RatiosSidebar";
 
 export default function VerAnalitica() {
   const { id } = useParams();
@@ -39,7 +40,10 @@ export default function VerAnalitica() {
             <article className='w-full md:w-3/4 prose lg:prose-xl print:prose-sm print:max-w-none'>
               <Markdown>{analitica?.markdown}</Markdown>
             </article>
-            <aside className='w-full md:w-1/4 py-4 sm:pl-4 print:hidden'>
+            <aside className='w-full md:w-1/4 py-4 sm:pl-4 print:hidden space-y-6'>
+              <div className='space-y-2'>
+                <RatiosSidebar analitica={analitica || undefined} />
+              </div>
               <div className='space-y-2'>
                 <h3>Agrégale una etiqueta a tu analítica:</h3>
                 <TagSearch analitica={analitica || undefined} />
