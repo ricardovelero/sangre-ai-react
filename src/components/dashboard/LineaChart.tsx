@@ -70,7 +70,7 @@ const LineaChart = ({
       if (resultado.nombre_normalizado && resultado.valor) {
         (resultadoObj as Record<string, number | string>)[
           resultado.nombre_normalizado
-        ] = parseFloat(resultado.valor);
+        ] = resultado.valor;
       }
     });
 
