@@ -22,8 +22,7 @@ export default function AboutUs() {
             ¿Quienes somos?
           </h1>
           <p className='mt-6 text-xl/8 text-muted-foreground'>
-            Inteligencia artificial para entender, mejorar y optimizar tu
-            bienestar.
+            Inteligencia artificial al servicio de tu bienestar
           </p>
         </div>
         <div className='mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:mt-10 lg:max-w-none lg:grid-cols-12'>
@@ -52,33 +51,51 @@ export default function AboutUs() {
           </div>
           <div className='max-w-xl text-base/7 text-muted-foreground lg:col-span-7'>
             <p>
-              La salud es un juego de precisión, pero demasiadas veces nos
-              enfrentamos a nuestros análisis de sangre sin una guía clara para
-              interpretarlos. Me llamo Ricardo Rodriguez, y soy ingeniero
-              industrial, pero también un apasionado del potencial que tiene la
-              inteligencia artificial para transformar nuestra vida diaria.
-              Después de años de intentar mantener mis valores en óptimas
-              condiciones, sumergiéndome en podcasts de salud y explorando la
-              ciencia de la longevidad, me di cuenta de algo fundamental: la
-              información sin contexto no genera cambios. Así nació esta
-              aplicación. No solo para traducir informes médicos en datos
-              comprensibles, sino para brindar claridad sobre cómo esos números
-              impactan la calidad y duración de nuestra vida. Porque la
-              longevidad no se trata solo de vivir más años, sino de vivir
-              mejor. Pequeños ajustes en el estilo de vida pueden marcar una
-              diferencia enorme, pero todo empieza con el conocimiento adecuado.
-              Nuestra misión es simple: ofrecerte información clara, basada en
-              ciencia actualizada, para que puedas tomar decisiones informadas
-              sobre tu salud. Con el respaldo de la inteligencia artificial,
-              nuestro objetivo es que cada informe que analices se convierta en
-              una herramienta útil para optimizar tu bienestar. La ciencia
-              evoluciona, y con ella nuestra comprensión de lo que realmente nos
-              hace más saludables. Queremos asegurarnos de que siempre tengas
-              acceso a los últimos descubrimientos respaldados por evidencia,
-              para que puedas aplicar en tu vida lo que realmente funciona.
-              Porque la mejor inversión que podemos hacer es en nuestra salud. Y
-              todo empieza con una mejor interpretación de la información que ya
-              tenemos.
+              En SangreAI creemos que la salud es un juego de precisión, en el
+              que la información clara y relevante marca la diferencia. Sabemos
+              lo frustrante que puede ser enfrentarse a un análisis de sangre
+              repleto de cifras difíciles de interpretar, sin una guía práctica
+              que explique qué significan realmente esos valores para nuestra
+              vida diaria.
+            </p>
+            <p>
+              Soy Ricardo Rodríguez, ingeniero industrial y apasionado de la
+              inteligencia artificial, especialmente en cómo puede transformar
+              nuestra calidad de vida. Tras años explorando la ciencia de la
+              longevidad y buscando cómo mantener mis propios indicadores de
+              salud en sus mejores niveles, comprendí algo fundamental:{" "}
+              <strong>
+                la información, si no es clara y contextualizada, no genera
+                cambios.
+              </strong>
+            </p>
+            <p>
+              Así nació esta aplicación. Nuestra misión va más allá de convertir
+              resultados médicos complejos en información sencilla y útil.
+              Queremos que entiendas con precisión cómo cada dato afecta tu
+              bienestar, cómo pequeños ajustes en tu estilo de vida pueden
+              generar enormes beneficios, y cómo aprovechar al máximo el
+              conocimiento actual para vivir no solo más años, sino mejores
+              años.
+            </p>
+            <p>
+              Nos apoyamos en la inteligencia artificial para brindarte análisis
+              detallados y recomendaciones prácticas, siempre basadas en
+              evidencia científica actualizada. Queremos ser tu aliado de
+              confianza en el camino hacia una vida más saludable y plena.
+            </p>
+            <p>
+              Porque la ciencia evoluciona constantemente, y con ella nuestra
+              capacidad para optimizar nuestra salud. En SangreAI nos
+              comprometemos a mantenerte al día con los últimos avances
+              científicos, ofreciéndote las herramientas necesarias para tomar
+              decisiones informadas que realmente impacten positivamente tu
+              vida.
+            </p>
+            <p>
+              Creemos firmemente que la mejor inversión que puedes hacer es en
+              tu salud, y todo comienza aquí: con una interpretación clara,
+              precisa y útil de la información que ya tienes.
             </p>
           </div>
         </div>
