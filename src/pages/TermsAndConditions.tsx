@@ -42,7 +42,7 @@ export default function TermsAndConditions() {
         (MongoDB), y se implementan medidas de cifrado y acceso restringido.
         Para más detalles, consulta nuestra{" "}
         <NavLink
-          to='/porivacy-policy'
+          to='/privacy-policy'
           className='text-accent-foreground underline'
         >
           Política de Privacidad
@@ -112,7 +112,7 @@ export default function TermsAndConditions() {
       <p className='mb-4'>
         Si tienes dudas o necesitas más información, puedes contactarnos en{" "}
         <NavLink
-          to='mailto:soporte@tudominio.com'
+          to='mailto:info@goldenorinoco.com'
           className='text-accent-foreground underline'
         >
           info@goldenorinoco.com

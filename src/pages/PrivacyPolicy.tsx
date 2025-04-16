@@ -87,7 +87,7 @@ export default function PrivacyPolicy() {
         como a limitar u oponerte al tratamiento. Para ejercer estos derechos,
         contáctanos a través de{" "}
         <a
-          href='mailto:soporte@tudominio.com'
+          href='mailto:info@goldenorinoco.com'
           className='text-accent-foreground underline'
         >
           info@goldenorinoco.com
@@ -118,7 +118,7 @@ export default function PrivacyPolicy() {
         Para cualquier duda sobre esta política o sobre el tratamiento de tus
         datos personales, puedes escribirnos a{" "}
         <a
-          href='mailto:soporte@tudominio.com'
+          href='mailto:info@goldenorinoco.com'
           className='text-accent-foreground underline'
         >
           info@goldenorinoco.com
