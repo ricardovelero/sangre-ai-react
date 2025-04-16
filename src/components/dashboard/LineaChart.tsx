@@ -62,20 +62,24 @@ const LineaChart = ({
   }, [parameters]);
 
   const valores = data.map((d) => {
-    const resultadoObj = {
-      fecha: format(d.fecha_toma_muestra, "dd-MM-yyyy"),
-    };
-
-    d.resultados.forEach((resultado) => {
-      if (resultado.nombre_normalizado && resultado.valor) {
-        (resultadoObj as Record<string, number | string>)[
-          resultado.nombre_normalizado
-        ] = resultado.valor;
-      }
-    });
+    const resultadoObj = d.resultados
+      .filter((r) => r.nombre_normalizado && r.valor)
+      .reduce(
+        (acc, r) => {
+          acc[r.nombre_normalizado] = r.valor;
+          return acc;
+        },
+        {
+          fecha: format(d.fecha_toma_muestra, "dd-MM-yyyy"),
+        } as Record<string, number | string>
+      );
 
     return resultadoObj;
   });
+
+  const parametrosConDatos = parameters.filter((param) =>
+    valores.some((obj) => param in obj)
+  );
 
   const trend = useTrendAnalysis(valores, selectedParam || "");
 
@@ -145,7 +149,7 @@ const LineaChart = ({
             <SelectValue placeholder='Selecciona una categoría' />
           </SelectTrigger>
           <SelectContent>
-            {parameters.map((parameter) => (
+            {parametrosConDatos.map((parameter) => (
               <SelectItem key={parameter} value={parameter}>
                 {toTitleCase(parameter)}
               </SelectItem>
