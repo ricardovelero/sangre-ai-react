@@ -1,5 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Edit, Notebook, Printer } from "lucide-react";
+import {
+  ArrowLeft,
+  Edit,
+  FileSpreadsheet,
+  Notebook,
+  Printer,
+} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -11,6 +17,7 @@ import { DialogDrawerEditAnalitica } from "./DialogDrawerEditAnalitica";
 import { useAnaliticaStore } from "@/store/analiticaStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { exportarAnaliticaCSV } from "@/lib/exportToCsv";
 
 export default function AnaliticaVerHeader() {
   const { analitica } = useAnaliticaStore();
@@ -44,6 +51,21 @@ export default function AnaliticaVerHeader() {
             </TooltipTrigger>
             <TooltipContent>
               <p>Imprimir informe</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant={"outline"}
+                onClick={() => {
+                  if (analitica) exportarAnaliticaCSV(analitica);
+                }}
+              >
+                <FileSpreadsheet />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Exportar datos a CSV</p>
             </TooltipContent>
           </Tooltip>
           <div className='sm:hidden'>
