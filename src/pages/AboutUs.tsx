@@ -49,7 +49,7 @@ export default function AboutUs() {
               />
             </svg>
           </div>
-          <div className='max-w-xl text-base/7 text-muted-foreground lg:col-span-7'>
+          <div className='text-base/7 text-muted-foreground lg:col-span-12 prose'>
             <p>
               En SangreAI creemos que la salud es un juego de precisión, en el
               que la información clara y relevante marca la diferencia. Sabemos
