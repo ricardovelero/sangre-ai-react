@@ -1,25 +1,33 @@
 import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import PublicLayout from "@/components/PublicLayout";
 import AppLayout from "@/components/AppLayout";
-import Home from "@/pages/Home";
-import Dashboard from "@/pages/Dashboard";
 import PageNotFound from "@/pages/NotFound";
 import AppError from "@/pages/AppError";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import AboutUs from "@/pages/AboutUs";
-import ContactUs from "@/pages/ContactUs";
-import Register from "@/pages/Register";
-import LoginForm from "@/pages/Login";
-import HowItWorks from "@/pages/HowItWorks";
-import Analiticas from "@/pages/Analiticas";
-import AnaliticasSubir from "@/pages/AnaliticasSubir";
-import Settings from "@/pages/Settings";
-import Test from "@/pages/Test";
-import VerAnalitica from "@/pages/AnaliticaVer";
-import ResetPassword from "./pages/ResetPassword";
-import ForgotPassword from "./pages/ForgotPassword";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
+import LoadingState from "./components/LoadingState";
+
+const Home = lazy(() => import("@/pages/Home"));
+const AboutUs = lazy(() => import("@/pages/AboutUs"));
+const HowItWorks = lazy(() => import("@/pages/HowItWorks"));
+const LoginForm = lazy(() => import("@/pages/Login"));
+const ForgotPassword = lazy(() => import("@/pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
+const Register = lazy(() => import("@/pages/Register"));
+const ContactUs = lazy(() => import("@/pages/ContactUs"));
+const TermsAndConditions = lazy(() => import("@/pages/TermsAndConditions"));
+const PrivacyPolicy = lazy(() => import("@/pages/PrivacyPolicy"));
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Analiticas = lazy(() => import("@/pages/Analiticas"));
+const VerAnalitica = lazy(() => import("@/pages/AnaliticaVer"));
+const AnaliticasSubir = lazy(() => import("@/pages/AnaliticasSubir"));
+const Settings = lazy(() => import("@/pages/Settings"));
+
+const withSuspense = (Component: React.ComponentType) => (
+  <Suspense fallback={<LoadingState />}>
+    <Component />
+  </Suspense>
+);
 
 export const router = createBrowserRouter([
   {
@@ -27,16 +35,19 @@ export const router = createBrowserRouter([
     element: <PublicLayout />, // Layout para páginas públicas
     errorElement: <AppError />,
     children: [
-      { index: true, element: <Home /> },
-      { path: "how-it-works", element: <HowItWorks /> },
-      { path: "about-us", element: <AboutUs /> },
-      { path: "contact-us", element: <ContactUs /> },
-      { path: "terms-and-conditions", element: <TermsAndConditions /> },
-      { path: "privacy-policy", element: <PrivacyPolicy /> },
-      { path: "register", element: <Register /> },
-      { path: "login", element: <LoginForm /> },
-      { path: "forgot-password", element: <ForgotPassword /> },
-      { path: "reset-password/:token", element: <ResetPassword /> },
+      { index: true, element: withSuspense(Home) },
+      { path: "how-it-works", element: withSuspense(HowItWorks) },
+      { path: "about-us", element: withSuspense(AboutUs) },
+      { path: "contact-us", element: withSuspense(ContactUs) },
+      { path: "register", element: withSuspense(Register) },
+      { path: "login", element: withSuspense(LoginForm) },
+      { path: "forgot-password", element: withSuspense(ForgotPassword) },
+      { path: "reset-password/:token", element: withSuspense(ResetPassword) },
+      { path: "privacy-policy", element: withSuspense(PrivacyPolicy) },
+      {
+        path: "terms-and-conditions",
+        element: withSuspense(TermsAndConditions),
+      },
       { path: "*", element: <PageNotFound /> },
     ],
   },
@@ -48,12 +59,11 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { path: "dashboard", element: <Dashboard /> },
-          { path: "analiticas", element: <Analiticas /> },
-          { path: "analitica/:id", element: <VerAnalitica /> },
-          { path: "subir-analitica", element: <AnaliticasSubir /> },
-          { path: "ajustes", element: <Settings /> },
-          { path: "test", element: <Test /> },
+          { path: "dashboard", element: withSuspense(Dashboard) },
+          { path: "analiticas", element: withSuspense(Analiticas) },
+          { path: "analitica/:id", element: withSuspense(VerAnalitica) },
+          { path: "subir-analitica", element: withSuspense(AnaliticasSubir) },
+          { path: "ajustes", element: withSuspense(Settings) },
         ],
       },
     ],
