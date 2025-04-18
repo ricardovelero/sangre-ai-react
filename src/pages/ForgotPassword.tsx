@@ -64,7 +64,7 @@ export default function LoginForm() {
           Restaurar Contraseña
         </h2>
         <p className='text-sm text-center text-gray-600'>
-          Ingresa el correo electrónico con que te registraste.
+          Ingresa el correo electrónico con el que te has registrado.
         </p>
       </div>
       <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
