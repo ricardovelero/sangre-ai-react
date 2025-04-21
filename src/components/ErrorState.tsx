@@ -1,8 +1,8 @@
 import { Bomb } from "lucide-react";
 
-interface ErrorProps {
+type ErrorProps = {
   message?: string;
-}
+};
 
 export default function ErrorState({ message = "Error" }: ErrorProps) {
   return (
