@@ -19,13 +19,13 @@ export default function Dashboard() {
           <div className='mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-4'>
             <div className='space-y-4 mb-12'>
               <h2 className='text-2xl font-semibold'>
-                Vista rápida de tu última analítica
+                Resumen rápido de los resultados de tu última analítica.
               </h2>
               <p>
-                Una vista de pájaro de los lípidos tomados de tu última
-                analítica. Siempre es importante contar con la consulta de un
-                médico especializado. La evaluación del riesgo de estos valores
-                son según la opinión del{" "}
+                Un vistazo general a los niveles de lípidos según tu última
+                analítica. Recuerda que estos resultados deben interpretarse
+                siempre con el apoyo de un médico especialista. La evaluación
+                del riesgo de estos valores son según la opinión del{" "}
                 <a
                   href='https://peterattiamd.com/'
                   target='_blank'
@@ -46,9 +46,9 @@ export default function Dashboard() {
             <div className='flex flex-col gap-8'>
               <h2 className='text-2xl font-semibold'>Gráficas</h2>
               <p>
-                Tomando en cuenta tus últimas analíticas, elaboramos algunos
-                gráficos para que tengas una idea de la tendencia de tus
-                valores.
+                A partir de tus últimas analíticas, hemos preparado algunos
+                gráficos que te ayudarán a visualizar fácilmente la evolución de
+                tus valores.
               </p>
               <AnalyticsChart />
             </div>
@@ -63,8 +63,8 @@ export default function Dashboard() {
               </h2>
               <p>
                 Una vez que cargues tu primera analítica, aquí empezará a
-                aperecer datos y gráficos sobre tus valores y algunas los
-                niveles recomendados
+                aperecer datos y gráficos sobre tus valores y algunas
+                recomendaciones.
               </p>
               <EmptyState
                 icon={<Clipboard size={32} />}
