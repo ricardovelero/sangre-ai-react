@@ -1,4 +1,11 @@
-import { Analitica } from "@/types/analitica.types";
+import { formatDateToSpanish, toTitleCase } from '@/lib/utils';
+import { Analitica } from '@/types/analitica.types';
+import { BookCopy, Copy, Delete, MoreHorizontal } from 'lucide-react';
+import React from 'react';
+import Markdown from 'react-markdown';
+import { useNavigate } from 'react-router-dom';
+import remarkGfm from 'remark-gfm';
+import { Button } from '../ui/button';
 import {
   Card,
   CardContent,
@@ -6,13 +13,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import Markdown from "react-markdown";
-import { Button } from "../ui/button";
-import remarkGfm from "remark-gfm";
-import { useNavigate } from "react-router-dom";
-import { formatDateToSpanish } from "@/lib/utils";
-import { toTitleCase } from "@/lib/utils";
+} from '../ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,9 +21,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { BookCopy, Copy, Delete, MoreVertical } from "lucide-react";
-import React from "react";
+} from '../ui/dropdown-menu';
 
 type CardViewProps = {
   analitica: Analitica;
@@ -49,23 +48,23 @@ export default function CardView({
               Fecha: {formatDateToSpanish(analitica.fecha_toma_muestra)}
               <br />
               Paciente: {toTitleCase(analitica.paciente.apellidos) ||
-                "N/D"}, {toTitleCase(analitica.paciente.nombre) || "N/D"}
+                'N/D'}, {toTitleCase(analitica.paciente.nombre) || 'N/D'}
               <br />
-              Laboratorio: {toTitleCase(analitica.laboratorio) || "N/D"}
+              Laboratorio: {toTitleCase(analitica.laboratorio) || 'N/D'}
               <br />
-              Medico: {toTitleCase(analitica.medico) || "N/D"}
+              Medico: {toTitleCase(analitica.medico) || 'N/D'}
             </CardDescription>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger className='cursor-pointer'>
               <span className='sr-only'>Abrir menu</span>
-              <MoreVertical size={20} />
+              <MoreHorizontal size={20} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               <DropdownMenuLabel>Acciones</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() =>
-                  navigator.clipboard.writeText(analitica?.markdown || "")
+                  navigator.clipboard.writeText(analitica?.markdown || '')
                 }
               >
                 <BookCopy />
@@ -73,7 +72,7 @@ export default function CardView({
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() =>
-                  navigator.clipboard.writeText(analitica?.resumen || "")
+                  navigator.clipboard.writeText(analitica?.resumen || '')
                 }
               >
                 <Copy />
@@ -103,7 +102,7 @@ export default function CardView({
           </CardContent>
         )}
         <CardFooter>
-          <Button onClick={() => navigate("/a/analitica/" + analitica._id)}>
+          <Button onClick={() => navigate('/a/analitica/' + analitica._id)}>
             Ver informe completo
           </Button>
         </CardFooter>
