@@ -33,7 +33,7 @@ import { TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { useTrendAnalysis } from "@/hooks/useTrendAnalysis";
 import { referenceValues } from "@/lib/referenceValues";
 import { cn, toTitleCase } from "@/lib/utils";
-import { SeriesResult } from "@/types/analitica.types";
+import { Analito, SeriesResult } from "@/types/analitica.types";
 import { format } from "date-fns";
 
 type LineaChartProps = {
@@ -56,23 +56,62 @@ const LineaChart = ({
   const [selectedParam, setSelectedParam] = useState(parameters[0] || "");
   const referenceValue = referenceValues[selectedParam || ""];
 
+  const isRatioLikeName = (name?: string) =>
+    typeof name === "string" && /\/|ratio/i.test(name);
+
+  const isMgDlUnit = (unit?: string) =>
+    typeof unit === "string" && /mg\s*\/\s*dl/i.test(unit);
+
+  const isLipidKey = (key: string) =>
+    [
+      "colesterol total",
+      "colesterol no hdl",
+      "hdl",
+      "ldl",
+      "trigliceridos",
+    ].includes(key);
+
+  const getResultadoScore = (resultado: Analito) => {
+    let score = 0;
+    if (!isRatioLikeName(resultado.nombre)) {
+      score += 2;
+    }
+    if (
+      isLipidKey(resultado.nombre_normalizado) &&
+      isMgDlUnit(resultado.unidad)
+    ) {
+      score += 1;
+    }
+    return score;
+  };
+
   // Establece el primer parámetro como seleccionado por defecto
   useEffect(() => {
     setSelectedParam(parameters[0]);
   }, [parameters]);
 
   const valores = data.map((d) => {
-    const resultadoObj = d.resultados
-      .filter((r) => r.nombre_normalizado && r.valor)
-      .reduce(
-        (acc, r) => {
-          acc[r.nombre_normalizado] = r.valor;
-          return acc;
-        },
-        {
-          fecha: format(d.fecha_toma_muestra, "dd-MM-yyyy"),
-        } as Record<string, number | string>
-      );
+    const resultadoObj: Record<string, number | string> = {
+      fecha: format(d.fecha_toma_muestra, "dd-MM-yyyy"),
+    };
+    const scoreByKey: Record<string, number> = {};
+
+    d.resultados
+      .filter(
+        (r) =>
+          r.nombre_normalizado &&
+          r.valor !== null &&
+          r.valor !== undefined
+      )
+      .forEach((r) => {
+        const score = getResultadoScore(r);
+        const currentScore = scoreByKey[r.nombre_normalizado];
+
+        if (currentScore === undefined || score > currentScore) {
+          resultadoObj[r.nombre_normalizado] = r.valor;
+          scoreByKey[r.nombre_normalizado] = score;
+        }
+      });
 
     return resultadoObj;
   });

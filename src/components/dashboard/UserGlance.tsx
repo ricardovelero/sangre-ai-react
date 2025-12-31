@@ -13,21 +13,33 @@ type UserGlanceProps = {
 };
 
 export default function UserGlance({ analiticas }: UserGlanceProps) {
-  const valores = analiticas.map((analitica) => {
-    const resultadoObj: Record<string, number | string> = {
-      fecha: analitica.fecha_toma_muestra,
-    };
+  const isRatioLikeName = (name?: string) =>
+    typeof name === "string" && /\/|ratio/i.test(name);
 
-    analitica.resultados.forEach((resultado) => {
-      if (resultado.nombre_normalizado) {
-        (resultadoObj as Record<string, number | string>)[
-          resultado.nombre_normalizado
-        ] = resultado.valor;
-      }
-    });
+  const isMgDlUnit = (unit?: string) =>
+    typeof unit === "string" && /mg\s*\/\s*dl/i.test(unit);
 
-    return resultadoObj;
-  });
+  const toNumber = (value: number | string | undefined) => {
+    if (value === null || value === undefined) return NaN;
+    return typeof value === "number" ? value : parseFloat(value);
+  };
+
+  const getResultadoValor = (normalizedName: string) => {
+    const latestAnalitica = analiticas[0];
+    if (!latestAnalitica) return undefined;
+
+    const matching = latestAnalitica.resultados.filter(
+      (resultado) =>
+        resultado.nombre_normalizado === normalizedName &&
+        !isRatioLikeName(resultado.nombre)
+    );
+
+    const preferred = matching.find((resultado) =>
+      isMgDlUnit(resultado.unidad)
+    );
+
+    return (preferred ?? matching[0])?.valor;
+  };
 
   let riesgoCnh: RiskResponse = { mensaje: "", nivel: "invalid" },
     cnh,
@@ -38,15 +50,11 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     ldl,
     riesgoLdl: RiskResponse = { mensaje: "", nivel: "invalid" };
 
-  if (valores[0]) {
-    const colesterolNoHdl = parseFloat(
-      valores[0]["colesterol no hdl"] as string
-    );
-    const hdlValue = parseFloat(valores[0]["hdl"] as string);
-    const trigliceridosValue = parseFloat(
-      valores[0]["trigliceridos"] as string
-    );
-    const ldlValue = parseFloat(valores[0]["ldl"] as string);
+  if (analiticas[0]) {
+    const colesterolNoHdl = toNumber(getResultadoValor("colesterol no hdl"));
+    const hdlValue = toNumber(getResultadoValor("hdl"));
+    const trigliceridosValue = toNumber(getResultadoValor("trigliceridos"));
+    const ldlValue = toNumber(getResultadoValor("ldl"));
 
     // Colesterol no HDL
     if (!isNaN(colesterolNoHdl)) {
