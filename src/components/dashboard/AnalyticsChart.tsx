@@ -14,9 +14,12 @@ const DashboardCharts = () => {
   const lipidos = useAnaliticaData({
     endpoint: "/analitica/series?tipo=lipidos",
   });
+  const glucosaMetabolica = useAnaliticaData({
+    endpoint: "/analitica/series?tipo=glucosa-metabolica",
+  });
 
   return (
-    <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
+    <div className='grid gap-4 grid-cols-1 md:grid-cols-2'>
       {analiticas.length === 0 ? (
         <ChartEmpty />
       ) : (
@@ -44,6 +47,14 @@ const DashboardCharts = () => {
             data={lipidos.data}
             loading={lipidos.loading}
             error={lipidos.error}
+          />
+          <LineaChart
+            title='Glucosa y metabolismo'
+            description='Evolución de glucosa y métricas metabólicas'
+            parameters={glucosaMetabolica.parameters}
+            data={glucosaMetabolica.data}
+            loading={glucosaMetabolica.loading}
+            error={glucosaMetabolica.error}
           />
         </>
       )}
