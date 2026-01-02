@@ -119,3 +119,70 @@ export function evaluarRiesgoLdlHDL(ldlHdl: number): RiskResponse {
       return { mensaje: "Valor inválido", nivel: "invalid" };
   }
 }
+
+export function evaluarRiesgoGlucosa(glucosa: number): RiskResponse {
+  switch (true) {
+    case glucosa < 70:
+      return { mensaje: 'Baja (riesgo de hipoglucemia)', nivel: 'high' };
+
+    case glucosa >= 70 && glucosa < 90:
+      return { mensaje: 'Óptimo', nivel: 'low' };
+
+    case glucosa >= 91 && glucosa < 126:
+      return { mensaje: 'Elevada (riesgo moderado)', nivel: 'medium' };
+
+    case glucosa >= 126:
+      return { mensaje: 'Alto riesgo (posible diabetes)', nivel: 'high' };
+
+    default:
+      return { mensaje: 'Valor inválido', nivel: 'invalid' };
+  }
+}
+
+export function evaluarRiesgoHbA1c(hba1c: number): RiskResponse {
+  switch (true) {
+    case hba1c < 5.7:
+      return { mensaje: 'Óptimo', nivel: 'low' };
+
+    case hba1c >= 5.7 && hba1c < 6.5:
+      return { mensaje: 'Prediabetes', nivel: 'medium' };
+
+    case hba1c >= 6.5:
+      return { mensaje: 'Diabetes', nivel: 'high' };
+
+    default:
+      return { mensaje: 'Valor inválido', nivel: 'invalid' };
+  }
+}
+
+export function evaluarRiesgoHomaIr(homaIr: number): RiskResponse {
+  switch (true) {
+    case homaIr < 2:
+      return { mensaje: 'Óptimo', nivel: 'low' };
+
+    case homaIr >= 2 && homaIr < 3:
+      return { mensaje: 'Riesgo moderado', nivel: 'medium' };
+
+    case homaIr >= 3:
+      return { mensaje: 'Resistencia a la insulina', nivel: 'high' };
+
+    default:
+      return { mensaje: 'Valor inválido', nivel: 'invalid' };
+  }
+}
+
+export function evaluarRiesgoTgHdlRatio(tgHdlRatio: number): RiskResponse {
+  switch (true) {
+    case tgHdlRatio < 2:
+      return { mensaje: 'Óptimo', nivel: 'low' };
+
+    case tgHdlRatio >= 2 && tgHdlRatio < 4:
+      return { mensaje: 'Riesgo moderado', nivel: 'medium' };
+
+    case tgHdlRatio >= 4:
+      return { mensaje: 'Alto riesgo', nivel: 'high' };
+
+    default:
+      return { mensaje: 'Valor inválido', nivel: 'invalid' };
+  }
+}
