@@ -11,6 +11,8 @@ import {
   evaluarRiesgoTrigliceridos,
   RiskResponse,
 } from "@/lib/riksAssestment";
+import MetabolicStatusCard from "./MetabolicStatusCard";
+import { type MetabolicMetricsInput } from "@/lib/metabolicStatus";
 
 type UserGlanceProps = {
   analiticas: Analitica[];
@@ -26,6 +28,11 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
   const toNumber = (value: number | string | undefined) => {
     if (value === null || value === undefined) return NaN;
     return typeof value === "number" ? value : parseFloat(value);
+  };
+
+  const toOptionalNumber = (value: number | string | undefined) => {
+    const numericValue = toNumber(value);
+    return Number.isFinite(numericValue) ? numericValue : undefined;
   };
 
   const roundRatioValue = (value: number) =>
@@ -69,31 +76,38 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     riesgoHomaIr: RiskResponse = { mensaje: "", nivel: "invalid" },
     tgHdlRatio,
     riesgoTgHdlRatio: RiskResponse = { mensaje: "", nivel: "invalid" };
+  let metabolicMetrics: MetabolicMetricsInput = {};
 
   if (analiticas[0]) {
-    const colesterolNoHdl = toNumber(
+    const colesterolNoHdl = toOptionalNumber(
       getResultadoValor("colesterol no hdl")
     );
-    const hdlValue = toNumber(getResultadoValor("hdl"));
-    const trigliceridosValue = toNumber(
+    const hdlValue = toOptionalNumber(getResultadoValor("hdl"));
+    const trigliceridosValue = toOptionalNumber(
       getResultadoValor("trigliceridos")
     );
-    const ldlValue = toNumber(getResultadoValor("ldl"));
-    const glucosaValue = toNumber(
+    const ldlValue = toOptionalNumber(getResultadoValor("ldl"));
+    const glucosaValue = toOptionalNumber(
       getResultadoValor("glucosa", { preferredUnit: /mg\s*\/\s*dl/i })
     );
-    const hba1cValue = toNumber(
+    const hba1cValue = toOptionalNumber(
       getResultadoValor("hemoglobina_glicosilada_a1c", {
         preferredUnit: /%/i,
       })
     );
-    const homaIrValue = toNumber(getResultadoValor("homa_ir"));
-    const tgHdlRatioValue = toNumber(
+    const homaIrValue = toOptionalNumber(getResultadoValor("homa_ir"));
+    const tgHdlRatioValue = toOptionalNumber(
       getResultadoValor("tg_hdl_ratio", { allowRatio: true })
     );
+    metabolicMetrics = {
+      tgHdlRatio: tgHdlRatioValue,
+      glucose: glucosaValue,
+      hba1c: hba1cValue,
+      homaIr: homaIrValue,
+    };
 
     // Colesterol no HDL
-    if (!isNaN(colesterolNoHdl)) {
+    if (colesterolNoHdl !== undefined) {
       cnh = colesterolNoHdl;
       riesgoCnh = evaluarRiesgoNoHDL(cnh);
     } else {
@@ -102,7 +116,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     }
 
     // Triglicéridos
-    if (!isNaN(trigliceridosValue)) {
+    if (trigliceridosValue !== undefined) {
       tri = trigliceridosValue;
       riesgoTri = evaluarRiesgoTrigliceridos(tri);
     } else {
@@ -111,7 +125,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     }
 
     // HDL
-    if (!isNaN(hdlValue)) {
+    if (hdlValue !== undefined) {
       hdl = hdlValue;
       riesgoHdl = evaluarRiesgoHdl(hdl);
     } else {
@@ -120,7 +134,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     }
 
     // LDL
-    if (!isNaN(ldlValue)) {
+    if (ldlValue !== undefined) {
       ldl = ldlValue;
       riesgoLdl = evaluarRiesgoLdl(ldl);
     } else {
@@ -129,7 +143,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     }
 
     // Glucosa
-    if (!isNaN(glucosaValue)) {
+    if (glucosaValue !== undefined) {
       glucosa = glucosaValue;
       riesgoGlucosa = evaluarRiesgoGlucosa(glucosa);
     } else {
@@ -138,7 +152,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     }
 
     // HbA1c
-    if (!isNaN(hba1cValue)) {
+    if (hba1cValue !== undefined) {
       hba1c = hba1cValue;
       riesgoHba1c = evaluarRiesgoHbA1c(hba1c);
     } else {
@@ -147,7 +161,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     }
 
     // HOMA-IR
-    if (!isNaN(homaIrValue)) {
+    if (homaIrValue !== undefined) {
       homaIr = homaIrValue;
       riesgoHomaIr = evaluarRiesgoHomaIr(homaIr);
     } else {
@@ -156,7 +170,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     }
 
     // TG/HDL ratio
-    if (!isNaN(tgHdlRatioValue)) {
+    if (tgHdlRatioValue !== undefined) {
       tgHdlRatio = roundRatioValue(tgHdlRatioValue);
       riesgoTgHdlRatio = evaluarRiesgoTgHdlRatio(tgHdlRatio);
     } else {
@@ -166,71 +180,74 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
   }
 
   return (
-    <div className='flex flex-col items-center sm:flex-row sm:flex-wrap sm:justify-center gap-4'>
-      <SituationCard
-        title='Colesterol no HDL'
-        description='Colesterol total menos HDL'
-        value={cnh}
-        unit={"mg/dL"}
-        risk={riesgoCnh}
-        recomendation='Óptimo < 100, Bueno entre 100-130'
-      />
-      <SituationCard
-        title='Triglicéridos'
-        description='Evaluar riesgo cardiovascular'
-        value={tri}
-        unit={"mg/dL"}
-        risk={riesgoTri}
-        recomendation='Óptimo < 80, Bueno ≈ 100'
-      />
-      <SituationCard
-        title='Colesterol HDL'
-        description='El colesterol "bueno"'
-        value={hdl}
-        unit={"mg/dL"}
-        risk={riesgoHdl}
-        recomendation='recomendado entre 40-80 mg/dL'
-      />
-      <SituationCard
-        title='Colesterol LDL'
-        description='El colesterol malo'
-        value={ldl}
-        unit={"mg/dL"}
-        risk={riesgoLdl}
-        recomendation='recomendado entre 40-80'
-      />
-      <SituationCard
-        title='Glucosa'
-        description='Glucosa en ayunas'
-        value={glucosa}
-        unit={"mg/dL"}
-        risk={riesgoGlucosa}
-        recomendation='Ideal entre 70-100 mg/dL'
-      />
-      <SituationCard
-        title='HbA1c'
-        description='Promedio de glucosa 3 meses'
-        value={hba1c}
-        unit={"%"}
-        risk={riesgoHba1c}
-        recomendation='Objetivo < 5.7%'
-      />
-      <SituationCard
-        title='HOMA-IR'
-        description='Resistencia a la insulina'
-        value={homaIr}
-        unit={"index"}
-        risk={riesgoHomaIr}
-        recomendation='Objetivo < 2'
-      />
-      <SituationCard
-        title='TG/HDL ratio'
-        description='Relación triglicéridos/HDL'
-        value={tgHdlRatio}
-        unit={"ratio"}
-        risk={riesgoTgHdlRatio}
-        recomendation='Objetivo < 2'
-      />
+    <div className='flex w-full flex-col gap-4'>
+      <MetabolicStatusCard metrics={metabolicMetrics} />
+      <div className='flex flex-col items-center sm:flex-row sm:flex-wrap sm:justify-center gap-4'>
+        <SituationCard
+          title='Colesterol no HDL'
+          description='Colesterol total menos HDL'
+          value={cnh}
+          unit={"mg/dL"}
+          risk={riesgoCnh}
+          recomendation='Óptimo < 100, Bueno entre 100-130'
+        />
+        <SituationCard
+          title='Triglicéridos'
+          description='Evaluar riesgo cardiovascular'
+          value={tri}
+          unit={"mg/dL"}
+          risk={riesgoTri}
+          recomendation='Óptimo < 80, Bueno ≈ 100'
+        />
+        <SituationCard
+          title='Colesterol HDL'
+          description='El colesterol "bueno"'
+          value={hdl}
+          unit={"mg/dL"}
+          risk={riesgoHdl}
+          recomendation='recomendado entre 40-80 mg/dL'
+        />
+        <SituationCard
+          title='Colesterol LDL'
+          description='El colesterol malo'
+          value={ldl}
+          unit={"mg/dL"}
+          risk={riesgoLdl}
+          recomendation='recomendado entre 40-80'
+        />
+        <SituationCard
+          title='Glucosa'
+          description='Glucosa en ayunas'
+          value={glucosa}
+          unit={"mg/dL"}
+          risk={riesgoGlucosa}
+          recomendation='Ideal entre 70-100 mg/dL'
+        />
+        <SituationCard
+          title='HbA1c'
+          description='Promedio de glucosa 3 meses'
+          value={hba1c}
+          unit={"%"}
+          risk={riesgoHba1c}
+          recomendation='Objetivo < 5.7%'
+        />
+        <SituationCard
+          title='HOMA-IR'
+          description='Resistencia a la insulina'
+          value={homaIr}
+          unit={"index"}
+          risk={riesgoHomaIr}
+          recomendation='Objetivo < 2'
+        />
+        <SituationCard
+          title='TG/HDL ratio'
+          description='Relación triglicéridos/HDL'
+          value={tgHdlRatio}
+          unit={"ratio"}
+          risk={riesgoTgHdlRatio}
+          recomendation='Objetivo < 2'
+        />
+      </div>
     </div>
   );
 }
