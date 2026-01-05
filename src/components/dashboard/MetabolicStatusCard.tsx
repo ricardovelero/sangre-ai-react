@@ -85,26 +85,14 @@ export default function MetabolicStatusCard({
             </div>
             <p className='text-sm text-muted-foreground'>{copy.summary}</p>
             {status.partial && (
-              <p className='text-xs text-muted-foreground'>
-                Evaluación parcial basada en los datos disponibles.
-              </p>
+              <div className='space-y-1 text-xs text-muted-foreground'>
+                <p>Evaluación parcial basada en los datos disponibles.</p>
+                <p>Sube una analítica completa para activar este indicador.</p>
+              </div>
             )}
           </div>
         </div>
       </CardContent>
     </Card>
-  );
-}
-
-export function MetabolicStatusCardExample() {
-  return (
-    <MetabolicStatusCard
-      metrics={{
-        tgHdlRatio: 4,
-        glucose: 130,
-        hba1c: 5.4,
-        homaIr: 2.1,
-      }}
-    />
   );
 }
