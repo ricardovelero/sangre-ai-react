@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { RiskResponse } from "@/lib/riksAssestment";
+import type { KpiMissingInfo } from "@/lib/kpiMissing";
 
 type SituationCardProps = {
   title: string;
@@ -15,6 +16,7 @@ type SituationCardProps = {
   unit: string;
   risk: RiskResponse;
   recomendation?: string;
+  missingInfo?: KpiMissingInfo;
 };
 
 export default function SituationCard({
@@ -24,7 +26,9 @@ export default function SituationCard({
   unit,
   risk,
   recomendation,
+  missingInfo,
 }: SituationCardProps) {
+  const isMissing = Boolean(missingInfo);
   const riskColorClass = {
     low: "text-green-500",
     medium: "text-yellow-500",
@@ -39,12 +43,32 @@ export default function SituationCard({
       </CardHeader>
       <CardContent>
         <div className='flex items-baseline justify-center gap-1'>
-          <span className='text-5xl'>{value}</span>
-          <span className='text-xs'>{unit}</span>
+          <span
+            className={cn(
+              "text-5xl",
+              isMissing && "text-muted-foreground/70"
+            )}
+          >
+            {value}
+          </span>
+          <span
+            className={cn("text-xs", isMissing && "text-muted-foreground/70")}
+          >
+            {unit}
+          </span>
         </div>
         <div>
-          <p className={cn("text-sm", riskColorClass)}>{risk.mensaje}</p>
-          <p className='text-xs'>{recomendation}</p>
+          {isMissing ? (
+            // Missing state keeps a calm tone and a passive CTA.
+            <p className='text-sm text-muted-foreground'>
+              {missingInfo?.message}
+            </p>
+          ) : (
+            <>
+              <p className={cn("text-sm", riskColorClass)}>{risk.mensaje}</p>
+              <p className='text-xs'>{recomendation}</p>
+            </>
+          )}
         </div>
       </CardContent>
     </Card>

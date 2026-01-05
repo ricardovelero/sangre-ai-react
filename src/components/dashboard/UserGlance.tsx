@@ -9,10 +9,10 @@ import {
   evaluarRiesgoNoHDL,
   evaluarRiesgoTgHdlRatio,
   evaluarRiesgoTrigliceridos,
-  RiskResponse,
 } from "@/lib/riksAssestment";
 import MetabolicStatusCard from "./MetabolicStatusCard";
 import { type MetabolicMetricsInput } from "@/lib/metabolicStatus";
+import { buildKpiCardState } from "@/lib/kpiMissing";
 
 type UserGlanceProps = {
   analiticas: Analitica[];
@@ -60,124 +60,70 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     return (preferred ?? matching[0])?.valor;
   };
 
-  let riesgoCnh: RiskResponse = { mensaje: "", nivel: "invalid" },
-    cnh,
-    tri,
-    riesgoTri: RiskResponse = { mensaje: "", nivel: "invalid" },
-    hdl,
-    riesgoHdl: RiskResponse = { mensaje: "", nivel: "invalid" },
-    ldl,
-    riesgoLdl: RiskResponse = { mensaje: "", nivel: "invalid" },
-    glucosa,
-    riesgoGlucosa: RiskResponse = { mensaje: "", nivel: "invalid" },
-    hba1c,
-    riesgoHba1c: RiskResponse = { mensaje: "", nivel: "invalid" },
-    homaIr,
-    riesgoHomaIr: RiskResponse = { mensaje: "", nivel: "invalid" },
-    tgHdlRatio,
-    riesgoTgHdlRatio: RiskResponse = { mensaje: "", nivel: "invalid" };
-  let metabolicMetrics: MetabolicMetricsInput = {};
+  const colesterolNoHdlValue = toOptionalNumber(
+    getResultadoValor("colesterol no hdl")
+  );
+  const hdlValue = toOptionalNumber(getResultadoValor("hdl"));
+  const trigliceridosValue = toOptionalNumber(
+    getResultadoValor("trigliceridos")
+  );
+  const ldlValue = toOptionalNumber(getResultadoValor("ldl"));
+  const glucosaValue = toOptionalNumber(
+    getResultadoValor("glucosa", { preferredUnit: /mg\s*\/\s*dl/i })
+  );
+  const hba1cValue = toOptionalNumber(
+    getResultadoValor("hemoglobina_glicosilada_a1c", {
+      preferredUnit: /%/i,
+    })
+  );
+  const homaIrValue = toOptionalNumber(getResultadoValor("homa_ir"));
+  const tgHdlRatioValue = toOptionalNumber(
+    getResultadoValor("tg_hdl_ratio", { allowRatio: true })
+  );
+  const tgHdlRatioRounded =
+    tgHdlRatioValue !== undefined
+      ? roundRatioValue(tgHdlRatioValue)
+      : undefined;
 
-  if (analiticas[0]) {
-    const colesterolNoHdl = toOptionalNumber(
-      getResultadoValor("colesterol no hdl")
-    );
-    const hdlValue = toOptionalNumber(getResultadoValor("hdl"));
-    const trigliceridosValue = toOptionalNumber(
-      getResultadoValor("trigliceridos")
-    );
-    const ldlValue = toOptionalNumber(getResultadoValor("ldl"));
-    const glucosaValue = toOptionalNumber(
-      getResultadoValor("glucosa", { preferredUnit: /mg\s*\/\s*dl/i })
-    );
-    const hba1cValue = toOptionalNumber(
-      getResultadoValor("hemoglobina_glicosilada_a1c", {
-        preferredUnit: /%/i,
-      })
-    );
-    const homaIrValue = toOptionalNumber(getResultadoValor("homa_ir"));
-    const tgHdlRatioValue = toOptionalNumber(
-      getResultadoValor("tg_hdl_ratio", { allowRatio: true })
-    );
-    metabolicMetrics = {
-      tgHdlRatio: tgHdlRatioValue,
-      glucose: glucosaValue,
-      hba1c: hba1cValue,
-      homaIr: homaIrValue,
-    };
+  const metabolicMetrics: MetabolicMetricsInput = {
+    tgHdlRatio: tgHdlRatioRounded,
+    glucose: glucosaValue,
+    hba1c: hba1cValue,
+    homaIr: homaIrValue,
+  };
 
-    // Colesterol no HDL
-    if (colesterolNoHdl !== undefined) {
-      cnh = colesterolNoHdl;
-      riesgoCnh = evaluarRiesgoNoHDL(cnh);
-    } else {
-      cnh = "N/D";
-      riesgoCnh = { mensaje: "Datos insuficientes", nivel: "invalid" };
-    }
-
-    // Triglicéridos
-    if (trigliceridosValue !== undefined) {
-      tri = trigliceridosValue;
-      riesgoTri = evaluarRiesgoTrigliceridos(tri);
-    } else {
-      tri = "N/D";
-      riesgoTri = { mensaje: "Datos insuficientes", nivel: "invalid" };
-    }
-
-    // HDL
-    if (hdlValue !== undefined) {
-      hdl = hdlValue;
-      riesgoHdl = evaluarRiesgoHdl(hdl);
-    } else {
-      hdl = "N/D";
-      riesgoHdl = { mensaje: "Datos insuficientes", nivel: "invalid" };
-    }
-
-    // LDL
-    if (ldlValue !== undefined) {
-      ldl = ldlValue;
-      riesgoLdl = evaluarRiesgoLdl(ldl);
-    } else {
-      ldl = "N/D";
-      riesgoLdl = { mensaje: "Datos insuficientes", nivel: "invalid" };
-    }
-
-    // Glucosa
-    if (glucosaValue !== undefined) {
-      glucosa = glucosaValue;
-      riesgoGlucosa = evaluarRiesgoGlucosa(glucosa);
-    } else {
-      glucosa = "N/D";
-      riesgoGlucosa = { mensaje: "Datos insuficientes", nivel: "invalid" };
-    }
-
-    // HbA1c
-    if (hba1cValue !== undefined) {
-      hba1c = hba1cValue;
-      riesgoHba1c = evaluarRiesgoHbA1c(hba1c);
-    } else {
-      hba1c = "N/D";
-      riesgoHba1c = { mensaje: "Datos insuficientes", nivel: "invalid" };
-    }
-
-    // HOMA-IR
-    if (homaIrValue !== undefined) {
-      homaIr = homaIrValue;
-      riesgoHomaIr = evaluarRiesgoHomaIr(homaIr);
-    } else {
-      homaIr = "N/D";
-      riesgoHomaIr = { mensaje: "Datos insuficientes", nivel: "invalid" };
-    }
-
-    // TG/HDL ratio
-    if (tgHdlRatioValue !== undefined) {
-      tgHdlRatio = roundRatioValue(tgHdlRatioValue);
-      riesgoTgHdlRatio = evaluarRiesgoTgHdlRatio(tgHdlRatio);
-    } else {
-      tgHdlRatio = "N/D";
-      riesgoTgHdlRatio = { mensaje: "Datos insuficientes", nivel: "invalid" };
-    }
-  }
+  const cnhState = buildKpiCardState(
+    "nonHdl",
+    colesterolNoHdlValue,
+    evaluarRiesgoNoHDL
+  );
+  const triState = buildKpiCardState(
+    "triglycerides",
+    trigliceridosValue,
+    evaluarRiesgoTrigliceridos
+  );
+  const hdlState = buildKpiCardState("hdl", hdlValue, evaluarRiesgoHdl);
+  const ldlState = buildKpiCardState("ldl", ldlValue, evaluarRiesgoLdl);
+  const glucosaState = buildKpiCardState(
+    "glucose",
+    glucosaValue,
+    evaluarRiesgoGlucosa
+  );
+  const hba1cState = buildKpiCardState(
+    "hba1c",
+    hba1cValue,
+    evaluarRiesgoHbA1c
+  );
+  const homaIrState = buildKpiCardState(
+    "homaIr",
+    homaIrValue,
+    evaluarRiesgoHomaIr
+  );
+  const tgHdlRatioState = buildKpiCardState(
+    "tgHdlRatio",
+    tgHdlRatioRounded,
+    evaluarRiesgoTgHdlRatio
+  );
 
   return (
     <div className='flex w-full flex-col gap-4'>
@@ -186,65 +132,73 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
         <SituationCard
           title='Colesterol no HDL'
           description='Colesterol total menos HDL'
-          value={cnh}
+          value={cnhState.displayValue}
           unit={"mg/dL"}
-          risk={riesgoCnh}
+          risk={cnhState.risk}
+          missingInfo={cnhState.missingInfo}
           recomendation='Óptimo < 100, Bueno entre 100-130'
         />
         <SituationCard
           title='Triglicéridos'
           description='Evaluar riesgo cardiovascular'
-          value={tri}
+          value={triState.displayValue}
           unit={"mg/dL"}
-          risk={riesgoTri}
+          risk={triState.risk}
+          missingInfo={triState.missingInfo}
           recomendation='Óptimo < 80, Bueno ≈ 100'
         />
         <SituationCard
           title='Colesterol HDL'
           description='El colesterol "bueno"'
-          value={hdl}
+          value={hdlState.displayValue}
           unit={"mg/dL"}
-          risk={riesgoHdl}
+          risk={hdlState.risk}
+          missingInfo={hdlState.missingInfo}
           recomendation='recomendado entre 40-80 mg/dL'
         />
         <SituationCard
           title='Colesterol LDL'
           description='El colesterol malo'
-          value={ldl}
+          value={ldlState.displayValue}
           unit={"mg/dL"}
-          risk={riesgoLdl}
+          risk={ldlState.risk}
+          missingInfo={ldlState.missingInfo}
           recomendation='recomendado entre 40-80'
         />
         <SituationCard
           title='Glucosa'
           description='Glucosa en ayunas'
-          value={glucosa}
+          value={glucosaState.displayValue}
           unit={"mg/dL"}
-          risk={riesgoGlucosa}
+          risk={glucosaState.risk}
+          missingInfo={glucosaState.missingInfo}
           recomendation='Ideal entre 70-100 mg/dL'
         />
         <SituationCard
           title='HbA1c'
           description='Promedio de glucosa 3 meses'
-          value={hba1c}
+          value={hba1cState.displayValue}
           unit={"%"}
-          risk={riesgoHba1c}
+          risk={hba1cState.risk}
+          missingInfo={hba1cState.missingInfo}
           recomendation='Objetivo < 5.7%'
         />
         <SituationCard
           title='HOMA-IR'
           description='Resistencia a la insulina'
-          value={homaIr}
+          value={homaIrState.displayValue}
           unit={"index"}
-          risk={riesgoHomaIr}
+          risk={homaIrState.risk}
+          missingInfo={homaIrState.missingInfo}
           recomendation='Objetivo < 2'
         />
         <SituationCard
           title='TG/HDL ratio'
           description='Relación triglicéridos/HDL'
-          value={tgHdlRatio}
+          value={tgHdlRatioState.displayValue}
           unit={"ratio"}
-          risk={riesgoTgHdlRatio}
+          risk={tgHdlRatioState.risk}
+          missingInfo={tgHdlRatioState.missingInfo}
           recomendation='Objetivo < 2'
         />
       </div>
