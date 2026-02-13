@@ -1,18 +1,9 @@
 import { Analitica } from "@/types";
 import SituationCard from "./SituationCard";
-import {
-  evaluarRiesgoHdl,
-  evaluarRiesgoHbA1c,
-  evaluarRiesgoHomaIr,
-  evaluarRiesgoGlucosa,
-  evaluarRiesgoLdl,
-  evaluarRiesgoNoHDL,
-  evaluarRiesgoTgHdlRatio,
-  evaluarRiesgoTrigliceridos,
-} from "@/lib/riksAssestment";
 import MetabolicStatusCard from "./MetabolicStatusCard";
 import { type MetabolicMetricsInput } from "@/lib/metabolicStatus";
 import { buildKpiCardState } from "@/lib/kpiMissing";
+import { calculateNonHdl } from "@/lib/kpiCalculations";
 
 type UserGlanceProps = {
   analiticas: Analitica[];
@@ -60,8 +51,8 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     return (preferred ?? matching[0])?.valor;
   };
 
-  const colesterolNoHdlValue = toOptionalNumber(
-    getResultadoValor("colesterol no hdl")
+  const colesterolTotalValue = toOptionalNumber(
+    getResultadoValor("colesterol total", { preferredUnit: /mg\s*\/\s*dl/i })
   );
   const hdlValue = toOptionalNumber(getResultadoValor("hdl"));
   const trigliceridosValue = toOptionalNumber(
@@ -84,6 +75,7 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     tgHdlRatioValue !== undefined
       ? roundRatioValue(tgHdlRatioValue)
       : undefined;
+  const nonHdlValue = calculateNonHdl(colesterolTotalValue, hdlValue);
 
   const metabolicMetrics: MetabolicMetricsInput = {
     tgHdlRatio: tgHdlRatioRounded,
@@ -92,114 +84,98 @@ export default function UserGlance({ analiticas }: UserGlanceProps) {
     homaIr: homaIrValue,
   };
 
-  const cnhState = buildKpiCardState(
-    "nonHdl",
-    colesterolNoHdlValue,
-    evaluarRiesgoNoHDL
-  );
-  const triState = buildKpiCardState(
-    "triglycerides",
-    trigliceridosValue,
-    evaluarRiesgoTrigliceridos
-  );
-  const hdlState = buildKpiCardState("hdl", hdlValue, evaluarRiesgoHdl);
-  const ldlState = buildKpiCardState("ldl", ldlValue, evaluarRiesgoLdl);
-  const glucosaState = buildKpiCardState(
-    "glucose",
-    glucosaValue,
-    evaluarRiesgoGlucosa
-  );
-  const hba1cState = buildKpiCardState(
-    "hba1c",
-    hba1cValue,
-    evaluarRiesgoHbA1c
-  );
-  const homaIrState = buildKpiCardState(
-    "homaIr",
-    homaIrValue,
-    evaluarRiesgoHomaIr
-  );
-  const tgHdlRatioState = buildKpiCardState(
-    "tgHdlRatio",
-    tgHdlRatioRounded,
-    evaluarRiesgoTgHdlRatio
-  );
+  const nonHdlState = buildKpiCardState("nonHdl", nonHdlValue);
+  const triState = buildKpiCardState("triglycerides", trigliceridosValue);
+  const hdlState = buildKpiCardState("hdl", hdlValue);
+  const ldlState = buildKpiCardState("ldl", ldlValue);
+  const glucosaState = buildKpiCardState("glucose", glucosaValue);
+  const hba1cState = buildKpiCardState("hba1c", hba1cValue);
+  const homaIrState = buildKpiCardState("homaIr", homaIrValue);
+  const tgHdlRatioState = buildKpiCardState("tgHdlRatio", tgHdlRatioRounded);
 
   return (
     <div className='flex w-full flex-col gap-4'>
       <MetabolicStatusCard metrics={metabolicMetrics} />
       <div className='flex flex-col items-center sm:flex-row sm:flex-wrap sm:justify-center gap-4'>
         <SituationCard
-          title='Colesterol no HDL'
-          description='Colesterol total menos HDL'
-          value={cnhState.displayValue}
+          title='Non-HDL Cholesterol'
+          description='Total cholesterol minus HDL'
+          value={nonHdlState.displayValue}
           unit={"mg/dL"}
-          risk={cnhState.risk}
-          missingInfo={cnhState.missingInfo}
-          recomendation='Óptimo < 100, Bueno entre 100-130'
+          statusLabel={nonHdlState.statusLabel}
+          statusTone={nonHdlState.statusTone}
+          missingInfo={nonHdlState.missingInfo}
+          recomendation='Optimal < 130'
         />
         <SituationCard
           title='Triglicéridos'
           description='Evaluar riesgo cardiovascular'
           value={triState.displayValue}
           unit={"mg/dL"}
-          risk={triState.risk}
+          statusLabel={triState.statusLabel}
+          statusTone={triState.statusTone}
           missingInfo={triState.missingInfo}
-          recomendation='Óptimo < 80, Bueno ≈ 100'
+          recomendation='Optimal < 80'
         />
         <SituationCard
           title='Colesterol HDL'
           description='El colesterol "bueno"'
           value={hdlState.displayValue}
           unit={"mg/dL"}
-          risk={hdlState.risk}
+          statusLabel={hdlState.statusLabel}
+          statusTone={hdlState.statusTone}
           missingInfo={hdlState.missingInfo}
-          recomendation='recomendado entre 40-80 mg/dL'
+          recomendation='Optimal 40–80 mg/dL'
         />
         <SituationCard
           title='Colesterol LDL'
           description='El colesterol malo'
           value={ldlState.displayValue}
           unit={"mg/dL"}
-          risk={ldlState.risk}
+          statusLabel={ldlState.statusLabel}
+          statusTone={ldlState.statusTone}
           missingInfo={ldlState.missingInfo}
-          recomendation='recomendado entre 40-80'
+          recomendation='Optimal < 100'
         />
         <SituationCard
           title='Glucosa'
           description='Glucosa en ayunas'
           value={glucosaState.displayValue}
           unit={"mg/dL"}
-          risk={glucosaState.risk}
+          statusLabel={glucosaState.statusLabel}
+          statusTone={glucosaState.statusTone}
           missingInfo={glucosaState.missingInfo}
-          recomendation='Ideal entre 70-100 mg/dL'
+          recomendation='Optimal 70–99 mg/dL'
         />
         <SituationCard
           title='HbA1c'
           description='Promedio de glucosa 3 meses'
           value={hba1cState.displayValue}
           unit={"%"}
-          risk={hba1cState.risk}
+          statusLabel={hba1cState.statusLabel}
+          statusTone={hba1cState.statusTone}
           missingInfo={hba1cState.missingInfo}
-          recomendation='Objetivo < 5.7%'
+          recomendation='Optimal < 5.7%'
         />
         <SituationCard
           title='HOMA-IR'
           description='Resistencia a la insulina'
           value={homaIrState.displayValue}
           unit={"index"}
-          risk={homaIrState.risk}
+          statusLabel={homaIrState.statusLabel}
+          statusTone={homaIrState.statusTone}
           missingInfo={homaIrState.missingInfo}
-          recomendation='Objetivo < 2'
+          recomendation='Optimal < 2'
         />
         <SituationCard
           title='TG/HDL ratio'
           description='Relación triglicéridos/HDL'
           value={tgHdlRatioState.displayValue}
           unit={"ratio"}
-          risk={tgHdlRatioState.risk}
+          statusLabel={tgHdlRatioState.statusLabel}
+          statusTone={tgHdlRatioState.statusTone}
           missingInfo={tgHdlRatioState.missingInfo}
-          recomendation='Objetivo < 2'
+          recomendation='Optimal < 2'
         />
       </div>
     </div>

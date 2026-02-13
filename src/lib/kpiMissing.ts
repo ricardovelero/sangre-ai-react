@@ -1,14 +1,11 @@
-import type { RiskResponse } from '@/lib/riksAssestment';
-
-export type KpiKey =
-  | 'nonHdl'
-  | 'triglycerides'
-  | 'hdl'
-  | 'ldl'
-  | 'glucose'
-  | 'hba1c'
-  | 'homaIr'
-  | 'tgHdlRatio';
+import type { KpiKey } from '@/lib/kpiTypes';
+import {
+  evaluateKpiStatus,
+  KPI_STATUS_LABELS,
+  MISSING_STATUS_LABEL,
+  type KPIStatus,
+  type KPIStatusTone,
+} from '@/lib/kpiStatus';
 
 export type KpiMissingInfo = {
   requiredFields: string[];
@@ -58,25 +55,27 @@ export function getKpiMissingInfo(key: KpiKey): KpiMissingInfo {
   return KPI_MISSING_CONFIG[key];
 }
 
-export function buildKpiCardState(
-  key: KpiKey,
-  value: number | undefined,
-  evaluateRisk: (value: number) => RiskResponse
-): {
+export function buildKpiCardState(key: KpiKey, value: number | undefined): {
   displayValue: number | string;
-  risk: RiskResponse;
+  statusLabel: string;
+  statusTone: KPIStatusTone;
+  status?: KPIStatus;
   missingInfo?: KpiMissingInfo;
 } {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
     return {
       displayValue: MISSING_VALUE_LABEL,
-      risk: { mensaje: '', nivel: 'invalid' },
+      statusLabel: MISSING_STATUS_LABEL,
+      statusTone: 'missing',
       missingInfo: getKpiMissingInfo(key),
     };
   }
 
+  const status = evaluateKpiStatus(key, value);
   return {
     displayValue: value,
-    risk: evaluateRisk(value),
+    status,
+    statusLabel: KPI_STATUS_LABELS[status],
+    statusTone: status,
   };
 }
