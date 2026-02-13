@@ -11,17 +11,14 @@ type RatiosSidebarProps = {
 };
 
 export default function RatiosSidebar({ analitica }: RatiosSidebarProps) {
-  const totalHdl = analitica?.resultados.filter(
-    (r) => r.nombre_normalizado === "total/hdl"
-  )[0].valor;
+  const getRatioValue = (ratioName: string) =>
+    analitica?.resultados.find(
+      (resultado) => resultado.nombre_normalizado === ratioName
+    )?.valor;
 
-  const colNoHdl = analitica?.resultados.filter(
-    (r) => r.nombre_normalizado === "colesterol no hdl"
-  )[0].valor;
-
-  const ldlHdl = analitica?.resultados.filter(
-    (r) => r.nombre_normalizado === "ldl/hdl"
-  )[0].valor;
+  const totalHdl = getRatioValue("total/hdl");
+  const colNoHdl = getRatioValue("colesterol no hdl");
+  const ldlHdl = getRatioValue("ldl/hdl");
 
   const colNoHdlRisk = evaluarRiesgoNoHDL(colNoHdl ?? 0);
   const totalHdlRisk = evaluarRiesgoTotalHDL(totalHdl ?? 0);
@@ -32,19 +29,19 @@ export default function RatiosSidebar({ analitica }: RatiosSidebarProps) {
       <RatiosCard
         title='Colesterol no HDL'
         description='El favorito de Dr. Peter Attia'
-        value={colNoHdl?.toFixed(0)}
+        value={typeof colNoHdl === "number" ? colNoHdl.toFixed(0) : undefined}
         risk={colNoHdlRisk}
       />
       <RatiosCard
         title='Colesterol Total/HDL'
         description='La escala del ratio colesterol total entre HDL (colesterol bueno).'
-        value={totalHdl?.toFixed(1)}
+        value={typeof totalHdl === "number" ? totalHdl.toFixed(1) : undefined}
         risk={totalHdlRisk}
       />
       <RatiosCard
         title='LDL/HDL'
         description='La relación LDL/HDL compara el colesterol “malo” (LDL) con el colesterol “bueno” (HDL).'
-        value={ldlHdl?.toFixed(1)}
+        value={typeof ldlHdl === "number" ? ldlHdl.toFixed(1) : undefined}
         risk={ldlHdlRisk}
       />
     </>
