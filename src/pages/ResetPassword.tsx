@@ -14,11 +14,12 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import axios from "axios";
+import { getApiErrorMessage } from "@/lib/utils";
 
 // Backend API URL
-const API_URL =
-  `${import.meta.env.VITE_APP_API_URL}/auth` ||
-  "http://localhost:3000/api/auth";
+const API_URL = `${
+  import.meta.env.VITE_APP_API_URL || "http://localhost:3000/api"
+}/auth`;
 
 const formSchema = z
   .object({
@@ -63,17 +64,13 @@ export default function ResetPassword() {
 
       toast.info(response.data.message);
       navigate("/login");
-    } catch (error: any) {
-      if (error) {
-        toast.error(
-          error.response.data.message ||
-            "🤦 Falló el cambio de contraseña, por favor intenta de nuevo o contacta sporte."
-        );
-        console.error(
-          error.response.data.message ||
-            "😵 Something went wrong. Login failed."
-        );
-      }
+    } catch (error) {
+      const message = getApiErrorMessage(
+        error,
+        "🤦 Falló el cambio de contraseña, por favor intenta de nuevo o contacta soporte."
+      );
+      toast.error(message);
+      console.error(message);
     }
   };
 

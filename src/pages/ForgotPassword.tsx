@@ -14,15 +14,16 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import axios from "axios";
+import { getApiErrorMessage } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.string().min(1, { message: "Debes ingresar tu email" }),
 });
 
 // Backend API URL
-const API_URL =
-  `${import.meta.env.VITE_APP_API_URL}/auth` ||
-  "http://localhost:3000/api/auth";
+const API_URL = `${
+  import.meta.env.VITE_APP_API_URL || "http://localhost:3000/api"
+}/auth`;
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -41,14 +42,13 @@ export default function LoginForm() {
 
       toast.info(response.data.message);
       navigate("/");
-    } catch (error: any) {
-      console.error(
-        error.response.data.message || "😵 Something went wrong. Login failed."
+    } catch (error) {
+      const message = getApiErrorMessage(
+        error,
+        "🤦 Algo salió mal!, por favor intenta de nuevo o contacta soporte."
       );
-      toast.error(
-        error.response.data.message ||
-          "🤦 Algo salió mal!, por favor intenta de nuevo o contacta soporte."
-      );
+      console.error(message);
+      toast.error(message);
     }
   };
 
