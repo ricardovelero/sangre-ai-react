@@ -2,9 +2,38 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import axios from "axios";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+type ApiFieldError = { field?: string; message?: string };
+
+/**
+ * Extracts the most specific message from an API error response.
+ *
+ * The backend returns validation failures (including password rules, see PR #6)
+ * as `{ message: "Datos inválidos", errors: [{ field, message }] }`. We prefer
+ * the per-field message(s) over the generic top-level one, then fall back.
+ */
+export function getApiErrorMessage(
+  error: unknown,
+  fallback = "Algo salió mal, por favor intenta de nuevo."
+): string {
+  if (axios.isAxiosError(error)) {
+    const data = error.response?.data as
+      | { message?: string; errors?: ApiFieldError[] }
+      | undefined;
+
+    const fieldMessages = data?.errors
+      ?.map((e) => e.message)
+      .filter((m): m is string => Boolean(m));
+
+    if (fieldMessages?.length) return fieldMessages.join(" ");
+    if (data?.message) return data.message;
+  }
+  return fallback;
 }
 
 export function toTitleCase(str: string) {

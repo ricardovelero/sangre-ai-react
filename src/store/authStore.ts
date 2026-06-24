@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { getApiErrorMessage } from "@/lib/utils";
 import { FormData } from "@/pages/Register";
 import { UpdateUserFormData } from "@/components/settings/AccountForm";
 import { UpdatePasswordFormData } from "@/components/settings/ChangePasswordForm";
@@ -41,9 +42,9 @@ type AuthState = {
 };
 
 // Backend API URL
-const API_URL =
-  `${import.meta.env.VITE_APP_API_URL}/auth` ||
-  "http://localhost:3000/api/auth";
+const API_URL = `${
+  import.meta.env.VITE_APP_API_URL || "http://localhost:3000/api"
+}/auth`;
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -124,13 +125,9 @@ export const useAuthStore = create<AuthState>()(
 
           if (onSuccess) onSuccess();
           return null;
-        } catch (error: any) {
-          console.error(
-            "Registration Error:",
-            error.response?.data?.message || error
-          );
-          const errorMessage =
-            error.response?.data?.message || "Registration failed";
+        } catch (error) {
+          const errorMessage = getApiErrorMessage(error, "Registration failed");
+          console.error("Registration Error:", errorMessage);
           set({ error: errorMessage });
           return get().error;
         } finally {
@@ -148,23 +145,25 @@ export const useAuthStore = create<AuthState>()(
             user: User;
           }>(`${API_URL}/login`, { email, password });
 
-          // Save tokens in cookies
+          // Save tokens in cookies (match backend token lifetimes: access 3d, refresh 9d)
           Cookies.set("token", response.data.token, {
-            expires: 1,
+            expires: 3,
             secure: true,
           });
           Cookies.set("refreshToken", response.data.refreshToken, {
-            expires: 7,
+            expires: 9,
             secure: true,
           });
 
           set({ user: response.data.user, isAuthenticated: true });
           if (onSuccess) onSuccess();
           return null;
-        } catch (error: any) {
-          console.error("Login Error:", error.response?.data?.message || error);
-          const errorMessage =
-            error.response?.data?.message || "Error de inicio de sesión";
+        } catch (error) {
+          const errorMessage = getApiErrorMessage(
+            error,
+            "Error de inicio de sesión"
+          );
+          console.error("Login Error:", errorMessage);
           set({ error: errorMessage });
           return get().error;
         } finally {
@@ -203,13 +202,9 @@ export const useAuthStore = create<AuthState>()(
 
           if (onSuccess) onSuccess();
           return null;
-        } catch (error: any) {
-          console.error(
-            "User Update Error:",
-            error.response?.data?.message || error
-          );
-          const errorMessage =
-            error.response?.data?.message || "User Update failed";
+        } catch (error) {
+          const errorMessage = getApiErrorMessage(error, "User Update failed");
+          console.error("User Update Error:", errorMessage);
           set({ error: errorMessage });
           return get().error;
         } finally {
@@ -227,13 +222,12 @@ export const useAuthStore = create<AuthState>()(
 
           if (onSuccess) onSuccess();
           return null;
-        } catch (error: any) {
-          console.error(
-            "Change password error:",
-            error.response?.data?.message || error
+        } catch (error) {
+          const errorMessage = getApiErrorMessage(
+            error,
+            "Change password failed"
           );
-          const errorMessage =
-            error.response?.data?.message || "Change password failed";
+          console.error("Change password error:", errorMessage);
           set({ error: errorMessage });
           return get().error;
         } finally {

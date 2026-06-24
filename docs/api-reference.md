@@ -227,13 +227,13 @@ special character. Per-rule messages (Spanish):
 | No number | `La contraseña debe contener al menos un número` |
 | No special char | `La contraseña debe contener al menos un carácter especial` |
 
-> **⚠️ Shape change in flight (PR #6).**
-> - **Current `main`:** a weak password returns a **top-level** message:
->   `{ "message": "La contraseña debe contener al menos un número" }`.
-> - **After PR #6 merges:** it returns the **standard validation shape**:
->   `{ "message": "Datos inválidos", "errors": [{ "field": "password", "message": "La contraseña debe contener al menos un número" }] }`.
+> **✅ Shape unified (PR #6, merged).**
+> A weak password now returns the **standard validation shape**:
+> `{ "message": "Datos inválidos", "errors": [{ "field": "password", "message": "La contraseña debe contener al menos un número" }] }`.
 >
-> The frontend should read `errors[]` for the rule message once #6 is merged.
+> The frontend reads `errors[]` for the per-field rule message (see
+> `getApiErrorMessage` in `src/lib/utils.ts`), falling back to the top-level
+> `message`.
 
 ---
 

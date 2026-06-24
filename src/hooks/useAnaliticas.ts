@@ -157,44 +157,6 @@ export function useAnaliticas() {
     }
   };
 
-  const handleDeleteNota = async (nota: string, analiticaId: string) => {
-    setIsProcessing(true);
-    if (!token) {
-      toast.error("No estás identificado para eliminar la nota");
-      return;
-    }
-    if (!analiticaId) {
-      toast.error("ID de analítica no disponible");
-      return;
-    }
-
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_APP_API_URL}/analitica/${analiticaId}/notas`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ nota }),
-        }
-      );
-
-      if (!res.ok) throw new Error("Error deleting nota");
-      toast.success("Nota eliminada correctamente");
-      await mutate(
-        `${import.meta.env.VITE_APP_API_URL}/analitica/${analiticaId}`
-      );
-    } catch (error) {
-      toast.error("Error al eliminar nota", {
-        description: (error as Error).message,
-      });
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
   return {
     analiticas,
     isLoading,
@@ -209,6 +171,5 @@ export function useAnaliticas() {
     fetchAnaliticaById,
     useAnaliticaById,
     updateAnalitica,
-    handleDeleteNota,
   };
 }
