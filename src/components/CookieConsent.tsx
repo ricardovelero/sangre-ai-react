@@ -33,7 +33,12 @@ export default function CookieConsent() {
   }, []);
 
   const handleConsent = (decision: "accepted" | "rejected") => {
-    Cookies.set("cookie_consent", decision, { expires: 365, path: "/" });
+    Cookies.set("cookie_consent", decision, {
+      expires: 365,
+      path: "/",
+      secure: true,
+      sameSite: "strict",
+    });
     toast.dismiss(); // Cierra el toast después de la elección
   };
 

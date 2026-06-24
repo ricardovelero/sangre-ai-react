@@ -115,10 +115,12 @@ export const useAuthStore = create<AuthState>()(
           Cookies.set("token", response.data.token, {
             expires: 3,
             secure: true,
+            sameSite: "strict",
           });
           Cookies.set("refreshToken", response.data.refreshToken, {
             expires: 9,
             secure: true,
+            sameSite: "strict",
           });
 
           set({ user: response.data.user, isAuthenticated: true });
@@ -149,10 +151,12 @@ export const useAuthStore = create<AuthState>()(
           Cookies.set("token", response.data.token, {
             expires: 3,
             secure: true,
+            sameSite: "strict",
           });
           Cookies.set("refreshToken", response.data.refreshToken, {
             expires: 9,
             secure: true,
+            sameSite: "strict",
           });
 
           set({ user: response.data.user, isAuthenticated: true });
